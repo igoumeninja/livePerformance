@@ -3,26 +3,19 @@
 void liveApp::setup()	{
 	{
 		ofSetCircleResolution(200);
-		bSmooth = true; 
-		bool 	bAuto = false;
 		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGB);// GL_RGBA); 
-		//texScreen.allocate(1280,1024);
-		ofSetBackgroundAuto(bAuto);
+		ofSetBackgroundAuto(false);
 		ofEnableSmoothing();
 		ofEnableAlphaBlending(); 
 		//glutSetCursor(GLUT_CURSOR_CYCLE);  // change cursor icon (http://pyopengl.sourceforge.net/documentation/manual/glutSetCursor.3GLUT.html)
-		cout << "liveApp class recieving OSC at port: 12345 " << PORTlisten << "\n";
+		cout << "recieving OSC at port: 12345 " << PORTlisten << "\n";
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
-		//ofSetWindowTitle("Joda: AudioVisual Performance at Polytechno Fri, 29 July 2011");
-		ofSetWindowTitle("wfae2011: Crossing Listening Paths -  Thu, 06 October 2011, 09:51");
+		ofSetWindowTitle("Joda: AudioVisual Performance at Lyon");
 		ofSetFrameRate(60); // if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps.
+		ofSetVerticalSync(false);
 		
-		snapCounter = 0;
-		bSnapshot = false;
-		phase = 0;
-		memset(snapString, 0, 255);		// clear the string by setting all chars to 0
 		
 	}	// Setup
 	{
@@ -148,8 +141,8 @@ void liveApp::setup()	{
 		// Video
 		sketchDust100328.loadMovie("videos/sketchDust100328.avi");
 		// Fonts
-		myFont11.loadFont("/Users/fou/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
-		myFont350.loadFont("/Users/fou/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
+		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
+		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
 	}	// data
 	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
@@ -572,14 +565,7 @@ void liveApp::draw()	{
 //		for( int i=2000; i<2000 + numMouseSketches; i++ ) {
 //			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
 //		}	
-	}	else	{
-		for( int i=1000; i<1000 + numMouseSketches; i++ ) {
-				sketch[i].drawMouse(padX, padY, 0, r7, g7, b7, 0, mouseLines);	
-		}
-//		for( int i=2000; i<2000 + numMouseSketches; i++ ) {
-//				sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, 0, mouseLines);	
-//		}
-	}	//	draw with iPod
+	}
 	if	(feedbackView)	{
 		texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							
@@ -591,9 +577,6 @@ void liveApp::draw()	{
 		//texScreen.draw(0,0,ofGetScreenWidth(), ofGetScreenHeight());
 		//texScreen.draw(0,0,1280,1024);		
 		glPopMatrix();
-	}
-	if	(bSnapshot)	{
-		takePictures();
 	}
 }
 void liveApp::syncStudies ()	{
@@ -607,16 +590,7 @@ void liveApp::syncStudies ()	{
 		myFont11.drawString(beatStr,0, 0);		
 		ofPopMatrix();
 }
-void liveApp::takePictures()	{
-	img.grabScreen(0,0,600, 600);
-	//img.grabScreen(0,0,4256,2832);
-	char fileName[255];
-	sprintf(fileName, "100406_%0.3i.png", snapCounter);
-	img.saveImage(fileName);
-	sprintf(snapString, "x %s", fileName);
-	snapCounter++;
-	bSnapshot = false;
-}
+
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   
   if (dotSize > 1.0) {

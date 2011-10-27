@@ -49,7 +49,6 @@ public:
 	void	feedbackStudies();	
 	void	maskStudies();			
 	void	syncStudies();
-	void	takePictures();
 	void	seed1(float dotSize, float angle, float x, float y);
 	void	seed2(float dotSize, float angle, float x, float y);	
 	

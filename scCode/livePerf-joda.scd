@@ -1,16 +1,33 @@
 //:Joda - Live Performance
 //:-----------------------
+"open -a /Users/fou/projects/phD/code/Gea/apps/abizof/110517_ofSpectrograph/bin/openFrameworks.app/Contents/MacOS/openFrameworks".unixCmd;
+
+"killall openFrameworks".unixCmd;
+
+//:change application
+{
+"open -a /Users/fou/projects/phD/code/Gea/apps/abizof/110517_ofSpectrograph/bin/openFrameworks.app/Contents/MacOS/openFrameworks".unixCmd;
+
+2.wait;
+"killall openFrameworks".unixCmd;
+
+"open -a /Users/fou/projects/phD/code/Gea/apps/abizof/110728_cutMotion/bin/openFrameworks.app/Contents/MacOS/openFrameworks".unixCmd;
+
+}.fork
+
 //:Define Global Variables
-OF.background(0,0,0);
+OF.background(40,40,40);
 OF.rgb("background",0,0,0,20);
+
 //:numSketch
 OF.interactWithSound("numSoundSketches", 4);		//	RANGE: 1 -> 999
+
 //:---
 ~screenWidth = 1280;
 ~screenHeight = 1024;
 
 // Take a string from file
-~myString = File.use("/Users/fou/Projects/Artistic/Performance/Joda-HighButUnderControl/data/text/text", "r", { |f| f.readAllString.postln })
+~myString = File.use("/Users/ari/Projects/artistic/performance/JodaLyon/data/text/text", "r", { |f| f.readAllString.postln })
 //:Do Typo
 OF.background(0,0,0);
 OF.rgb("background",0,0,0,25);	//OF.rgb("background",R,G,B,A);
