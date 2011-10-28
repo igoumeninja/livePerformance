@@ -118,7 +118,7 @@ public:
 	float xSolo, ySolo;
 	
 	//		for ImageCapture		
-	int				snapCounter, full;
+	int				snapCounter;
 	char 			snapString[255];
 	ofImage 		img;
 	bool 			bSnapshot;		
@@ -151,7 +151,7 @@ public:
 	float			fillRate;
 	
 private:
-	
+	int windowWidth, windowHeight; 
 	ofxOscReceiver	receiver;
 	int				current_msg_string;
 	string			msg_strings[NUM_MSG_STRINGS];

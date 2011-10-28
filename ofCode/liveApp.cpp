@@ -11,11 +11,22 @@
 
 void liveApp::setup()	{
 	{
+
+		int windowMode = ofGetWindowMode();  
+		if(windowMode == OF_FULLSCREEN){  
+			this->windowWidth = ofGetScreenWidth();  
+			this->windowHeight = ofGetScreenHeight();  
+		}  
+		else if(windowMode == OF_WINDOW){  
+			this->windowWidth = ofGetWidth();  
+			this->windowHeight = ofGetHeight();  
+		} 
+		
 		ofSetCircleResolution(200);
 		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGBA);// GL_RGBA); 
 		ofSetBackgroundAuto(false);
-		ofEnableSmoothing();
-		ofEnableAlphaBlending(); 
+		//ofEnableSmoothing();
+		//ofEnableAlphaBlending(); 
 		//glutSetCursor(GLUT_CURSOR_CYCLE);  // change cursor icon (http://pyopengl.sourceforge.net/documentation/manual/glutSetCursor.3GLUT.html)
 		cout << "recieving OSC at port: 12345 " << PORTlisten << "\n";
 		receiver.setup( PORTlisten );
@@ -66,7 +77,7 @@ void liveApp::setup()	{
 		//	RGB - MIDI
 		obj_a = 10;
 		obj_r = obj_g = obj_b = 255;
-		a1 = 0;
+		a1 = 255;
 		a2 = 0;
 		a3 = 18;
 		a4 = 8;
@@ -74,7 +85,7 @@ void liveApp::setup()	{
 		a6 = 40;
 		a7 = 140;
 		a8 = 0; //for Blending:  GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA  a8=18 (oriaka)
-		r1 = g1 = b1 = 0;
+		r1 = g1 = b1 = 255;
 		r2 = g2 = b2 = 0;
 		r3 = g3 = b3 = 255;
 		r4 = g4 = b4 = 255;
@@ -249,7 +260,7 @@ void liveApp::update()	{
 					ofRotateX(m.getArgAsInt32(8));
 					ofRotateY(m.getArgAsInt32(9));
 					ofRotateZ(m.getArgAsInt32(10));										
-					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));					
 					ofEndShape();
 					break;
 				case 14:
@@ -597,7 +608,7 @@ void liveApp::draw()	{
 		glPushMatrix();
 		ofSetHexColor(0xffffff);
 		glTranslatef(feedbackSpeedX,feedbackSpeedY,0);
-		glTranslatef(2,2,0);		
+		//		glTranslatef(2,2,0);		
 		texScreen.draw(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.draw(0,0,ofGetScreenWidth(), ofGetScreenHeight());
 		//texScreen.draw(0,0,1280,1024);		
@@ -742,12 +753,13 @@ void liveApp::keyPressed  (int key)	{
     if(key == 'N'){
     }
 	if(key == 'v' or key == 'V'){
-		full = !full;
-		if(full){
+		int previousWindowX, previousWindowY;  
+		
+		if(ofGetWindowMode() == 0){  
 			ofSetFullscreen(true);
-		} else {
+		}else{  
 			ofSetFullscreen(false);
-		}
+		}  
 	}		
 	if(key == 'b' or key == 'B'){
 		ofBackground(0, 0, 0);

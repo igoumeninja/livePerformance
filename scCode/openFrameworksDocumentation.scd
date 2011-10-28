@@ -7,7 +7,6 @@ BACKGROUND
 ----------
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
-
 SKETCH
 ------
 OF.interactWithSound("activate",1); 			//	0:DEACTIVATE, 1: ACTIVATE
@@ -24,7 +23,6 @@ OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 1);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
-
 OF.rgb("particleConnections",255,255,255,255);		//	RGBA
 OF.rgb("particlesColor",255,255,255,255);			//	RGBA
 
@@ -34,24 +32,20 @@ OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A)
 
 FEEDBACK
 --------
-
-OF.feedback("activate", 0);
-OF.feedback("speexXY", 1, 2);
-
+OF.feedback("activate", 1);
+OF.feedback("speedXY", 0,0);
 
 WFAE
 ----
-
-OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
-OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
+OF.rgb("background",0,0,0,10);					//   OF.rgb("background",R,G,B,A);
+OF.particle("activate", 1);						//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("forceRadius", 100);					//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
-OF.rgb("particleConnections",255,255,255,255);		//	RGBA
+OF.rgb("particleConnectionsColor",255,255,255,255);	//	RGBA
 OF.rgb("particlesColor",255,255,255,255);			//	RGBA
 
 CUTMOTION
 ---------
-
 OF.image(imageID, xPos, yPos, width, height);
 OF.image(imageID, xPos, yPos, width, height, rotX,rotY,rotZ);
 OF.image(imageID, xPos, yPos, width, height, translateX, translateY, translateZ, rotX,rotY,rotZ);

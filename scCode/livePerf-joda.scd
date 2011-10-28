@@ -17,7 +17,7 @@
 
 //:Define Global Variables
 OF.background(40,40,40);
-OF.rgb("background",0,0,0,20);
+OF.rgb("background",0,0,0,5);
 
 //:numSketch
 OF.interactWithSound("numSoundSketches", 4);		//	RANGE: 1 -> 999
@@ -30,14 +30,14 @@ OF.interactWithSound("numSoundSketches", 4);		//	RANGE: 1 -> 999
 ~myString = File.use("/Users/ari/Projects/artistic/performance/JodaLyon/data/text/text", "r", { |f| f.readAllString.postln })
 //:Do Typo
 OF.background(0,0,0);
-OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
 {
 	40.do {
 		{
 			var xPos, yPos = 20, count = 0;
 			11500.do	{ |i|
 				xPos = 8*count;
-				OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,125);
+				OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,225);
 				//i.postln;
 				0.01.wait;
 				if (xPos > ~screenWidth, {xPos = 0; count = 0; yPos = yPos +15} );
@@ -48,25 +48,17 @@ OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 	}
 }.fork
 
-//:Random symbols
-
-OF.writeString(["!","@", "$"].at(1),100,100,255,255,255,125);
-{
-	40.do {
-		{
-			var xPos, yPos = 20, count = 0;
-			11500.do	{ |i|
-				xPos = 8*count;
-				OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,125);
-				//i.postln;
-				0.01.wait;
-				if (xPos > ~screenWidth, {xPos = 0; count = 0; yPos = yPos +15} );
-				count = count + 1;
-			}
-		}.fork;
-		rrand(2,14).wait;
+//:rotateText
+~rotateText = Task({
+	inf.do	{ |i|
+		OF.img(rrand(0,60).asInteger,0, 0, 0, 0, ~screenWidth/2, ~screenHeight/2, 0, 0,0, i);
+		0.02.wait;
 	}
-}.fork
+});
+//:play rotateText
+~rotateText.play;
+//:stop rotateText
+~rotateText.stop;
 
 //:OSC responder from omer
 OF.background(0,0,0);
@@ -78,6 +70,55 @@ OF.particle("pushParticles", 1);				//	0:DON'T PUSH, 1: PUSH
 	"hi omer".postln;
 
 } ).add; 
+
+//:lyon rotate 2d
+~rotate2d = Task({
+	inf.do	{ |i|
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);
+		0.02.wait;
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);		0.02.wait;
+	}
+});
+//:play rotate2d
+~rotate2d.play;
+//:stop rotate2d
+~rotate2d.stop;
+~position.play;
+//:lyon position
+~position = Task({
+	var imageSize = 200, waitTime = 0.05 ;
+	inf.do	{ |i|
+		OF.img(rrand(0,60).asInteger,~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		waitTime.wait;
+		OF.img(rrand(0,60).asInteger,2*~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		waitTime.wait;
+		OF.img(rrand(0,60).asInteger,3*~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		waitTime.wait;
+		OF.img(rrand(0,60).asInteger,4*~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		waitTime.wait;
+	}
+});
+~position.play;
+//:play position
+~position.play;
+//:stop position
+~position.stop;
+
+//:old rotate with fork
+{
+	inf.do{|i|
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);
+		0.02.wait;
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);		0.02.wait;
+	}
+}.fork
+//:lyon position
+{
+	inf.do{|i|
+		OF.img(rrand(0,60).asInteger,~screenWidth/2, 3*~screenHeight/4,200,200);		0.02.wait;
+		OF.img(rrand(0,60).asInteger,~screenWidth/2, ~screenHeight/4,200,200);		0.02.wait;
+	}
+}.fork
 
 
 //:---------------------
