@@ -9,7 +9,15 @@ Jerome - Omer - Damian - Aris
 
 ** Infinity Plus
 At my shared items
+
+** life-death
+
+\int_{birth}^{death}{what happens*how you feel about it dt}
+
 * log
 ** TODO 
 *** Insert mirrow mode
 *** Create interfaces
+*** Create window without menu, so if it is like that you don't have to run fullscreen mode
+*** feedback OSC responders at oF
+*** try myApp with ofxFenster

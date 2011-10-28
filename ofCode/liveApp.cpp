@@ -12,7 +12,7 @@
 void liveApp::setup()	{
 	{
 		ofSetCircleResolution(200);
-		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGB);// GL_RGBA); 
+		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGBA);// GL_RGBA); 
 		ofSetBackgroundAuto(false);
 		ofEnableSmoothing();
 		ofEnableAlphaBlending(); 
@@ -210,7 +210,7 @@ void liveApp::update()	{
 			switch (m.getNumArgs())	{
 				case 1:
 					ofFill();
-					ofSetColor(0xFFFFFF);				
+					ofSetHexColor(0xFFFFFF);				
 					//image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), 0, 0, ofGetWidth(), ofGetHeight());
 					break;
 				case 4:
@@ -227,12 +227,12 @@ void liveApp::update()	{
 					break;
 				case 5:
 					//ofFill();
-					ofSetColor(0xFFFFFF);				
+					ofSetHexColor(0xFFFFFF);				
 					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
 					break;
 				case 8:
 					ofNoFill();
-					ofSetColor(0xFFFFFF);		
+					ofSetHexColor(0xFFFFFF);		
 					ofBeginShape();		
 					ofRotateX(m.getArgAsInt32(5));
 					ofRotateY(m.getArgAsInt32(6));
@@ -243,7 +243,7 @@ void liveApp::update()	{
 				case 11:
 					//cout << m.getNumArgs() << endl;
 					ofNoFill();
-					ofSetColor(0xFFFFFF);		
+					ofSetHexColor(0xFFFFFF);		
 					ofBeginShape();		
 					ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
 					ofRotateX(m.getArgAsInt32(8));
@@ -255,7 +255,7 @@ void liveApp::update()	{
 				case 14:
 					cout << m.getNumArgs() << endl;
 					ofNoFill();
-					ofSetColor(0xFFFFFF);		
+					ofSetHexColor(0xFFFFFF);		
 					ofBeginShape();		
 					ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
 					ofScale(m.getArgAsInt32(8),m.getArgAsInt32(9),m.getArgAsInt32(10));										
@@ -318,12 +318,14 @@ void liveApp::update()	{
 			}
 		}	//  particles
 		if ( m.getAddress() == "feedback" )				{
-			if (m.getArgAsString( 0 ) == "activate")	feedbackView = m.getArgAsInt32( 1 );
-			else if (m.getArgAsString( 0 ) == "speedXY")		{
+			if (m.getArgAsString( 0 ) == "activate")	{
+				feedbackView = m.getArgAsInt32( 1 );
+			} else if (m.getArgAsString( 0 ) == "speedXY")		{
 				feedbackSpeedY = m.getArgAsFloat( 1 );
 				feedbackSpeedX = m.getArgAsFloat( 2 );
+				cout << feedbackSpeedY << endl;
 			}
-		}	//	Feedback		
+		}	//	feedback		
 		if ( m.getAddress() == "background" )			{
 			int rBack = m.getArgAsInt32(0);
 			int gBack = m.getArgAsInt32(1);
@@ -593,12 +595,14 @@ void liveApp::draw()	{
 		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							
 		//texScreen.loadScreenData(0,0,1280,1024);							
 		glPushMatrix();
-		ofSetColor(0xffffff);
+		ofSetHexColor(0xffffff);
 		glTranslatef(feedbackSpeedX,feedbackSpeedY,0);
+		glTranslatef(2,2,0);		
 		texScreen.draw(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.draw(0,0,ofGetScreenWidth(), ofGetScreenHeight());
 		//texScreen.draw(0,0,1280,1024);		
 		glPopMatrix();
+		//cout << "test" << endl;
 	}
 }
 void liveApp::syncStudies ()	{
