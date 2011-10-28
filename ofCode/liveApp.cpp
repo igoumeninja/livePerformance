@@ -1,3 +1,12 @@
+/*
+ 
+ Preapering AudioVisual Performance at Lyon
+ 
+ Aris Bezas 
+ Igoumeninja 28-10-2011
+ 
+*/
+ 
 #include "liveApp.h"
 
 void liveApp::setup()	{
@@ -48,31 +57,6 @@ void liveApp::setup()	{
 	}
 	}	// memAlloc
 	{
-		viewIperatou = false;
-		iperatouRate = 10;
-//		int billy [] = { 16, 2, 77, 40, 12071 };
-//		iperatouString[] = {1,1,1,1};
-		iperatouString [0] = "~";
-		iperatouString [1] = "!";
-		iperatouString [1] = "@";
-		iperatouString [2] = "#";
-		iperatouString [3] = "$";
-		iperatouString [4] = "%";
-		iperatouString [5] = "^";
-		iperatouString [6] = "&";
-		iperatouString [7] = "*";
-		iperatouString [8] = "(";
-		iperatouString [9] = ")";
-		iperatouString [10] = "-";
-		iperatouString [11] = "+";
-		iperatouString [12] = "_";
-		iperatouString [13] = "=";
-		iperatouString [14] = "[";
-		iperatouString [15] = "]";
-		iperatouString [16] = "{";
-		iperatouString [17] = "}";
-		iperatouString [18] = "|";
-		iperatouString [19] = ":";
 		 		
 		// Tree
 		dotSize = 15;
@@ -138,12 +122,28 @@ void liveApp::setup()	{
 		}	// Initial Values
 	{
 		// Imagenes
+		string imageDir = "/Users/ari/Media/images/paintings/lyon/";
+		
+		for (int i = 0; i < 61; i++)	{
+			string number;
+			std::string s;
+			std::stringstream out;
+			out << i;
+			s = out.str();
+			imageDir += s;
+			imageDir += ".jpg";
+			cout << imageDir << endl;
+			image[i].loadImage(imageDir);
+			imageDir = "/Users/ari/Media/images/paintings/lyon/";
+		}
+		
+		//image[0].loadImage("/Users/ari/Media/images/bibliOdyssey/Australian-Places/Cape-Otway-Ranges.jpg");
 		// Video
-		sketchDust100328.loadMovie("videos/sketchDust100328.avi");
+			//sketchDust100328.loadMovie("videos/sketchDust100328.avi");
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
-	}	// data
+	}	// data (images, fonts, video ...)
 	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
 			sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));	//to 1o stoixeio einai to id 0:
@@ -203,6 +203,71 @@ void liveApp::update()	{
 	{
 		ofxOscMessage m;
 		receiver.getNextMessage( &m ); 
+		if ( m.getAddress() == "img" )	{
+			
+			//cout << m.getNumArgs() << endl;
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE			
+			switch (m.getNumArgs())	{
+				case 1:
+					ofFill();
+					ofSetColor(0xFFFFFF);				
+					//image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), 0, 0, ofGetWidth(), ofGetHeight());
+					break;
+				case 4:
+					if (image[m.getArgAsInt32(0)].width/image[m.getArgAsInt32(0)].height > 1.25)	{
+						
+						//image[id].draw(x,y,width,height);	
+						
+					}	else	{
+						
+						
+						
+					}
+					
+					break;
+				case 5:
+					//ofFill();
+					ofSetColor(0xFFFFFF);				
+					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+					break;
+				case 8:
+					ofNoFill();
+					ofSetColor(0xFFFFFF);		
+					ofBeginShape();		
+					ofRotateX(m.getArgAsInt32(5));
+					ofRotateY(m.getArgAsInt32(6));
+					ofRotateZ(m.getArgAsInt32(7));										
+					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+					ofEndShape();
+					break;
+				case 11:
+					//cout << m.getNumArgs() << endl;
+					ofNoFill();
+					ofSetColor(0xFFFFFF);		
+					ofBeginShape();		
+					ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
+					ofRotateX(m.getArgAsInt32(8));
+					ofRotateY(m.getArgAsInt32(9));
+					ofRotateZ(m.getArgAsInt32(10));										
+					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+					ofEndShape();
+					break;
+				case 14:
+					cout << m.getNumArgs() << endl;
+					ofNoFill();
+					ofSetColor(0xFFFFFF);		
+					ofBeginShape();		
+					ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
+					ofScale(m.getArgAsInt32(8),m.getArgAsInt32(9),m.getArgAsInt32(10));										
+					ofRotateX(m.getArgAsInt32(11));
+					ofRotateY(m.getArgAsInt32(12));
+					ofRotateZ(m.getArgAsInt32(13));										
+					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+					ofEndShape();
+					break;
+					
+			}
+		}		
 		if ( m.getAddress() == "obj" )					{
 			if (m.getArgAsString( 0 ) == "activate")	viewOBJ = m.getArgAsInt32( 1 );		
 			else if (m.getArgAsString( 0 ) == "type")	objType = m.getArgAsInt32( 1 );		
@@ -291,42 +356,10 @@ void liveApp::update()	{
 				ofPopMatrix();
 			}
 		}	//	Write a string
-		if ( m.getAddress() == "effect" )				{
-			if ( m.getArgAsString(0) == "tree" )	{
-				glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
-				seed1(dotSize, (270*3.1415926)/180, 0, 0);
-			}			
-			if ( m.getArgAsString(0) == "iperatou" )	{
-				if ( m.getArgAsString(1) == "activate" )	viewIperatou = m.getArgAsInt32( 2 );
-				else if ( m.getArgAsString(1) == "rate" )	iperatouRate =  m.getArgAsInt32(2) ;
-				else if ( m.getArgAsString(1) == "shoot1" )	{
-					ofFill();
-					ofSetColor(r9,g9,b9,a9);	// even
-					myFont11.drawString(iperatouString[int(ofRandom(0,19))], 200, 600);		
-				}					
-				else if ( m.getArgAsString(1) == "shoo2" )	{
-					ofFill();
-					ofSetColor(r9,g9,b9,a9);	// even
-					myFont11.drawString(iperatouString[int(ofRandom(0,19))], 500, 600);		
-				}					
-				else if ( m.getArgAsString(1) == "shoot3" )	{
-					ofFill();
-					ofSetColor(r9,g9,b9,a9);	// even
-					myFont11.drawString(iperatouString[int(ofRandom(0,19))], 800, 600);		
-				}
-				else if ( m.getArgAsString(1) == "shoot" )	{
-					ofFill();
-					//ofSetColor(r9,g9,b9,a9);	// even
-											ofSetColor(255,255,255,255);	// even
-					myFont11.drawString(iperatouString[int(ofRandom(0,19))], 200, 600);		
-					//monacoFont.drawString(iperatouString[int(ofRandom(0,19))], 500, 600);		
-					//monacoFont.drawString(iperatouString[int(ofRandom(0,19))], 800, 600);		
-				}
-		}				
-		}
-		if ( m.getAddress() == "viewIperatou" )			{
-			viewIperatou = !viewIperatou;
-		}		
+		if ( m.getAddress() == "tree" )	{
+			glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
+			seed1(dotSize, (270*3.1415926)/180, 0, 0);
+		}			
 		if ( m.getAddress() == "rgb" )					{
 				 if ( m.getArgAsString( 0 ) == "background")	{ r8 = m.getArgAsInt32( 1 );	g8 = m.getArgAsInt32( 2 );	b8 = m.getArgAsInt32( 3 );	a8 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "sketch")	{ r7 = m.getArgAsInt32( 1 );	g7 = m.getArgAsInt32( 2 );	b7 = m.getArgAsInt32( 3 );	a7 = m.getArgAsInt32( 4 );	}
@@ -493,17 +526,6 @@ void liveApp::update()	{
 	}	
 }
 void liveApp::draw()	{
-	if	(viewIperatou)	{
-		if	(ofGetFrameNum() % iperatouRate == 0)	{
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-			ofFill();
-			ofSetColor(r9,g9,b9,a9);	// even
-			//ofSetColor(255,255,255,255);	// even			
-			myFont11.drawString(iperatouString[int(ofRandom(0,19))], 200, 600);		
-			//monacoFont.drawString(iperatouString[int(ofRandom(0,19))], 500, 600);		
-			//monacoFont.drawString(iperatouString[int(ofRandom(0,19))], 800, 600);		
-		}
-	}
 	if	(viewParticles)	{
         particleSystem.setTimeStep(timeStep);
         ofEnableAlphaBlending();
@@ -590,7 +612,6 @@ void liveApp::syncStudies ()	{
 		myFont11.drawString(beatStr,0, 0);		
 		ofPopMatrix();
 }
-
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   
   if (dotSize > 1.0) {

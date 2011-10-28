@@ -4,16 +4,10 @@
 
 // addons
 #include "ofMain.h"
-#include "ofxOpenCv.h"
-#include "ofxDirList.h"
 #include "ofxVectorMath.h"
-//#include "ofxNetwork.h"
 #include "ofxOsc.h"
 #include "ofxThread.h"
-#include "ofxXmlSettings.h"
-#include "ofx3DModelLoader.h"
 #include "ParticleSystem.h"
-#include "ofxOpenCv.h"
 
 #include <vector>
 
@@ -53,18 +47,11 @@ public:
 	void	seed2(float dotSize, float angle, float x, float y);	
 	
 	//	addons objects
-	ofxCvGrayscaleImage		cvGray;
-	ofxDirList				dirList;
 	ofxVec2f				p;
 	ofxOscSender			osc_sender;
 	ofxThread				thread;
-	ofxXmlSettings			settings;
-	ofx3DModelLoader		modelLoader;
 	ParticleSystem			particleSystem;
-	
-	bool viewIperatou,backgroundErase; int iperatouRate;
-	string iperatouString[20];// = {"&", "*", "0"};
-	
+		
 	// my objects
 	ofSketch				sketch[MAX_SKETCHES];
 	
@@ -91,7 +78,8 @@ public:
 	string	lsystemString;
 	int		lsystemGeneration;
 		
-	ofVideoPlayer 		sketchDust100328;
+	//ofVideoPlayer 		sketchDust100328;
+	ofImage			image[200];
 	
 	bool defaultFBO;
 	bool toggleImage, doRender;

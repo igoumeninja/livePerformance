@@ -21,7 +21,7 @@ int main( ){
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:
 	
-	//ofSetWindowPosition(1440,0);
+	ofSetWindowPosition(1440,0);
 	//ofSetWindowPosition(-1280,0);
 	//ofSetFullscreen(true);
 	

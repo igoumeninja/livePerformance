@@ -1,7 +1,6 @@
-//:Joda iPod
+//:Joda Performance
 //:------------------
 //:OSC messages dictionary
-
 
 
 BACKGROUND
@@ -36,11 +35,12 @@ OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A)
 FEEDBACK
 --------
 
-OF.feedback("activate", 1);
+OF.feedback("activate", 0);
 OF.feedback("speexXY", 1, 2);
 
 
-//:wfae
+WFAE
+----
 
 OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
 OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
@@ -48,3 +48,28 @@ OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
 OF.rgb("particleConnections",255,255,255,255);		//	RGBA
 OF.rgb("particlesColor",255,255,255,255);			//	RGBA
+
+CUTMOTION
+---------
+
+OF.image(imageID, xPos, yPos, width, height);
+OF.image(imageID, xPos, yPos, width, height, rotX,rotY,rotZ);
+OF.image(imageID, xPos, yPos, width, height, translateX, translateY, translateZ, rotX,rotY,rotZ);
+OF.image(image
+	ID, 
+	xPos, yPos, 
+	width, height, 
+	translateX, translateY, translateZ, 
+	scaleX, scaleY, scaleZ,
+	rotX,rotY,rotZ);
+//:
+{
+	inf.do{|i|
+		OF.img(rrand(0,60).asInteger,0, 0, 400, 400, 400, 200, 0, 0, 0, i);
+//		OF.img(rrand(0,60).asInteger,1280,0,400,400, 0,0, i);
+//		OF.img(rrand(0,60).asInteger,0,1024,400,400, 0,0, i);
+//		OF.img(rrand(0,60).asInteger,1280,1024,400,400, 0,0, i);
+		i.postln;
+		0.05.wait;
+	}
+}.fork

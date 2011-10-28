@@ -30,7 +30,27 @@ OF.interactWithSound("numSoundSketches", 4);		//	RANGE: 1 -> 999
 ~myString = File.use("/Users/ari/Projects/artistic/performance/JodaLyon/data/text/text", "r", { |f| f.readAllString.postln })
 //:Do Typo
 OF.background(0,0,0);
-OF.rgb("background",0,0,0,25);	//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
+{
+	40.do {
+		{
+			var xPos, yPos = 20, count = 0;
+			11500.do	{ |i|
+				xPos = 8*count;
+				OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,125);
+				//i.postln;
+				0.01.wait;
+				if (xPos > ~screenWidth, {xPos = 0; count = 0; yPos = yPos +15} );
+				count = count + 1;
+			}
+		}.fork;
+		rrand(2,14).wait;
+	}
+}.fork
+
+//:Random symbols
+
+OF.writeString(["!","@", "$"].at(1),100,100,255,255,255,125);
 {
 	40.do {
 		{
