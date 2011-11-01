@@ -12,21 +12,27 @@
 void liveApp::setup()	{
 	{
 
+		ofBackground(0,0,0);
+
 		int windowMode = ofGetWindowMode();  
 		if(windowMode == OF_FULLSCREEN){  
+			
 			this->windowWidth = ofGetScreenWidth();  
 			this->windowHeight = ofGetScreenHeight();  
 		}  
 		else if(windowMode == OF_WINDOW){  
-			this->windowWidth = ofGetWidth();  
-			this->windowHeight = ofGetHeight();  
+			this->windowWidth = ofGetScreenWidth();  
+			this->windowHeight = ofGetScreenHeight();  
+
+//			this->windowWidth = ofGetWidth();  
+//			this->windowHeight = ofGetHeight();  
 		} 
 		
 		ofSetCircleResolution(200);
-		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGBA);// GL_RGBA); 
+		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGB);// GL_RGBA); 
 		ofSetBackgroundAuto(false);
-		//ofEnableSmoothing();
-		//ofEnableAlphaBlending(); 
+		ofEnableSmoothing();
+		ofEnableAlphaBlending(); 
 		//glutSetCursor(GLUT_CURSOR_CYCLE);  // change cursor icon (http://pyopengl.sourceforge.net/documentation/manual/glutSetCursor.3GLUT.html)
 		cout << "recieving OSC at port: 12345 " << PORTlisten << "\n";
 		receiver.setup( PORTlisten );
@@ -160,6 +166,8 @@ void liveApp::setup()	{
 			sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));	//to 1o stoixeio einai to id 0:
 			sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping));	//id:1 => mouse init(int sketchID, float elast, float aposv)
 		}
+		
+		sketchPhrase = false;
 
 	}	// sKeTch
 	{
@@ -172,7 +180,7 @@ void liveApp::setup()	{
         int binPower = 4;
 
         particleSystem.setup(ofGetWidth(), ofGetHeight(), binPower);
-
+		/*
         kParticles = 2;  // change that to 5 for MacBook Pro
         float padding = 0;
         float maxVelocity = .5;
@@ -184,6 +192,7 @@ void liveApp::setup()	{
                 Particle particle(x, y, xv, yv);
                 particleSystem.add(particle);
         }
+		 */
 
         ofBackground(0, 0, 0);
 
@@ -197,11 +206,21 @@ void liveApp::setup()	{
         centerAttraction = .01;
 		forceRadius = 100;
 		forceScale = 10;
+		bounceXstart = 0; 
+		bounceYstart = 0;
+		bounceXend = ofGetWidth(); 
+		bounceYend = ofGetHeight();
 		
 		viewParticles = false;
 		
 		
 		}	// Particles
+	{		
+		textureRed = textureGreen = textureBlue = textureAlpha = 255;
+		reverseEllipse = ofGetWidth();	reverseTexture = -1;
+		mirrorMode = -2;
+		spectroRed = spectroGreen = spectroBlue = 1;	
+	}		// Spectro	
 		
 }
 void liveApp::update()	{ 
@@ -214,7 +233,154 @@ void liveApp::update()	{
 	{
 		ofxOscMessage m;
 		receiver.getNextMessage( &m ); 
-		if ( m.getAddress() == "img" )	{
+
+		if ( m.getAddress() == "/fftpixels" )			{
+			switch ( mirrorMode )
+			{
+					// full screen normal spectro
+				case -20:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],0,0);
+						ofEllipse(reverseEllipse,ofMap(i, 512, 0, 0.0, ofGetWidth()),2,2);
+						glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+						ofEllipse(reverseEllipse,ofMap(i, 512, 0, 0.0, ofGetWidth()),2,2);
+						
+					}
+					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+					
+					break;
+					
+					// fire colors
+				case -2:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],0,0);
+						ofEllipse(reverseEllipse,512-i,2,2);
+						ofEllipse(reverseEllipse,512+i,2,2);
+						glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+						ofEllipse(reverseEllipse,512-i,2,2);
+						ofEllipse(reverseEllipse,512+i,2,2);						
+						
+					}
+					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+					
+					break;
+					
+				case -1:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],0,0);
+						ofEllipse(reverseEllipse,512-i,2,2);
+						glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+						ofEllipse(reverseEllipse,512-i,2,2);
+						
+					}
+					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+					
+					break;
+					
+				case 0:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+						ofEllipse(reverseEllipse,512-i,2,2);
+						//glColor3f(0,0,0);
+						//ofEllipse(reverseEllipse,512+i,2,2);				
+					}
+					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+					
+					break;
+				case 1:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+						ofEllipse(reverseEllipse,512-i,2,2);
+						ofEllipse(reverseEllipse,512+i,2,2);				
+					}
+					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+					break;
+				case 2:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+						ofEllipse(0,512-i,2,2);
+						ofEllipse(0,512+i,2,2);				
+					}
+					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+					break;
+					
+				case 3:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+						ofEllipse(ofGetWidth()/2,512-i,2,2);
+						ofEllipse(ofGetWidth()/2,512+i,2,2);						
+					}
+					texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+					texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
+					texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
+					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+					texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
+					break;
+				case 4:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+						
+						ofEllipse(ofGetWidth()/4,256-i/2,2,2);
+						ofEllipse(ofGetWidth()/4,256+i/2,2,2);						
+						
+						ofEllipse(ofGetWidth()/4,776-i/2,2,2);
+						ofEllipse(ofGetWidth()/4,776+i/2,2,2);						
+						
+						ofEllipse(3*ofGetWidth()/4,256-i/2,2,2);
+						ofEllipse(3*ofGetWidth()/4,256+i/2,2,2);						
+						
+						ofEllipse(3*ofGetWidth()/4,776-i/2,2,2);
+						ofEllipse(3*ofGetWidth()/4,776+i/2,2,2);						
+						
+					}
+					ofSetColor(255,255,255,255);
+					texScreen.loadScreenData(0,0,ofGetWidth()/4, ofGetHeight());
+					texScreen.draw(-1,0);					
+					texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
+					texScreen.draw(ofGetWidth()/4 + 1,0);					
+					
+					texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
+					texScreen.draw(3*ofGetWidth()/4 + 1,0);					
+					//
+					texScreen.loadScreenData(ofGetWidth()/2, 0, ofGetWidth()/4, ofGetHeight());
+					texScreen.draw(ofGetWidth()/2 - 1,0);
+					
+					break;
+				case 5:
+					for (int i=0; i<512; i++)	{
+						data[i] = m.getArgAsFloat( i );
+						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+						ofLine(0,i,ofGetWidth(),i);
+					}
+					break;
+					
+				default:
+					cout << "default";
+			}
+			
+		}	//	spectro
+		if ( m.getAddress() == "img" )					{
 			
 			//cout << m.getNumArgs() << endl;
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE			
@@ -278,7 +444,7 @@ void liveApp::update()	{
 					break;
 					
 			}
-		}		
+		}	//  images	
 		if ( m.getAddress() == "obj" )					{
 			if (m.getArgAsString( 0 ) == "activate")	viewOBJ = m.getArgAsInt32( 1 );		
 			else if (m.getArgAsString( 0 ) == "type")	objType = m.getArgAsInt32( 1 );		
@@ -290,43 +456,37 @@ void liveApp::update()	{
 			else if (m.getArgAsString( 0 ) == "transparence")	obj_a = m.getArgAsInt32( 1 );					
 		}	//  .obj	
 		if ( m.getAddress() == "particle" )				{
-			if (m.getArgAsString( 0 ) == "type")	objType = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "activate")	{
+			if (m.getArgAsString( 0 ) == "type")						objType = m.getArgAsInt32( 1 );		
+			else if (m.getArgAsString( 0 ) == "activate")				{
 					if (m.getArgAsInt32(1) == 1)	viewParticles = true;	
 					else if (m.getArgAsInt32(1) == 0)	viewParticles = false;	
 			}
-			else if (m.getArgAsString( 0 ) == "lineOpacity")	lineOpacity = m.getArgAsInt32( 1 );	
+			else if (m.getArgAsString( 0 ) == "lineOpacity")			lineOpacity = m.getArgAsInt32( 1 );	
 			else if (m.getArgAsString( 0 ) == "particleNeighborhood")	particleNeighborhood = m.getArgAsInt32( 1 );
-			else if (m.getArgAsString( 0 ) == "forceRadius")	forceRadius = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "forceScale")	forceScale = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "iPodPush")		{
+			else if (m.getArgAsString( 0 ) == "forceRadius")			forceRadius = m.getArgAsInt32( 1 );		
+			else if (m.getArgAsString( 0 ) == "forceScale")				forceScale = m.getArgAsInt32( 1 );		
+			else if (m.getArgAsString( 0 ) == "iPodPush")				{
 				if (m.getArgAsInt32(1) == 1)	iPodPush = true;	
 				else if (m.getArgAsInt32(1) == 0)	iPodPush = false;	
 			}
-			else if (m.getArgAsString( 0 ) == "pushParticles")		{
+			else if (m.getArgAsString( 0 ) == "pushParticles")			{
 				if (m.getArgAsInt32(1) == 1)	pushParticles = true;	
 				else if (m.getArgAsInt32(1) == 0)	pushParticles = false;	
 			}
-			else if (m.getArgAsString( 0 ) == "push")		{
+			else if (m.getArgAsString( 0 ) == "push")					{
 				pushX = m.getArgAsFloat( 1 );
 				pushY = m.getArgAsFloat( 2 );
 			}
-			else if	(m.getArgAsString( 0 ) == "addParticles")	{
-				kParticles = m.getArgAsInt32( 1 );	
-				float padding = 0;
-				float maxVelocity = .5;
-				for(int i = 0; i < kParticles * 1024; i++) {
-						float x = ofRandom(padding, ofGetWidth() - padding);
-						float y = ofRandom(padding, ofGetHeight() - padding);
-						float xv = ofRandom(-maxVelocity, maxVelocity);
-						float yv = ofRandom(-maxVelocity, maxVelocity);
-						Particle particle(x, y, xv, yv);
-						particleSystem.add(particle);
-				}
+			else if	(m.getArgAsString( 0 ) == "add")					{
+				Particle particle(m.getArgAsInt32(1), m.getArgAsInt32(2), m.getArgAsFloat(3), m.getArgAsFloat(3));
+				particleSystem.add(particle);
 			}
-			else if	(m.getArgAsString( 0 ) == "eraseParticles")	{
-				particleSystem.erase();
-			}
+			else if	(m.getArgAsString( 0 ) == "bounce")					{
+				bounceXstart = m.getArgAsInt32(1);
+				bounceYstart = m.getArgAsInt32(2); 
+				bounceXend = m.getArgAsInt32(3);
+				bounceYend = m.getArgAsInt32(4);
+			}			
 		}	//  particles
 		if ( m.getAddress() == "feedback" )				{
 			if (m.getArgAsString( 0 ) == "activate")	{
@@ -344,6 +504,8 @@ void liveApp::update()	{
 			ofBackground(rBack, gBack, bBack);
 		}	//	background						
 		if ( m.getAddress() == "writeString" )			{
+
+			/*
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
 			ofFill();
 			ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
@@ -351,7 +513,13 @@ void liveApp::update()	{
 			ofTranslate(m.getArgAsFloat( 1 ), m.getArgAsFloat( 2 ), 0);
 			myFont11.drawString(m.getArgAsString( 0 ), 0, 0);		
 			ofPopMatrix();
-		
+			*/
+			
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+			//ofFill();
+			ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
+			myFont11.drawString(m.getArgAsString( 0 ), m.getArgAsFloat( 1 ), m.getArgAsFloat( 2 ));		
+			
 		}	//	Write a string
 		if ( m.getAddress() == "renderString" )			{
 			if (m.getArgAsString( 0 ) == "string")	{
@@ -368,11 +536,11 @@ void liveApp::update()	{
 				myFont11.drawString(renderString, 0, 0);		
 				ofPopMatrix();
 			}
-		}	//	Write a string
-		if ( m.getAddress() == "tree" )	{
+			}	//	Write a string
+		if ( m.getAddress() == "tree" )					{
 			glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
 			seed1(dotSize, (270*3.1415926)/180, 0, 0);
-		}			
+		}	//	tree		
 		if ( m.getAddress() == "rgb" )					{
 				 if ( m.getArgAsString( 0 ) == "background")	{ r8 = m.getArgAsInt32( 1 );	g8 = m.getArgAsInt32( 2 );	b8 = m.getArgAsInt32( 3 );	a8 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "sketch")	{ r7 = m.getArgAsInt32( 1 );	g7 = m.getArgAsInt32( 2 );	b7 = m.getArgAsInt32( 3 );	a7 = m.getArgAsInt32( 4 );	}
@@ -453,7 +621,7 @@ void liveApp::update()	{
 			}				
 			else if ( m.getArgAsString(0) == "maxAmpIn" )	ampInHigh =  m.getArgAsFloat(1);	
 			else if ( m.getArgAsString(0) == "maxFreqIn" )	freqInHigh =  m.getArgAsFloat(1);					
-		}		
+		}	//	sound interaction
 		if ( m.getAddress() == "interactWithSketch" )	{
 			if ( m.getArgAsString(0) == "activate" )	{
 				if (m.getArgAsInt32(1) == 1)	drawWithMouse = true;	
@@ -487,7 +655,7 @@ void liveApp::update()	{
 				}		
 			}
 		}	//	Mouse Interaction		
-		if	(viewSoundChanels)	{			
+		if	(viewSoundChanels)							{			
 				if ( m.getAddress() == "/ampChan0" )	{
 					ampChan0 = m.getArgAsFloat( 0 );
 					//printf(" %f \n", ampChan0);			
@@ -539,16 +707,18 @@ void liveApp::update()	{
 	}	
 }
 void liveApp::draw()	{
-	if	(viewParticles)	{
+
+	
+	if	(viewParticles)			{
         particleSystem.setTimeStep(timeStep);
-        ofEnableAlphaBlending();
 		ofSetColor(r1, g1, b1, a1);	
         particleSystem.setupForces();
         glBegin(GL_LINES);
         for(int i = 0; i < particleSystem.size(); i++) {
                 Particle& cur = particleSystem[i];
                 particleSystem.addRepulsionForce(cur, particleNeighborhood, particleRepulsion);
-                cur.bounceOffWalls(0, 0, ofGetWidth(), ofGetHeight());				
+                //cur.bounceOffWalls(0, 0, ofGetWidth(), ofGetHeight());				
+				cur.bounceOffWalls(bounceXstart, bounceYstart, bounceXend, bounceYend);				
                 cur.addDampingForce();
         }
         glEnd();
@@ -575,9 +745,11 @@ void liveApp::draw()	{
         ofSetColor(r2, g2, b2, a2);
         particleSystem.draw();
 	}	// Particles
-	if	(viewSketchAutomato)	{
+	if	(sketchPhrase)			{
+		
 		for( int i=0; i<100; i++ ) {
-			sketch[i].drawMouse(xSolo, ySolo, 0, a7, g7, b7, a7, 0);	
+			
+			sketch[i].drawMouse(i, 100+ i, 0, a7, g7, b7, a7, 0);	
 		}		
 	}
 	if	(view_fillBackground)	{
@@ -586,14 +758,14 @@ void liveApp::draw()	{
 		ofSetColor(r8, g8, b8, a8);
 		ofRect(0,0,ofGetWidth(),ofGetHeight());			
 	}
-	if	(viewSoundChanels)	{
+	if	(viewSoundChanels)		{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSoundSketches; i++ ) {
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, r6, g6, b6, a6, soundLines);	
 		}
 	}  	//  viewSoundChanels 
-	if	(drawWithMouse)	{
+	if	(drawWithMouse)			{
 		for( int i=1000; i<1000 + numMouseSketches; i++ ) {
 				sketch[i].drawMouse(padX, padY, 0, r7, g7, b7, a7/3, mouseLines);	
 			}
@@ -601,7 +773,7 @@ void liveApp::draw()	{
 //			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
 //		}	
 	}
-	if	(feedbackView)	{
+	if	(feedbackView)			{
 		texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							
 		//texScreen.loadScreenData(0,0,1280,1024);							
@@ -614,18 +786,7 @@ void liveApp::draw()	{
 		//texScreen.draw(0,0,1280,1024);		
 		glPopMatrix();
 		//cout << "test" << endl;
-	}
-}
-void liveApp::syncStudies ()	{
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-		ofFill();
-		strPosX = ofRandom(0, ofGetWidth());
-		strPosY = ofRandom(0, ofGetHeight());
-		ofSetColor(r1,g1,b1,a1);	// even
-		ofPushMatrix();
-		ofTranslate(strPosX, strPosY, 0);
-		myFont11.drawString(beatStr,0, 0);		
-		ofPopMatrix();
+	}	//	feedback
 }
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   
@@ -756,9 +917,12 @@ void liveApp::keyPressed  (int key)	{
 		int previousWindowX, previousWindowY;  
 		
 		if(ofGetWindowMode() == 0){  
+
 			ofSetFullscreen(true);
+			ofBackground(0, 0, 0);
 		}else{  
 			ofSetFullscreen(false);
+			ofBackground(0, 0, 0);
 		}  
 	}		
 	if(key == 'b' or key == 'B'){

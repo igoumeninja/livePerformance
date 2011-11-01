@@ -17,20 +17,21 @@
 
 //:Define Global Variables
 OF.background(40,40,40);
-OF.rgb("background",0,0,0,5);
-
+OF.rgb("background",0,0,0,10);
+NetAddr("127.0.0.1", 12345).sendMsg("rgb","background", 0,0, 0, 30)
 //:numSketch
 OF.interactWithSound("numSoundSketches", 4);		//	RANGE: 1 -> 999
 
 //:---
-~screenWidth = 1280;
-~screenHeight = 1024;
+~width = 1280;
+~height = 1024;
 
 // Take a string from file
 ~myString = File.use("/Users/ari/Projects/artistic/performance/JodaLyon/data/text/text", "r", { |f| f.readAllString.postln })
 //:Do Typo
+
 OF.background(0,0,0);
-OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 {
 	40.do {
 		{
@@ -40,7 +41,7 @@ OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
 				OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,225);
 				//i.postln;
 				0.01.wait;
-				if (xPos > ~screenWidth, {xPos = 0; count = 0; yPos = yPos +15} );
+				if (xPos > ~width, {xPos = 0; count = 0; yPos = yPos +15} );
 				count = count + 1;
 			}
 		}.fork;
@@ -51,7 +52,7 @@ OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
 //:rotateText
 ~rotateText = Task({
 	inf.do	{ |i|
-		OF.img(rrand(0,60).asInteger,0, 0, 0, 0, ~screenWidth/2, ~screenHeight/2, 0, 0,0, i);
+		OF.img(rrand(0,60).asInteger,0, 0, 0, 0, ~width/2, ~height/2, 0, 0,0, i);
 		0.02.wait;
 	}
 });
@@ -61,22 +62,48 @@ OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
 ~rotateText.stop;
 
 //:OSC responder from omer
-OF.background(0,0,0);
-OF.particle("pushParticles", 1);				//	0:DON'T PUSH, 1: PUSH
-
-
 ~mertrig = OSCresponder.new(nil, "/mertrig", { 
 	arg time, resp, msg; 
 	"hi omer".postln;
 
 } ).add; 
 
+//:PARTICLES
+/* 
+At this phrase we will stop everything else and we will make a transport to particles.
+Initially the particles will be connected
+*/
+{
+	OF.rgb("background",0,0,0,20);
+	1.wait;
+	OF.particle("activate", 0);					
+	OF.particle("particleNeighborhood", 25);		
+	OF.rgb("particleConnectionsColor",255,255,255,25);	
+	OF.rgb("particlesColor",255,255,255,255);		
+	4000.do{
+		OF.particle("add", ~width/2.asInteger, ~height/2.asInteger, 0.1, 10);
+		0.001.wait;}
+		
+}.fork
+
+//:bounce phrase
+~bounce1 = Task({
+	inf.do	{ |i|
+		OF.particle("bounce", 0, 0, 500,500);
+		0.02.wait;
+	}
+});
+//:play rotate2d
+~bounce1.play;
+//:stop rotate2d
+~bounce1.stop;
+
 //:lyon rotate 2d
 ~rotate2d = Task({
 	inf.do	{ |i|
-		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~width/4, ~height/2, 0, 0, 0, i);
 		0.02.wait;
-		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);		0.02.wait;
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~width/4, ~height/2, 0, 0, 0, i);		0.02.wait;
 	}
 });
 //:play rotate2d
@@ -86,15 +113,15 @@ OF.particle("pushParticles", 1);				//	0:DON'T PUSH, 1: PUSH
 ~position.play;
 //:lyon position
 ~position = Task({
-	var imageSize = 200, waitTime = 0.05 ;
+	var imageSize = 200, waitTime = 0.005 ;
 	inf.do	{ |i|
-		OF.img(rrand(0,60).asInteger,~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		OF.img(rrand(0,60).asInteger,~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		
 		waitTime.wait;
-		OF.img(rrand(0,60).asInteger,2*~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		OF.img(rrand(0,60).asInteger,2*~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		
 		waitTime.wait;
-		OF.img(rrand(0,60).asInteger,3*~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		OF.img(rrand(0,60).asInteger,3*~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		
 		waitTime.wait;
-		OF.img(rrand(0,60).asInteger,4*~screenWidth/5-(imageSize/2), ~screenHeight/2-(imageSize/2), imageSize, imageSize);		
+		OF.img(rrand(0,60).asInteger,4*~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		
 		waitTime.wait;
 	}
 });
@@ -107,16 +134,16 @@ OF.particle("pushParticles", 1);				//	0:DON'T PUSH, 1: PUSH
 //:old rotate with fork
 {
 	inf.do{|i|
-		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~width/4, ~height/2, 0, 0, 0, i);
 		0.02.wait;
-		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~screenWidth/4, ~screenHeight/2, 0, 0, 0, i);		0.02.wait;
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~width/4, ~height/2, 0, 0, 0, i);		0.02.wait;
 	}
 }.fork
 //:lyon position
 {
 	inf.do{|i|
-		OF.img(rrand(0,60).asInteger,~screenWidth/2, 3*~screenHeight/4,200,200);		0.02.wait;
-		OF.img(rrand(0,60).asInteger,~screenWidth/2, ~screenHeight/4,200,200);		0.02.wait;
+		OF.img(rrand(0,60).asInteger,~width/2, 3*~height/4,200,200);		0.02.wait;
+		OF.img(rrand(0,60).asInteger,~width/2, ~height/4,200,200);		0.02.wait;
 	}
 }.fork
 
@@ -132,7 +159,7 @@ OF.particle("pushParticles", 1);				//	0:DON'T PUSH, 1: PUSH
 		OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,125);
 		i.postln;
 		0.01.wait;
-		if (xPos > ~screenWidth, {xPos = 0; count = 0; yPos = yPos +15} );
+		if (xPos > ~width, {xPos = 0; count = 0; yPos = yPos +15} );
 		count = count + 1;
 	}
 });

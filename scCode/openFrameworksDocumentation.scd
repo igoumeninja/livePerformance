@@ -17,14 +17,17 @@ OF.rgb("sound",255,255,55,20);				// 	OF.rgb("sound",r,g,b,a)
 
 PARTICLE
 --------
-OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,10);				//OF.rgb("background",R,G,B,A);
 OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
+OF.particle("add", 10,10, 0.5, 0.5);		
 OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
-OF.particle("iPodPush", 1);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
+OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.rgb("particleConnections",255,255,255,255);		//	RGBA
 OF.rgb("particlesColor",255,255,255,255);			//	RGBA
+OF.particle("bounce", 100, 100, 800, 1500);					
 
 TYPOGRAPHY
 ----------
@@ -32,8 +35,8 @@ OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A)
 
 FEEDBACK
 --------
-OF.feedback("activate", 1);
-OF.feedback("speedXY", 0,0);
+OF.feedback("activate", 0);
+OF.feedback("speedXY", 0.1,0);
 
 WFAE
 ----

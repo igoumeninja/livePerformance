@@ -42,7 +42,6 @@ public:
 	void	playWithComplex();	
 	void	feedbackStudies();	
 	void	maskStudies();			
-	void	syncStudies();
 	void	seed1(float dotSize, float angle, float x, float y);
 	void	seed2(float dotSize, float angle, float x, float y);	
 	
@@ -55,7 +54,21 @@ public:
 	// my objects
 	ofSketch				sketch[MAX_SKETCHES];
 	
+	
+	// spectro
+	//ofTexture		texScreen;
+	float spectroRed,spectroGreen,spectroBlue,spectroAlpha;
+	float textureRed, textureGreen, textureBlue, textureAlpha, reverseEllipse, reverseTexture ;
+	int mirrorMode;
+	
+	
+	ofTrueTypeFont		font;
+		
+	float	data[1024];
+	float		countX;
+	
 	// Particles
+	int bounceXstart, bounceYstart, bounceXend, bounceYend;
 	bool isMousePressed, slowMotion, viewParticles, iPodPush, pushParticles;
 	float timeStep, pushX, pushY;
 	int lineOpacity, pointOpacity;
@@ -80,13 +93,7 @@ public:
 		
 	//ofVideoPlayer 		sketchDust100328;
 	ofImage			image[200];
-	
-	bool defaultFBO;
-	bool toggleImage, doRender;
-	bool frameByframe;
-	bool fbo0, fbo1, fbo2, fbo3, fbo4, fbo5, fbo6, fbo7, fbo8, fbo9;	
-	bool fbo0_A, fbo0_B, fbo0_C;
-	
+		
 	//****  control view ******
 	bool	viewSketchAutomato, memAlloc;
 	
@@ -115,7 +122,7 @@ public:
 	float			numMouseSketches, numSoundSketches, mouseLines, soundLines, viewSoundChanels;
 	float			minSoundElasticity, maxSoundElasticity, minSoundDamping, maxSoundDamping;
 	float			minMouseElasticity, maxMouseElasticity, minMouseDamping, maxMouseDamping;
-	float xSolo, ySolo;
+	float			xSolo, ySolo;
 	
 	//		for ImageCapture		
 	int				snapCounter;
@@ -135,7 +142,7 @@ public:
 	float			ampInLow,ampOutLow, ampInHigh, ampOutHigh;
 	float			freqInLow, freqOutLow,  freqInHigh, freqOutHigh;
 	
-	bool			drawNow, drawWithMouse, rotate, viewCamera, viewBlob, viewDiff;
+	bool			sketchPhrase, drawNow, drawWithMouse, rotate, viewCamera, viewBlob, viewDiff;
 	int				midi1, midi2, midi3, midi4, midi5, midi6, midi7, midi8;
 	int				midi65, midi66, midi67, midi68, midi69;
 	int				midi70, midi71, midi72, midi73, midi74, midi75, midi76, midi77, midi78, midi79;
