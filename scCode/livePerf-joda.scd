@@ -15,6 +15,21 @@
 
 }.fork
 
+//:spectro
+MySynths.sendToServer;
+//:Load Buffers
+MyBuffers.seals;
+//:SendSpectrogramData
+SendSpectrogramData.new;
+
+SendAmpFreq.start
+//SendSpectrogramData('fft').free;
+//SendSpectrogramData('ofSpectrograph');
+//SendSpectrogramData('ofSpectrograph').free;
+
+//:Use SoundIn
+'pure_clarinet'.playDef
+
 //:Define Global Variables
 OF.background(40,40,40);
 OF.rgb("background",0,0,0,10);
@@ -93,11 +108,32 @@ Initially the particles will be connected
 		0.02.wait;
 	}
 });
-//:play rotate2d
+//:play bounce
 ~bounce1.play;
-//:stop rotate2d
+//:stop bounce
 ~bounce1.stop;
 
+//:=====================
+//:    SLIDE  SHOW
+//:=====================
+
+//:Collage
+~collage = Task({
+	var 	delayTime = 0.1, countX = 0, countY = 0, fotoWidth = ~width/2.5, fotoHeight = ~width/2.5;
+	loop	{
+		60.do	{ |i|
+			OF.img(rrand(0,60).asInteger, countX, countY, fotoWidth, fotoHeight);
+			countX = countX + fotoWidth;
+			if (countX>~width, {countX = 0;countY = countY + fotoHeight});
+			if (countY>~height, {countY = 0;});
+			delayTime.wait;
+		}
+	}
+});
+~collage.play;
+//:stop collage
+~collage.stop;
+//====================================================
 //:lyon rotate 2d
 ~rotate2d = Task({
 	inf.do	{ |i|

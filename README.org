@@ -15,10 +15,9 @@ Jerome - Omer - Damian - Aris
    \int_{birth}^{death}{what happens*how you feel about it dt}
 
 * log
-** TODO 
-*** Insert mirrow mode
-*** Create interfaces
-*** Create window without menu, so if it is like that you don't have to run fullscreen mode
-*** try myApp with ofxFenster
-*** repulsion responder
-*** DONE feedback OSC responders at oF
+** Insert mirrow mode
+** Create interfaces
+** repulsion responder
+** DONE feedback OSC responders at oF
+** DONE Fi flickering problem. Create window without menu, so if it is like that you don't have to run fullscreen mode (ofFenster).
+** DONE try ofxFenster.
