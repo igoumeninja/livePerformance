@@ -35,8 +35,14 @@ OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A)
 
 FEEDBACK
 --------
-OF.feedback("activate", 0);
+OF.feedback("activate", 1);
 OF.feedback("speedXY", 0.1,0);
+
+EFFECTS
+=======
+OF.effect("noiseEffect", "false");
+OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
+OF.effect("noiseEffect", "true")
 
 WFAE
 ----

@@ -16,16 +16,12 @@ void liveApp::setup()	{
 
 		int windowMode = ofGetWindowMode();  
 		if(windowMode == OF_FULLSCREEN){  
-			
 			this->windowWidth = ofGetScreenWidth();  
 			this->windowHeight = ofGetScreenHeight();  
 		}  
 		else if(windowMode == OF_WINDOW){  
 			this->windowWidth = ofGetScreenWidth();  
 			this->windowHeight = ofGetScreenHeight();  
-
-//			this->windowWidth = ofGetWidth();  
-//			this->windowHeight = ofGetHeight();  
 		} 
 		
 		ofSetCircleResolution(200);
@@ -100,7 +96,7 @@ void liveApp::setup()	{
 		r7 = g7 = b7 = 255;
 		r8 = g8 = b8 = 0;				
 		r9 = g9 = b9 =  a9 = 255;						
-		viewSoundChanels = 1;
+		viewSoundChanels = 0;
 		midi85 = midi93 = 127;
 		
 		drawWithMouse = 1;
@@ -220,7 +216,25 @@ void liveApp::setup()	{
 		reverseEllipse = ofGetWidth();	reverseTexture = -1;
 		mirrorMode = -2;
 		spectroRed = spectroGreen = spectroBlue = 1;	
-	}		// Spectro	
+	}	// Spectro	
+	{
+		mirrowEffect = true;
+		noiseEffect = false;
+		w = ofGetWidth();
+		h = ofGetHeight();
+		texGray.allocate(w,h,GL_LUMINANCE);
+		grayPixels			= new unsigned char [w*h];
+		// gray pixels, set them randomly
+		for (int i = 0; i < w*h; i++){
+			grayPixels[i] = (unsigned char)(ofRandomuf() * 255);
+			
+		}
+		texGray.loadData(grayPixels, w,h, GL_LUMINANCE); 
+	}	// Texture effects
+	{	
+		texMirrow.allocate(w,h, GL_RGB);
+		//texMirrow.loadData(grayPixels, w,h, GL_RGBA); 
+	}
 		
 }
 void liveApp::update()	{ 
@@ -380,6 +394,13 @@ void liveApp::update()	{
 			}
 			
 		}	//	spectro
+		if ( m.getAddress() == "rotate" )				{
+			ofBeginShape();		
+			ofRotateX(m.getArgAsInt32(0));
+			ofRotateY(m.getArgAsInt32(1));
+			ofRotateZ(m.getArgAsInt32(2));										
+			ofEndShape();					
+		}	//	rotate
 		if ( m.getAddress() == "img" )					{
 			
 			//cout << m.getNumArgs() << endl;
@@ -505,20 +526,13 @@ void liveApp::update()	{
 		}	//	background						
 		if ( m.getAddress() == "writeString" )			{
 
-			/*
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
 			ofFill();
 			ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
 			ofPushMatrix();
-			ofTranslate(m.getArgAsFloat( 1 ), m.getArgAsFloat( 2 ), 0);
+			ofTranslate(m.getArgAsInt32( 1 ), m.getArgAsInt32(2), 0);
 			myFont11.drawString(m.getArgAsString( 0 ), 0, 0);		
 			ofPopMatrix();
-			*/
-			
-			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-			//ofFill();
-			ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
-			myFont11.drawString(m.getArgAsString( 0 ), m.getArgAsFloat( 1 ), m.getArgAsFloat( 2 ));		
 			
 		}	//	Write a string
 		if ( m.getAddress() == "renderString" )			{
@@ -537,10 +551,28 @@ void liveApp::update()	{
 				ofPopMatrix();
 			}
 			}	//	Write a string
-		if ( m.getAddress() == "tree" )					{
-			glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
-			seed1(dotSize, (270*3.1415926)/180, 0, 0);
-		}	//	tree		
+		if ( m.getAddress() == "effect" )				{
+				if ( m.getArgAsString(0) == "tree" )		{
+					glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
+					seed1(dotSize, (270*3.1415926)/180, 0, 0);
+				}	else if ( m.getArgAsString(0) == "noiseEffect" ) {
+						if (m.getArgAsString(1) == "true") {
+							noiseEffect = true;
+						} else {
+							noiseEffect = false;
+						}
+				}	else if ( m.getArgAsString(0) == "mirrowEffect" ) {
+						if (m.getArgAsString(1) == "true") {
+							mirrowEffect = true;
+							cout << "mirrow!";
+						} else {
+							mirrowEffect = false;
+						}
+				}	else {
+					cout << "Write a new effect";
+				}
+
+		}	//	effects
 		if ( m.getAddress() == "rgb" )					{
 				 if ( m.getArgAsString( 0 ) == "background")	{ r8 = m.getArgAsInt32( 1 );	g8 = m.getArgAsInt32( 2 );	b8 = m.getArgAsInt32( 3 );	a8 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "sketch")	{ r7 = m.getArgAsInt32( 1 );	g7 = m.getArgAsInt32( 2 );	b7 = m.getArgAsInt32( 3 );	a7 = m.getArgAsInt32( 4 );	}
@@ -707,8 +739,41 @@ void liveApp::update()	{
 	}	
 }
 void liveApp::draw()	{
+	if	(mirrowEffect)	{
+//		ofSetHexColor(0xffffff);
+//		image[21].draw(0, 0,w,h);
+		texMirrow.loadScreenData(0, 0,	w/2, h);
 
-	
+		glPushMatrix();
+		ofSetHexColor(0xffffff);
+		glTranslatef(w,0,0);
+		glRotatef(180, 0, 1.0f, 0);
+		texMirrow.draw(0,0,w/2,h);
+		//texMirrow.draw(0,0,200,200);
+		glPopMatrix();
+		/*
+		//ofBackground(0,0,0);
+		glPushMatrix();
+			ofSetHexColor(0xffffff);
+			glRotatef(180, 0, 1, 0);
+			glTranslatef(w/2, 0, 0);
+			//
+			texMirrow.draw(w/2,0);
+		glPopMatrix();
+		 */
+	}	//	TextMirrow UNDER DEVELOPMENT
+	if	(noiseEffect)			{
+		ofBackground(255,255,255);
+		
+		for (int i = 0; i < w; i = i+ 1){
+			for (int j = 0; j < h; j=j+1){
+				grayPixels[j*w+i] = (unsigned char)(ofRandomuf() * 255);
+			}
+		}
+		texGray.loadData(grayPixels, w, h, GL_LUMINANCE); 
+		ofSetHexColor(0xffffff);
+		texGray.draw(0, 0, w, h);
+	}	//  Texture Effect
 	if	(viewParticles)			{
         particleSystem.setTimeStep(timeStep);
 		ofSetColor(r1, g1, b1, a1);	
@@ -844,7 +909,6 @@ void liveApp::seed2(float dotSize, float angle, float x, float y)	{
 void liveApp::keyPressed  (int key)	{
 	if ( key == 'm')	{	ofHideCursor();	}
 	if ( key == 'M')	{	ofShowCursor();	}
-	if ( key == 'x')	{	bSnapshot = true;	}
 	if ( key == 'g')	{
 		for (int t = 0; t < 1; t++)	{
 			int x1i = int(ofRandom(0,63));
@@ -899,21 +963,7 @@ void liveApp::keyPressed  (int key)	{
 		glEnd();	
 		glPopMatrix();
 	}	
-    if ( key == 'k')		{	
-		//viewOBJ = !viewOBJ;
-		//delete particle;
-	}
-    if( key == 'x'){	
-    }	
-    if( key == 'z' ){
-	}	
-    if(key == 'c'){
-    }	
-    if(key == 'n'){
-    }
-    if(key == 'N'){
-    }
-	if(key == 'v' or key == 'V'){
+	if(key == 'f' or key == 'F'){
 		int previousWindowX, previousWindowY;  
 		
 		if(ofGetWindowMode() == 0){  

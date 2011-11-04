@@ -54,6 +54,21 @@ public:
 	// my objects
 	ofSketch				sketch[MAX_SKETCHES];
 	
+	//==================
+	// texture effect
+	bool noiseEffect, mirrowEffect;
+	ofTexture		texGray;
+	ofTexture 		texMirrow;
+	
+	int 			w, h;
+	
+	unsigned char 	* colorPixels;
+	unsigned char 	* grayPixels;
+	unsigned char 	* colorAlphaPixels;
+	
+	
+	//================
+	
 	
 	// spectro
 	//ofTexture		texScreen;

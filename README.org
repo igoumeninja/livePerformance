@@ -5,6 +5,11 @@ AudioVisual electroacoustic group.
 Jerome - Omer - Damian - Aris
 
 
+* texture effect 
+inspiration: http://igoumeninja.tumblr.com/post/12249929468
+Texture screen capture example
+Check out texture example (noise effect is very interesting)
+
 * mathematical poetics
 
 ** Infinity Plus
