@@ -5,24 +5,19 @@ AudioVisual electroacoustic group.
 Jerome - Omer - Damian - Aris
 
 
-* texture effect 
-inspiration: http://igoumeninja.tumblr.com/post/12249929468
-Texture screen capture example
-Check out texture example (noise effect is very interesting)
-
-* mathematical poetics
-
+* TODO mathematical poetics
 ** Infinity Plus
    At my shared items
 
 ** life-death
 
    \int_{birth}^{death}{what happens*how you feel about it dt}
-
-* log
-** Insert mirrow mode
-** Create interfaces
-** repulsion responder
-** DONE feedback OSC responders at oF
-** DONE Fi flickering problem. Create window without menu, so if it is like that you don't have to run fullscreen mode (ofFenster).
-** DONE try ofxFenster.
+* TODO Create interfaces
+* DONE texture effect 
+inspiration: http://igoumeninja.tumblr.com/post/12249929468
+Texture screen capture example
+Check out texture example (noise effect is very interesting)
+* DONE Fix repulsion responder
+* DONE Fix feedback OSC responders at oF
+* DONE Fix flickering problem. 
+* DONE try ofxFenster.
