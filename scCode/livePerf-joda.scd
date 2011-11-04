@@ -2,7 +2,7 @@
 //:=======================
 //:Live Coding
 OF.background(40,40,40);
-OF.rgb("background",0,0,0,25);
+OF.rgb("background",0,0,0,0);
 OF.background(0,0,0);
 OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 
@@ -97,7 +97,7 @@ Initially the particles will be connected
 
 //:Collage
 ~collage = Task({
-	var 	delayTime = 0.1, countX = 0, countY = 0, fotoWidth = ~width/15, fotoHeight = ~width/15;
+	var 	delayTime = 0.01, countX = 0, countY = 0, fotoWidth = ~width/15, fotoHeight = ~width/15;
 	loop	{
 		60.do	{ |i|
 			OF.img(rrand(0,60).asInteger, countX, countY, fotoWidth, fotoHeight);
@@ -150,19 +150,39 @@ Initially the particles will be connected
 ~noiseEffect = Task({
 	OF.effect("noiseEffect", "true");
 	loop{
-		//OF.effect("noiseEffect", "false");
+		OF.effect("noiseEffect", "false");
 		OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
+			0.5.wait;
+		OF.effect("noiseEffect", "true");
 		0.5.wait;
-		//OF.effect("noiseEffect", "true");
-		//0.5.wait;
 	}	
 });
 ~noiseEffect.play;
 //:stop noiseEffect
 ~noiseEffect.stop;
 
-//:mirrowEffect
-OF.effect("mirrowEffect", "true")
+//:mirrowEffect - 2 dimension
+OF.effect("mirrowEffect", "fasle");
+
+//:mirrowEffect with map
+OF.img(62,0,0,~width,~height)
+OF.img(62)
+
+
+//:Mirrow at 4 
+OF.effect("mirrowEffect2", "false");
+
+//:move the map
+OF.effect("mirrowEffect2", "true");
+~moveMap = Task ({
+	
+	~width.do{ |i|
+		OF.img(62, -1*i, 1*i);	
+		0.05.wait;
+	}	
+});
+~moveMap.play
+
 //:=================
 //:UNDER DEVELOPMENT
 //:=================

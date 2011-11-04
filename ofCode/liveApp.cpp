@@ -135,6 +135,7 @@ void liveApp::setup()	{
 		}	// Initial Values
 	{
 		// Imagenes
+		// GROUP 1
 		string imageDir = "/Users/ari/Media/images/paintings/lyon/";
 		
 		for (int i = 0; i < 61; i++)	{
@@ -148,6 +149,22 @@ void liveApp::setup()	{
 			cout << imageDir << endl;
 			image[i].loadImage(imageDir);
 			imageDir = "/Users/ari/Media/images/paintings/lyon/";
+		}
+
+		// GROUP 2
+		imageDir = "/Users/ari/Media/images/maps/google/grenoble/";
+		
+		for (int i = 0; i < 10; i++)	{
+			string number;
+			std::string s;
+			std::stringstream out;
+			out << i;
+			s = out.str();
+			imageDir += s;
+			imageDir += ".png";
+			cout << imageDir << endl;
+			image[100+i].loadImage(imageDir);
+			imageDir = "/Users/ari/Media/images/maps/google/grenoble/";
 		}
 		
 		//image[0].loadImage("/Users/ari/Media/images/bibliOdyssey/Australian-Places/Cape-Otway-Ranges.jpg");
@@ -218,10 +235,13 @@ void liveApp::setup()	{
 		spectroRed = spectroGreen = spectroBlue = 1;	
 	}	// Spectro	
 	{
-		mirrowEffect = true;
-		noiseEffect = false;
 		w = ofGetWidth();
 		h = ofGetHeight();
+		
+		mirrowEffect2 = true;
+		texMirrow.allocate(w,h, GL_RGB);
+
+		noiseEffect = false;
 		texGray.allocate(w,h,GL_LUMINANCE);
 		grayPixels			= new unsigned char [w*h];
 		// gray pixels, set them randomly
@@ -232,7 +252,7 @@ void liveApp::setup()	{
 		texGray.loadData(grayPixels, w,h, GL_LUMINANCE); 
 	}	// Texture effects
 	{	
-		texMirrow.allocate(w,h, GL_RGB);
+		
 		//texMirrow.loadData(grayPixels, w,h, GL_RGBA); 
 	}
 		
@@ -407,10 +427,14 @@ void liveApp::update()	{
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE			
 			switch (m.getNumArgs())	{
 				case 1:
-					ofFill();
 					ofSetHexColor(0xFFFFFF);				
-					//image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), 0, 0, ofGetWidth(), ofGetHeight());
+					image[m.getArgAsInt32(0)].draw(0,0);
 					break;
+				case 3:
+					ofSetHexColor(0xFFFFFF);				
+					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2));
+					break;
+					
 				case 4:
 					if (image[m.getArgAsInt32(0)].width/image[m.getArgAsInt32(0)].height > 1.25)	{
 						
@@ -568,6 +592,13 @@ void liveApp::update()	{
 						} else {
 							mirrowEffect = false;
 						}
+				}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
+					if (m.getArgAsString(1) == "true") {
+						mirrowEffect2 = true;
+						cout << "mirrow!";
+					} else {
+						mirrowEffect2 = false;
+					}				
 				}	else {
 					cout << "Write a new effect";
 				}
@@ -739,7 +770,7 @@ void liveApp::update()	{
 	}	
 }
 void liveApp::draw()	{
-	if	(mirrowEffect)	{
+	if	(mirrowEffect)			{
 //		ofSetHexColor(0xffffff);
 //		image[21].draw(0, 0,w,h);
 		texMirrow.loadScreenData(0, 0,	w/2, h);
@@ -749,19 +780,35 @@ void liveApp::draw()	{
 		glTranslatef(w,0,0);
 		glRotatef(180, 0, 1.0f, 0);
 		texMirrow.draw(0,0,w/2,h);
-		//texMirrow.draw(0,0,200,200);
 		glPopMatrix();
-		/*
-		//ofBackground(0,0,0);
+	}	//	Mirrow Effect
+	if	(mirrowEffect2)			{
+//		ofSetHexColor(0xffffff);
+//		image[62].draw(0, 0);
+		texMirrow.loadScreenData(0, 0,	w/2, h/2);
+		
 		glPushMatrix();
-			ofSetHexColor(0xffffff);
-			glRotatef(180, 0, 1, 0);
-			glTranslatef(w/2, 0, 0);
-			//
-			texMirrow.draw(w/2,0);
+		ofSetHexColor(0xffffff);
+		glTranslatef(w,0,0);
+		glRotatef(180, 0, 1.0f, 0);
+		texMirrow.draw(0,0,w/2,h/2);
 		glPopMatrix();
-		 */
-	}	//	TextMirrow UNDER DEVELOPMENT
+
+		glPushMatrix();
+		ofSetHexColor(0xffffff);
+		glTranslatef(0,h,0);
+		glRotatef(180, 1.0f, 0, 0);
+		texMirrow.draw(0,0,w/2,h/2);
+		glPopMatrix();
+
+		glPushMatrix();
+		ofSetHexColor(0xffffff);
+		glTranslatef(w,h,0);
+		glRotatef(180, 0,0,1.0f);
+		texMirrow.draw(0,0,w/2,h/2);
+		glPopMatrix();
+		
+	}	//	The best Mirrow Effect	
 	if	(noiseEffect)			{
 		ofBackground(255,255,255);
 		
@@ -773,7 +820,7 @@ void liveApp::draw()	{
 		texGray.loadData(grayPixels, w, h, GL_LUMINANCE); 
 		ofSetHexColor(0xffffff);
 		texGray.draw(0, 0, w, h);
-	}	//  Texture Effect
+	}	//  Noise Effect
 	if	(viewParticles)			{
         particleSystem.setTimeStep(timeStep);
 		ofSetColor(r1, g1, b1, a1);	
@@ -809,20 +856,20 @@ void liveApp::draw()	{
 
         ofSetColor(r2, g2, b2, a2);
         particleSystem.draw();
-	}	// Particles
+	}	//  Particles
 	if	(sketchPhrase)			{
 		
 		for( int i=0; i<100; i++ ) {
 			
 			sketch[i].drawMouse(i, 100+ i, 0, a7, g7, b7, a7, 0);	
 		}		
-	}
+	}	//	Sketch
 	if	(view_fillBackground)	{
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
 		ofFill();	
 		ofSetColor(r8, g8, b8, a8);
 		ofRect(0,0,ofGetWidth(),ofGetHeight());			
-	}
+	}	//	background
 	if	(viewSoundChanels)		{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
@@ -837,7 +884,7 @@ void liveApp::draw()	{
 //		for( int i=2000; i<2000 + numMouseSketches; i++ ) {
 //			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
 //		}	
-	}
+	}	//	sketch with mouse
 	if	(feedbackView)			{
 		texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							

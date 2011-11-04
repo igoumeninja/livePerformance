@@ -13,8 +13,11 @@ Jerome - Omer - Damian - Aris
 
    \int_{birth}^{death}{what happens*how you feel about it dt}
 * TODO Create interfaces
+* TODO [[http://www.samburford.com/Painting.html][Brushes effect]]
+* <2011-11-04 Fri> Add second group of photos 
 * DONE texture effect 
 inspiration: http://igoumeninja.tumblr.com/post/12249929468
+Implement also a 4 copy mirrow effect
 Texture screen capture example
 Check out texture example (noise effect is very interesting)
 * DONE Fix repulsion responder

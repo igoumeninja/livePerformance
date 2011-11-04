@@ -56,7 +56,7 @@ public:
 	
 	//==================
 	// texture effect
-	bool noiseEffect, mirrowEffect;
+	bool noiseEffect, mirrowEffect, mirrowEffect2;
 	ofTexture		texGray;
 	ofTexture 		texMirrow;
 	
