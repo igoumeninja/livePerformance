@@ -36,7 +36,7 @@ OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A)
 FEEDBACK
 --------
 OF.feedback("activate", 1);
-OF.feedback("speedXY", 0.1,0);
+fOF.feedback("speedXY", 0.1,0);
 
 EFFECTS
 =======

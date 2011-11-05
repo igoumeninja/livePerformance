@@ -120,9 +120,9 @@ public:
 	string renderString;
 	
 	//##########	Beat  #################
+	bool typoEffect;
 	ofTrueTypeFont myFont11, myFont350;
-	string str,beatStr;
-	int	beat, beatsView;
+	string str;
 	int strPosX, strPosY;
 		
 	//	Feedback

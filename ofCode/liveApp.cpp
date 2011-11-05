@@ -128,9 +128,7 @@ void liveApp::setup()	{
 		viewRotate = 0;
 				
 		view_fillBackground = 1;
-	
-		beatsView = 1;
-		
+			
 		strPosX = strPosY = 200;
 		}	// Initial Values
 	{
@@ -235,10 +233,12 @@ void liveApp::setup()	{
 		spectroRed = spectroGreen = spectroBlue = 1;	
 	}	// Spectro	
 	{
-		w = ofGetWidth();
-		h = ofGetHeight();
+//		w = ofGetWidth();
+//		h = ofGetHeight();
+		w = 1280;
+		h = 1024;
 		
-		mirrowEffect2 = true;
+		mirrowEffect2 = false;
 		texMirrow.allocate(w,h, GL_RGB);
 
 		noiseEffect = false;
@@ -251,10 +251,7 @@ void liveApp::setup()	{
 		}
 		texGray.loadData(grayPixels, w,h, GL_LUMINANCE); 
 	}	// Texture effects
-	{	
-		
-		//texMirrow.loadData(grayPixels, w,h, GL_RGBA); 
-	}
+	{typoEffect = false;}	//	Typography
 		
 }
 void liveApp::update()	{ 
@@ -770,6 +767,18 @@ void liveApp::update()	{
 	}	
 }
 void liveApp::draw()	{
+	if	(noiseEffect)			{
+		ofBackground(255,255,255);
+		
+		for (int i = 0; i < w; i = i+ 1){
+			for (int j = 0; j < h; j=j+1){
+				grayPixels[j*w+i] = (unsigned char)(ofRandomuf() * 255);
+			}
+		}
+		texGray.loadData(grayPixels, w, h, GL_LUMINANCE); 
+		ofSetHexColor(0xffffff);
+		texGray.draw(0, 0, w, h);
+	}	//  Noise Effect
 	if	(mirrowEffect)			{
 //		ofSetHexColor(0xffffff);
 //		image[21].draw(0, 0,w,h);
@@ -809,18 +818,6 @@ void liveApp::draw()	{
 		glPopMatrix();
 		
 	}	//	The best Mirrow Effect	
-	if	(noiseEffect)			{
-		ofBackground(255,255,255);
-		
-		for (int i = 0; i < w; i = i+ 1){
-			for (int j = 0; j < h; j=j+1){
-				grayPixels[j*w+i] = (unsigned char)(ofRandomuf() * 255);
-			}
-		}
-		texGray.loadData(grayPixels, w, h, GL_LUMINANCE); 
-		ofSetHexColor(0xffffff);
-		texGray.draw(0, 0, w, h);
-	}	//  Noise Effect
 	if	(viewParticles)			{
         particleSystem.setTimeStep(timeStep);
 		ofSetColor(r1, g1, b1, a1);	
@@ -864,6 +861,14 @@ void liveApp::draw()	{
 			sketch[i].drawMouse(i, 100+ i, 0, a7, g7, b7, a7, 0);	
 		}		
 	}	//	Sketch
+	if	(drawWithMouse)			{
+		for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+			sketch[i].drawMouse(padX, padY, 0, r7, g7, b7, a7/3, mouseLines);	
+		}
+		//		for( int i=2000; i<2000 + numMouseSketches; i++ ) {
+		//			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
+		//		}	
+	}	//	sketch with mouse	
 	if	(view_fillBackground)	{
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
 		ofFill();	
@@ -877,14 +882,16 @@ void liveApp::draw()	{
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, r6, g6, b6, a6, soundLines);	
 		}
 	}  	//  viewSoundChanels 
-	if	(drawWithMouse)			{
-		for( int i=1000; i<1000 + numMouseSketches; i++ ) {
-				sketch[i].drawMouse(padX, padY, 0, r7, g7, b7, a7/3, mouseLines);	
-			}
-//		for( int i=2000; i<2000 + numMouseSketches; i++ ) {
-//			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
-//		}	
-	}	//	sketch with mouse
+	if	(typoEffect)			{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+		ofFill();
+		ofSetColor(255, 255, 0);
+		ofPushMatrix();
+		ofTranslate(w/2, h/2, 0);
+		myFont11.drawString("ALE ALE ALE OOOOOOO", 0, 0);		
+		ofPopMatrix();
+		
+	}	//  Typography
 	if	(feedbackView)			{
 		texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							
@@ -899,6 +906,8 @@ void liveApp::draw()	{
 		glPopMatrix();
 		//cout << "test" << endl;
 	}	//	feedback
+	
+	
 }
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   

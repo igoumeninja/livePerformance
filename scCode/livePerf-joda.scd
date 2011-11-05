@@ -2,7 +2,7 @@
 //:=======================
 //:Live Coding
 OF.background(40,40,40);
-OF.rgb("background",0,0,0,0);
+OF.rgb("background",0,0,0,20);
 OF.background(0,0,0);
 OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 
@@ -14,6 +14,7 @@ OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 	var xPos, yPos = 20, count = 0;
 	11500.do	{|i|
 		xPos = 8*count;
+		OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,225);
 		0.01.wait;
 		if (xPos > ~width, {xPos = 0; count = 0; yPos = yPos +15} );
 		count = count + 1;			
@@ -32,7 +33,7 @@ OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 		0.01.wait;
 		if (xPos < 0, {xPos = ~width; count = 0; yPos = yPos -15} );
 		count = count + 1;	
-		xPos.postln;		
+		//xPos.postln;		
 	}
 });
 ~reverseTypo.play;
@@ -159,29 +160,44 @@ Initially the particles will be connected
 });
 ~noiseEffect.play;
 //:stop noiseEffect
+OF.effect("noiseEffect", "false");
 ~noiseEffect.stop;
 
 //:mirrowEffect - 2 dimension
 OF.effect("mirrowEffect", "fasle");
 
 //:mirrowEffect with map
-OF.img(62,0,0,~width,~height)
-OF.img(62)
-
+OF.img(12,0,0,~width,~height)
+OF.img(100)
+OF.background(0,0,0)
 
 //:Mirrow at 4 
 OF.effect("mirrowEffect2", "false");
-
+ofS
 //:move the map
+OF.rgb("background",0,0,0,0);
 OF.effect("mirrowEffect2", "true");
-~moveMap = Task ({
-	
+~moveMap = Task ({	
 	~width.do{ |i|
-		OF.img(62, -1*i, 1*i);	
-		0.05.wait;
+		
+		OF.img(105, -1*i, -1*i);	
+		OF.img(105, -1*i + ~width, -1*i + ~height);	
+		OF.img(105, -1*i + ~width, -1*i + ~height);	
+		0.1.wait;
 	}	
 });
 ~moveMap.play
+//:zoom
+~zoom = Task ({	
+	loop{
+		9.do{ |i|
+		
+			OF.img(109 -i,0,0,~width, ~height);	
+			1.wait;
+		}	
+	}
+});
+~zoom.play
 
 //:=================
 //:UNDER DEVELOPMENT
@@ -253,3 +269,6 @@ OF.interactWithSound("numSoundSketches", 4);		//	RANGE: 1 -> 999
 ~height = 1024;
 
 ~myString = File.use("/Users/ari/Projects/artistic/performance/JodaLyon/data/text/text", "r", { |f| f.readAllString.postln })
+
+//:test for tasos
+"ok".postln

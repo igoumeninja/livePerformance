@@ -13,7 +13,12 @@ Jerome - Omer - Damian - Aris
 
    \int_{birth}^{death}{what happens*how you feel about it dt}
 * TODO Create interfaces
-* TODO [[http://www.samburford.com/Painting.html][Brushes effect]]
+* TODO Develop typography. 
+It has to be more delicant, more beatiful, more precise.
+** DONE write at the noise background. Need more detail. 
+* TODO Brush Effect
+[[http://www.samburford.com/Painting.html][Inspiration]]
+* TODO Trigger photos with FFT 
 * <2011-11-04 Fri> Add second group of photos 
 * DONE texture effect 
 inspiration: http://igoumeninja.tumblr.com/post/12249929468
