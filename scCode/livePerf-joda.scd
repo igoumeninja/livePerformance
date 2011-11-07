@@ -61,6 +61,7 @@ OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 //:PARTICLES
 //:==========
 
+//:Add 1000 particles
 /* 
 At this phrase we will stop everything else and we will make a transport to particles.
 Initially the particles will be connected
@@ -153,7 +154,7 @@ Initially the particles will be connected
 	loop{
 		OF.effect("noiseEffect", "false");
 		OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
-			0.5.wait;
+		0.5.wait;
 		OF.effect("noiseEffect", "true");
 		0.5.wait;
 	}	
@@ -166,23 +167,17 @@ OF.effect("noiseEffect", "false");
 //:mirrowEffect - 2 dimension
 OF.effect("mirrowEffect", "fasle");
 
-//:mirrowEffect with map
-OF.img(12,0,0,~width,~height)
-OF.img(100)
-OF.background(0,0,0)
-
-//:Mirrow at 4 
+//:Mirrow effect2 FALSE
 OF.effect("mirrowEffect2", "false");
-ofS
 //:move the map
 OF.rgb("background",0,0,0,0);
 OF.effect("mirrowEffect2", "true");
 ~moveMap = Task ({	
 	~width.do{ |i|
 		
-		OF.img(105, -1*i, -1*i);	
-		OF.img(105, -1*i + ~width, -1*i + ~height);	
-		OF.img(105, -1*i + ~width, -1*i + ~height);	
+		OF.img(16, -1*i, -1*i);	
+		OF.img(16, -1*i + ~width, -1*i + ~height);	
+		OF.img(16, -1*i + ~width, -1*i + ~height);	
 		0.1.wait;
 	}	
 });

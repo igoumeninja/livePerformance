@@ -33,6 +33,8 @@ OSCresponder.new(nil, "/numSoundSketches", { arg time, resp, msg; OF.interactWit
 OSCresponder.new(nil, "/maxFreqIn", { arg time, resp, msg; OF.interactWithSound("maxFreqIn", msg[1].round);} ).add; 
 OSCresponder.new(nil, "/maxAmpIn", { arg time, resp, msg; OF.interactWithSound("maxAmpIn", msg[1]);} ).add; 
 OSCresponder.new(nil, "/elasticity", { arg time, resp, msg; OF.interactWithSound("maxSoundElasticity", msg[1]);} ).add; 
+
+//+++++++++++++++++++++++++++++++++++++++++++++++
 OSCresponder.new(nil, "/soundBW", { arg time, resp, msg; 
 	if (msg[1] == 0)	{~soundBWTask.stop;OF.rgb("sound",255,255,255,20);OF.rgb("background",0,0,0,0);};
 	if (msg[1] == 1)	{~soundBWTask.start};

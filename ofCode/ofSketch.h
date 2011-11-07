@@ -12,8 +12,8 @@
 #include "ofxOsc.h"
 #include "ofxVectorMath.h"
 
-#define stoixeia			40
-#define stoixeiaMouse		40		// power to the people: 400 loop working fine
+#define stoixeia			140
+#define stoixeiaMouse		140		// power to the people: 400 loop working fine
 #define MAX_N_PTS			150
 
 #define HOST				"localhost"

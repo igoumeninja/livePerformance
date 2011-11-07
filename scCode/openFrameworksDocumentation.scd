@@ -6,19 +6,23 @@
 BACKGROUND
 ----------
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
-OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,2);	//OF.rgb("background",R,G,B,A);
+
 SKETCH
 ------
 OF.interactWithSound("activate",1); 			//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 7);		//	RANGE: 1 -> 999
 OF.interactWithSound("glBeginType",0);			//	0:POINTS, Ê Ê 1: LINES
-OF.interactWithSound("maxSoundElasticity",0.1);		//	RANGE: 0 -> 20
+OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
+OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
+OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
+OF.interactWithSound("maxSoundElasticity",0.1);	//  RANGE: 0 -> 20
 OF.rgb("sound",255,255,55,20);				// 	OF.rgb("sound",r,g,b,a)
 
 PARTICLE
 --------
 OF.rgb("background",0,0,0,10);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
 OF.particle("add", 10,10, 0.5, 0.5);		
 OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
@@ -36,13 +40,15 @@ OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A)
 FEEDBACK
 --------
 OF.feedback("activate", 1);
-fOF.feedback("speedXY", 0.1,0);
+OF.feedback("speedXY", 0.1,0);
 
 EFFECTS
 =======
 OF.effect("noiseEffect", "false");
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
-OF.effect("noiseEffect", "true")
+OF.effect("noiseEffect", "true");
+OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
+OF.effect("mirrowEffect2", "fasle");	// 4-D copy mirrow
 
 WFAE
 ----

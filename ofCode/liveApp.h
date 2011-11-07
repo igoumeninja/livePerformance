@@ -146,7 +146,9 @@ public:
 	bool 			bSnapshot;		
 	float 			phase;
 	
-	//		myThing
+	//	SKETCH - SOUND - NO SOUND
+	
+	int				rSound, gSound, bSound, aSound;
 	float			padX, padY;
 	float			Yamp0, Yamp1, Yamp2, Yamp3, Yamp4, Yamp5, Yamp6, Yamp7;
 	float			Xfreq0, Xfreq1, Xfreq2, Xfreq3, Xfreq4, Xfreq5, Xfreq6,Xfreq7;

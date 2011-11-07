@@ -182,6 +182,9 @@ void liveApp::setup()	{
 
 	}	// sKeTch
 	{
+		rSound = gSound = bSound = aSound = 255;
+	}	// Sound Interaction
+	{
         // this number describes how many bins are used
         // on my machine, 2 is the ideal number (2^2 = 4x4 pixel bins)
         // if this number is too high, binning is not effective
@@ -605,7 +608,7 @@ void liveApp::update()	{
 				 if ( m.getArgAsString( 0 ) == "background")	{ r8 = m.getArgAsInt32( 1 );	g8 = m.getArgAsInt32( 2 );	b8 = m.getArgAsInt32( 3 );	a8 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "sketch")	{ r7 = m.getArgAsInt32( 1 );	g7 = m.getArgAsInt32( 2 );	b7 = m.getArgAsInt32( 3 );	a7 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "sketchBW")	{ r7 = m.getArgAsInt32( 1 );	g7 = m.getArgAsInt32( 2 );	b7 = m.getArgAsInt32( 3 );	}			
-			else if ( m.getArgAsString( 0 ) == "sound")	{ r6 = m.getArgAsInt32( 1 );	g6 = m.getArgAsInt32( 2 );	b6 = m.getArgAsInt32( 3 );	a6 = m.getArgAsInt32( 4 );	}
+			else if ( m.getArgAsString( 0 ) == "sound")	{ rSound = m.getArgAsInt32( 1 );	gSound = m.getArgAsInt32( 2 );	bSound = m.getArgAsInt32( 3 );	aSound = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "5")	{ r5 = m.getArgAsInt32( 1 );	g5 = m.getArgAsInt32( 2 );	b5 = m.getArgAsInt32( 3 );	a5 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "4")	{ r4 = m.getArgAsInt32( 1 );	g4 = m.getArgAsInt32( 2 );	b4 = m.getArgAsInt32( 3 );	a4 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "object")	{ r3 = m.getArgAsInt32( 1 );	g3 = m.getArgAsInt32( 2 );	b3 = m.getArgAsInt32( 3 );	a3 = m.getArgAsInt32( 4 );	}								
@@ -879,7 +882,7 @@ void liveApp::draw()	{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSoundSketches; i++ ) {
-			sketch[i].drawSound(Xfreq0, Yamp0, 0, r6, g6, b6, a6, soundLines);	
+			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
 		}
 	}  	//  viewSoundChanels 
 	if	(typoEffect)			{
@@ -906,8 +909,6 @@ void liveApp::draw()	{
 		glPopMatrix();
 		//cout << "test" << endl;
 	}	//	feedback
-	
-	
 }
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   
@@ -1058,8 +1059,6 @@ void liveApp::mouseDragged(int x, int y, int button)	{
 void liveApp::mousePressed	(int x, int y, int button)	{
 	isMousePressed = true;
 	drawNow = true;	
-	
-			
 }
 void liveApp::mouseReleased	(int x, int y, int button)	{
 	isMousePressed = false;
