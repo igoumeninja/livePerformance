@@ -115,9 +115,9 @@ void liveApp::setup()	{
 		mouseLines = 1;
 		soundLines = 0;
 		
-		ampInLow =0;
+		ampInLow =0.0;
 		ampInHigh = 0.15;
-		freqInLow = 120;
+		freqInLow = 20;
 		freqInHigh = 4000;
 		
 		snapCounter = 3;
@@ -183,6 +183,8 @@ void liveApp::setup()	{
 	}	// sKeTch
 	{
 		rSound = gSound = bSound = aSound = 255;
+		
+		soundEffectNoto = false;
 	}	// Sound Interaction
 	{
         // this number describes how many bins are used
@@ -475,7 +477,7 @@ void liveApp::update()	{
 					ofEndShape();
 					break;
 				case 14:
-					cout << m.getNumArgs() << endl;
+					//cout << m.getNumArgs() << endl;
 					ofNoFill();
 					ofSetHexColor(0xFFFFFF);		
 					ofBeginShape();		
@@ -539,7 +541,7 @@ void liveApp::update()	{
 			} else if (m.getArgAsString( 0 ) == "speedXY")		{
 				feedbackSpeedY = m.getArgAsFloat( 1 );
 				feedbackSpeedX = m.getArgAsFloat( 2 );
-				cout << feedbackSpeedY << endl;
+				//cout << feedbackSpeedY << endl;
 			}
 		}	//	feedback		
 		if ( m.getAddress() == "background" )			{
@@ -585,17 +587,17 @@ void liveApp::update()	{
 						} else {
 							noiseEffect = false;
 						}
-				}	else if ( m.getArgAsString(0) == "mirrowEffect" ) {
+				}	else if ( m.getArgAsString(0) == "mirrowEffect1" ) {
 						if (m.getArgAsString(1) == "true") {
-							mirrowEffect = true;
-							cout << "mirrow!";
+							mirrowEffect1 = true;
+							//cout << "mirrow!";
 						} else {
-							mirrowEffect = false;
+							mirrowEffect1 = false;
 						}
 				}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
 					if (m.getArgAsString(1) == "true") {
 						mirrowEffect2 = true;
-						cout << "mirrow!";
+						//cout << "mirrow!";
 					} else {
 						mirrowEffect2 = false;
 					}				
@@ -782,7 +784,7 @@ void liveApp::draw()	{
 		ofSetHexColor(0xffffff);
 		texGray.draw(0, 0, w, h);
 	}	//  Noise Effect
-	if	(mirrowEffect)			{
+	if	(mirrowEffect1)			{
 //		ofSetHexColor(0xffffff);
 //		image[21].draw(0, 0,w,h);
 		texMirrow.loadScreenData(0, 0,	w/2, h);
@@ -861,7 +863,7 @@ void liveApp::draw()	{
 		
 		for( int i=0; i<100; i++ ) {
 			
-			sketch[i].drawMouse(i, 100+ i, 0, a7, g7, b7, a7, 0);	
+			sketch[i].drawMouse(i, 100+ i, 0, 255,255,255,255, 0);	
 		}		
 	}	//	Sketch
 	if	(drawWithMouse)			{
@@ -879,6 +881,13 @@ void liveApp::draw()	{
 		ofRect(0,0,ofGetWidth(),ofGetHeight());			
 	}	//	background
 	if	(viewSoundChanels)		{
+		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
+		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
+		for( int i=1000; i<1000+numSoundSketches; i++ ) {
+			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
+		}
+	}  	//  viewSoundChanels 
+	if	(soundEffectNoto)		{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSoundSketches; i++ ) {

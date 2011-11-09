@@ -2,7 +2,7 @@
 //:=======================
 //:Live Coding
 OF.background(40,40,40);
-OF.rgb("background",0,0,0,20);
+OF.rgb("background",0,0,0,30);
 OF.background(0,0,0);
 OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 
@@ -97,9 +97,9 @@ Initially the particles will be connected
 //:SLIDE  SHOW
 //:=====================
 
-//:Collage
+//:Collage aside
 ~collage = Task({
-	var 	delayTime = 0.01, countX = 0, countY = 0, fotoWidth = ~width/15, fotoHeight = ~width/15;
+	var 	delayTime = 0.04, countX = 0, countY = 0, fotoWidth = ~width/15, fotoHeight = ~width/15;
 	loop	{
 		60.do	{ |i|
 			OF.img(rrand(0,60).asInteger, countX, countY, fotoWidth, fotoHeight);
@@ -113,13 +113,30 @@ Initially the particles will be connected
 ~collage.play;
 //:stop collage
 ~collage.stop;
+//:Collage random at the grid UNDER DEVELOPMENT
+~collageRandGrid = Task({
+	var 	delayTime = 0.01, countX = 0, countY = 0, fotoWidth = ~width/15, fotoHeight = ~width/15;
+	loop	{
+		(1..59).scramble.do	{ |i|
+			OF.img(rrand(0,60).asInteger, countX, countY, fotoWidth, fotoHeight);
+			countX = countX + fotoWidth;
+			if (countX>~width, {countX = 0;countY = countY + fotoHeight});
+			if (countY>~height, {countY = 0;});
+			delayTime.wait;
+		}
+	}
+});
+~collageRandGrid.play;
+//:stop collage
+~collageRandGrid.stop;
+
 //==============
 //:rotate 2d
 ~rotate2d = Task({
 	inf.do	{ |i|
 		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~width/4, ~height/2, 0, 0, 0, i);
-		0.02.wait;
-		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~width/4, ~height/2, 0, 0, 0, i);		0.02.wait;
+		0.04.wait;
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~width/4, ~height/2, 0, 0, 0, i);		0.04.wait;
 	}
 });
 ~rotate2d.play;
@@ -128,7 +145,7 @@ Initially the particles will be connected
 //==============
 //:position
 ~position = Task({
-	var imageSize = 200, waitTime = 0.005 ;
+	var imageSize = 200, waitTime = 0.02;
 	inf.do	{ |i|
 		OF.img(rrand(0,60).asInteger,~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		
 		waitTime.wait;
@@ -165,20 +182,27 @@ OF.effect("noiseEffect", "false");
 ~noiseEffect.stop;
 
 //:mirrowEffect - 2 dimension
-OF.effect("mirrowEffect", "fasle");
+OF.effect("mirrowEffect", "true");
 
 //:Mirrow effect2 FALSE
 OF.effect("mirrowEffect2", "false");
 //:move the map
+~moveMap.stop;
+//~city = [101, 102, 103, 104].at(rrand(0,3).asInteger);
+
 OF.rgb("background",0,0,0,0);
 OF.effect("mirrowEffect2", "true");
 ~moveMap = Task ({	
+	var city, direction;
+	city = [101, 102, 103, 104].at(rrand(0,3).round);
+	direction = [-1,1].at(rrand(0,1).round).postln;
 	~width.do{ |i|
 		
-		OF.img(16, -1*i, -1*i);	
-		OF.img(16, -1*i + ~width, -1*i + ~height);	
-		OF.img(16, -1*i + ~width, -1*i + ~height);	
-		0.1.wait;
+		//OF.img(103, direction*i + ~width/2, -1*i + ~height/2);
+		OF.img(103, direction*i, direction*i);	
+		//OF.img(103, -1*i + ~width, -1*i + ~height);	
+		//OF.img(103, -1*i + ~width, -1*i + ~height);	
+		0.02.wait;
 	}	
 });
 ~moveMap.play
@@ -192,7 +216,21 @@ OF.effect("mirrowEffect2", "true");
 		}	
 	}
 });
-~zoom.play
+~zoom.play;
+//:ZoomIn ZoomOut phrase
+//:-
+
+{
+	90.do{ |i|
+			OF.img(100+i,0,0,~width,~height);
+			0.04.wait;
+	};
+	90.do{ |i|
+			OF.img(190-i,0,0,~width,~height);
+			0.04.wait;		
+	}
+}.fork
+
 
 //:=================
 //:UNDER DEVELOPMENT
@@ -260,10 +298,17 @@ OF.interactWithSound("numSoundSketches", 4);		//	RANGE: 1 -> 999
 //:==============
 //:--STARTUP FILE
 //:==============
-~width = 1280;
+"startup is working".postln;
+~width = 680;
 ~height = 1024;
 
-~myString = File.use("/Users/ari/Projects/artistic/performance/JodaLyon/data/text/text", "r", { |f| f.readAllString.postln })
+// Take a string from file
+~myString = File.use("/Users/ari/Projects/artistic/performance/JodaLyon/data/text/text", "r", { |f| f.readAllString})
 
-//:test for tasos
-"ok".postln
+// Sound Interaction
+Task({
+		if (not(s.serverRunning)) { s.boot };
+		s.doWhenBooted {
+			SendAmpFreq.start;
+		};					
+	}).play;

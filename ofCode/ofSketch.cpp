@@ -28,9 +28,6 @@ void ofSketch::init(int sketchID, float elast, float aposv) {
 		}
 	}
 }
-
-
-//######## draw Mouse  ##############//
 void ofSketch::drawMouse(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, float lines) {
 	ofNoFill();
 	ofSetColor(redL, greenL, blueL, alphaL);
@@ -72,8 +69,6 @@ void ofSketch::drawMouse(float xL, float yL, float zL, int redL, int greenL, int
 	}
 	glEnd();	
 }
-
-//########## draw Sound ######################//
 void ofSketch::drawSound(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, float slines) {
 	ofFill();
 	ofSetColor(redL, greenL, blueL, alphaL);
@@ -111,8 +106,6 @@ void ofSketch::drawSound(float xL, float yL, float zL, int redL, int greenL, int
 	}
 	glEnd();	
 }
-
-//######### Update With Sketch Lines  ###############//
 void ofSketch::update(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL) {
 	ofFill();
 	ofSetColor(redL, greenL, blueL, alphaL);
@@ -146,8 +139,6 @@ void ofSketch::update(float xL, float yL, float zL, int redL, int greenL, int bl
 	}
 	glEnd();	
 }
-
-// Update Classic With Sketch Lines
 void ofSketch::updateClassic(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL) {	
 	ofFill();
 	ofSetColor(redL, greenL, blueL, alphaL);
@@ -174,8 +165,6 @@ void ofSketch::updateClassic(float xL, float yL, float zL, int redL, int greenL,
 	ofEndShape();
 	
 }
-
-//######## Stop Sound  #############//
 void ofSketch::stoping(float xL, float yL) {
 	ofxOscMessage m;
 	m.setAddress( "/ampXar" );
@@ -190,8 +179,6 @@ void ofSketch::stoping(float xL, float yL) {
 		epitaxinsiY[i]  =0;
 	}
 }
-
-//##########  Sound  #################//
 void ofSketch::sound(float xL, float yL) {
 	for (int i=0; i<stoixeia; i++){
 		if (i==0){

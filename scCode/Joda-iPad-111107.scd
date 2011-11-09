@@ -1,8 +1,7 @@
-//:==================
 //:RESPONDERS
 
-//:==================
-//:GENERAL
+// ==================
+// GENERAL
 OSCresponderNode(n, '/blackBackground', { |t,r,msg| 
 	OF.background(0,0,0);				
 }).add;
@@ -14,12 +13,41 @@ OSCresponderNode(n, '/blackBackgroundAlpha', { |t,r,msg|
 	});
 }).add;
 
+~alphaBackground = ControlSpec(0, 125, \lin);
+OSCresponderNode(n, '/alphaBackground', { | time, resp, msg| 
+	OF.rgb("a8", ~alphaBackground.map(msg[1]).round);
+} ).add; 
+
+OSCresponderNode(n, '/feedback', { |t,r,msg| 
+	OF.feedback("activate", msg[1]);
+}).add;
+
+~xFeedback = ControlSpec(-5, 5, \lin);
+~yFeedback = ControlSpec(5, -5, \lin);
+	OSCresponderNode(n, '/feedbackXY', { | time, resp, msg| 
+	"test".postln;
+	OF.feedback("speedXY", ~xFeedback.map(msg[1]), ~yFeedback.map(msg[2]));
+} ).add; 
+
+OSCresponderNode(n, '/mirrowEffect1', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirrowEffect1", "true"); 
+	},{
+		OF.effect("mirrowEffect1", "false"); 
+	});
+}).add;
+
+OSCresponderNode(n, '/mirrowEffect2', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirrowEffect2", "true"); 
+	},{
+		OF.effect("mirrowEffect2", "false"); 
+	});
+}).add;
 
 
-
-
-//:==================
-//:SOUND INTERACTION
+// ==================
+// SOUND INTERACTION
 ~setupSound = Task({
 					if (not(s.serverRunning)) { s.boot };
 					s.doWhenBooted {
@@ -54,12 +82,12 @@ OSCresponderNode(n, '/numSoundSketches', { | time, resp, msg|
 	OF.interactWithSound("numSoundSketches", ~numSoundSketches.map(msg[1]).round);
 } ).add; 
 
-~maxFreqIn = ControlSpec(40, 2000, \lin);
+~maxFreqIn = ControlSpec(20, 2000, \lin);
 OSCresponderNode(n, '/maxFreqIn', { | time, resp, msg| 
 	OF.interactWithSound("maxFreqIn", ~maxFreqIn.map(msg[1]));
 } ).add; 
 
-~maxAmpIn = ControlSpec(0.001, 2, \lin);
+~maxAmpIn = ControlSpec(0.001, 0.5, \lin);
 OSCresponderNode(n, '/maxAmpIn', { | time, resp, msg| 
 	OF.interactWithSound("maxAmpIn", ~maxAmpIn.map(msg[1]));
 }).add; 
@@ -69,78 +97,78 @@ OSCresponderNode(n, '/elasticity', { | time, resp, msg|
 	OF.interactWithSound("maxSoundElasticity", ~elasticity.map(msg[1]));
 } ).add; 
 
-~soundBWTask = Task({
+~btw1 = Task({
+	OF.background(0, 0, 0, 0);
+	OF.rgb("a8",0);
+	OF.interactWithSound("numSoundSketches", 800);
+	OF.interactWithSound("glBeginType", 1);	
+	inf.do({
+		OF.rgb("sound",255,255,255,55);				
+		0.04.wait;	
+		OF.rgb("sound",0,0,0,55);
+		0.04.wait;	
+	});
+});
+
+
+OSCresponderNode(n, '/btw1', { |t,r,msg| 
+	if( msg[1] == 1,{
+		~btw1.play;
+	},{
+		~btw1.stop;
+	});
+}).add;
+
+~btw2 = Task({
 	OF.background(0, 0, 0);
 	OF.rgb("a8",0);
 	OF.interactWithSound("numSoundSketches", 800);
 	OF.interactWithSound("glBeginType", 1);	
 	inf.do({
-		OF.rgb("sound",255,255,255,20);				
-		0.02.wait;	
-		OF.rgb("sound",0,0,0,125);
-		0.02.wait;	
+		OF.rgb("sound",255,255,255,255);				
+		0.04.wait;	
+		OF.rgb("sound",0,0,0,255);
+		0.04.wait;	
 	});
 });
 
 
-OSCresponderNode(n, '/soundBWTask', { |t,r,msg| 
+OSCresponderNode(n, '/btw2', { |t,r,msg| 
 	if( msg[1] == 1,{
-		~soundBWTask.play;
+		~btw2.play;
 	},{
-		~soundBWTask.stop;
+		~btw2.stop;
 	});
 }).add;
 
-~backBWTask = Task({
+~btw3 = Task({
+	OF.background(0, 0, 0);
+	OF.rgb("a8",0);
+	OF.interactWithSound("numSoundSketches", 800);
+	OF.interactWithSound("glBeginType", 1);	
 	inf.do({
-		OF.rgb("background",0,0,0,255);
-		OF.rgb("sound",255,255,255,125);					
-		0.001.wait;	
-		OF.rgb("background",255,255,255,255);
-		OF.rgb("sound",0,0,0,125);
-		0.001.wait;	
-		OF.rgb("background",0,0,0,255);
-		OF.rgb("sound",255,255,255,125);					
-		0.001.wait;	
+		OF.background(0, 0, 0);
+		OF.rgb("sound",255,255,255,255);				
+		0.04.wait;	
+		OF.background(255,255,255);
+		OF.rgb("sound",0,0,0,255);
+		0.04.wait;	
 	});
 });
 
-OSCresponderNode(n, '/backBWTask', { |t,r,msg| 
+
+OSCresponderNode(n, '/btw3', { |t,r,msg| 
 	if( msg[1] == 1,{
-		~backBWTask.play;
+		~btw3.play;
 	},{
-		~backBWTask.stop;
-	});
-}).add;
-~backgroundTask = Task({
-	inf.do({
-		OF.rgb("background",0,0,0,255);
-		OF.rgb("sound",255,255,255,125);					
-		0.001.wait;	
-		OF.rgb("background",255,255,255,255);
-		OF.rgb("sound",0,0,0,125);
-		0.001.wait;	
-		OF.rgb("background",0,0,0,255);
-		OF.rgb("sound",255,255,255,125);					
-		0.001.wait;	
-	});
-});
-OSCresponderNode(n, '/backgroundTask', { |t,r,msg| 
-	if( msg[1] == 1,{
-		~backgroundTask.play;
-	},{
-		~backgroundTask.stop;
+		~btw3.stop;
 	});
 }).add;
 
 ~elastTask = Task({
 	inf.do({
-//		OF.interactWithSound("maxSoundElasticity",0.1);					
-//		0.5.wait;	
-		OF.interactWithSound("maxSoundElasticity",1);					
-		0.3.wait;	
-		OF.interactWithSound("maxSoundElasticity",0.01);					
-		0.7.wait;			
+		OF.interactWithSound("maxSoundElasticity",1);			0.5.wait;	
+		OF.interactWithSound("maxSoundElasticity",0.01);		0.5.wait;			
 	});
 });
 OSCresponderNode(n, '/elastTask', { |t,r,msg| 
@@ -164,9 +192,20 @@ OSCresponderNode(n, '/aSound', { | time, resp, msg|
 	OF.rgb("sound",255,255,255,~aSound.map(msg[1]).round);
 } ).add; 
 
+OSCresponderNode(n, '/pad', { |t,r,msg| 
+	OF.interactWithSketch("activate", msg[1]);	
+}).add;
 
-/aSound
+~xPad = ControlSpec(0, ~width, \lin);
+~yPad = ControlSpec(~height, 0, \lin);
+OSCresponderNode(n, '/padXY', { | time, resp, msg| 
+	OF.interactWithSketch("padXY", ~xPad.map(msg[2]).round, ~yPad.map(msg[1]).round);
+} ).add; 
 
+
+
+//OSCresponder.new(nil, "/feedback", { arg time, resp, msg; OF.feedback("activate", msg[1]);} ).add; 
+//OSCresponder.new(nil, "/speedXY", { arg time, resp, msg; OF.feedback("speedXY", msg[1], msg[2]);} ).add; 
 
 //:==================
 //:PARTICLES

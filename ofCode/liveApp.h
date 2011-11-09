@@ -56,7 +56,7 @@ public:
 	
 	//==================
 	// texture effect
-	bool noiseEffect, mirrowEffect, mirrowEffect2;
+	bool noiseEffect, mirrowEffect1, mirrowEffect2;
 	ofTexture		texGray;
 	ofTexture 		texMirrow;
 	
@@ -159,7 +159,7 @@ public:
 	float			ampInLow,ampOutLow, ampInHigh, ampOutHigh;
 	float			freqInLow, freqOutLow,  freqInHigh, freqOutHigh;
 	
-	bool			sketchPhrase, drawNow, drawWithMouse, rotate, viewCamera, viewBlob, viewDiff;
+	bool			sketchPhrase, drawNow, drawWithMouse, rotate, viewCamera, viewBlob, viewDiff, soundEffectNoto;
 	int				midi1, midi2, midi3, midi4, midi5, midi6, midi7, midi8;
 	int				midi65, midi66, midi67, midi68, midi69;
 	int				midi70, midi71, midi72, midi73, midi74, midi75, midi76, midi77, midi78, midi79;

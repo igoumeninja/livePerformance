@@ -19,19 +19,22 @@ https://github.com/igoumeninja/Joda/tree/lyon
 *** life-death
 
     \int_{birth}^{death}{what happens*how you feel about it dt}
+** TODO kill all Processes with SC (create responder) 
 ** TODO Create interfaces
+** TODO Create Masks [[http://www.flickr.com/photos/24538271@N04/4187408437/][link]]
 ** TODO Develop typography. 
-It has to be more delicant, more beatiful, more precise.
+   It has to be more delicant, more beatiful, more precise.
 *** DONE write at the noise background. Need more detail. 
+** TODO [[http://blog.hiremebecauseimsmart.com/post/12479694421/by-fractalartist][spiral]]
 ** TODO Brush Effect
-[[http://www.samburford.com/Painting.html][Inspiration]]
+   [[http://www.samburford.com/Painting.html][Inspiration]]
 ** TODO Trigger photos with FFT 
 * DONE DONE stuff
 ** DONE texture effect 
-inspiration: http://igoumeninja.tumblr.com/post/12249929468
-Implement also a 4 copy mirrow effect
-Texture screen capture example
-Check out texture example (noise effect is very interesting)
+   inspiration: http://igoumeninja.tumblr.com/post/12249929468
+   Implement also a 4 copy mirrow effect
+   Texture screen capture example
+   Check out texture example (noise effect is very interesting)
 ** DONE Fix repulsion responder
 ** DONE Fix feedback OSC responders at oF
 ** DONE Fix flickering problem. 
