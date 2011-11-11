@@ -19,6 +19,7 @@ https://github.com/igoumeninja/Joda/tree/lyon
 *** life-death
 
     \int_{birth}^{death}{what happens*how you feel about it dt}
+** TODO Video effect (saturation, contrast ...)
 ** TODO Create interfaces
 ** TODO Create Masks [[http://www.flickr.com/photos/24538271@N04/4187408437/][link]]
 ** TODO Develop typography. 
@@ -27,7 +28,6 @@ https://github.com/igoumeninja/Joda/tree/lyon
 ** TODO [[http://blog.hiremebecauseimsmart.com/post/12479694421/by-fractalartist][spiral]]
 ** TODO Brush Effect
    [[http://www.samburford.com/Painting.html][Inspiration]]
-** TODO Trigger photos with FFT 
 * DONE DONE stuff
 ** DONE texture effect 
    inspiration: http://igoumeninja.tumblr.com/post/12249929468
@@ -40,3 +40,4 @@ https://github.com/igoumeninja/Joda/tree/lyon
 ** DONE try ofxFenster.
 ** DONE kill all Processes with SC (create responder) 
 ** DONE Random image gollage
+** DONE Trigger photos with FFT 

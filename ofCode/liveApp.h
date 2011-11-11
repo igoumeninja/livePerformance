@@ -45,6 +45,11 @@ public:
 	void	seed1(float dotSize, float angle, float x, float y);
 	void	seed2(float dotSize, float angle, float x, float y);	
 	
+	//========================
+	//   VIDEO
+	int						playVideo, rVideo, gVideo, bVideo, aVideo;
+	ofVideoPlayer			myVideo;
+	
 	//	addons objects
 	ofxVec2f				p;
 	ofxOscSender			osc_sender;
@@ -107,11 +112,12 @@ public:
 	string	lsystemString;
 	int		lsystemGeneration;
 		
-	//ofVideoPlayer 		sketchDust100328;
+
 	ofImage			image[200];
 		
 	//****  control view ******
 	bool	viewSketchAutomato, memAlloc;
+
 	
 	//***** memAlloc
 	float gridX[MAX_MATRIX][MAX_MATRIX], gridY[MAX_MATRIX][MAX_MATRIX];

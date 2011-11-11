@@ -51,7 +51,7 @@ OF.effect("noiseEffect", "false");
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.effect("noiseEffect", "true");
 OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
-OF.effect("mirrowEffect2", "fasle");	// 4-D copy mirrow
+OF.effect("mirrowEffect2", "true");	// 4-D copy mirrow
 
 WFAE
 ----
@@ -85,3 +85,15 @@ OF.image(image
 		0.05.wait;
 	}
 }.fork
+
+VIDEO
+-----
+OF.video("playVideo",0)
+OF.video("setSpeed",1)
+OF.video("deleteVideo")
+OF.video("reloadVideo")
+OF.video("rVideo", 115)
+OF.video("gVideo", 115)
+OF.video("bVideo", 5)
+OF.video("aVideo", 5)
+OF.video("colorVideo", 255,255,255,255)

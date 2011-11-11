@@ -167,7 +167,12 @@ void liveApp::setup()	{
 		
 		//image[0].loadImage("/Users/ari/Media/images/bibliOdyssey/Australian-Places/Cape-Otway-Ranges.jpg");
 		// Video
-			//sketchDust100328.loadMovie("videos/sketchDust100328.avi");
+		myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
+		myVideo.setLoopState(OF_LOOP_PALINDROME);
+		//myVideo.setUseTexture(false);
+		playVideo = 0;
+		rVideo = gVideo = bVideo = aVideo = 255;
+		myVideo.play();
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
@@ -256,7 +261,7 @@ void liveApp::setup()	{
 		}
 		texGray.loadData(grayPixels, w,h, GL_LUMINANCE); 
 	}	// Texture effects
-	{typoEffect = false;}	//	Typography
+	{typoEffect = false;}	// Typography
 		
 }
 void liveApp::update()	{ 
@@ -269,7 +274,7 @@ void liveApp::update()	{
 	{
 		ofxOscMessage m;
 		receiver.getNextMessage( &m ); 
-
+		
 		if ( m.getAddress() == "/fftpixels" )			{
 			switch ( mirrorMode )
 			{
@@ -501,7 +506,23 @@ void liveApp::update()	{
 				viewControlX = m.getArgAsFloat( 2 );				
 			}
 			else if (m.getArgAsString( 0 ) == "transparence")	obj_a = m.getArgAsInt32( 1 );					
-		}	//  .obj	
+		}	//  .obj
+		if ( m.getAddress() == "video")					{
+			if (m.getArgAsString(0) == "playVideo") playVideo = m.getArgAsInt32(1);
+			else if (m.getArgAsString(0) == "setSpeed") myVideo.setSpeed(m.getArgAsFloat(1));
+			else if (m.getArgAsString(0) == "rVideo") rVideo = m.getArgAsInt32(1);			
+			else if (m.getArgAsString(0) == "gVideo") gVideo = m.getArgAsInt32(1);			
+			else if (m.getArgAsString(0) == "bVideo") bVideo = m.getArgAsInt32(1);			
+			else if (m.getArgAsString(0) == "aVideo") aVideo = m.getArgAsInt32(1);						\
+			else if (m.getArgAsString(0) == "colorVideo") {
+				rVideo = m.getArgAsInt32(1);
+				gVideo = m.getArgAsInt32(2);
+				bVideo = m.getArgAsInt32(3);
+				aVideo = m.getArgAsInt32(4);
+			}
+			else if (m.getArgAsString(0) == "deleteVideo") myVideo.loadMovie("/Users/ari/Media/videos/maps/smallVideo.mov");
+			else if (m.getArgAsString(0) == "reloadVideo") myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
+		}	//	video
 		if ( m.getAddress() == "particle" )				{
 			if (m.getArgAsString( 0 ) == "type")						objType = m.getArgAsInt32( 1 );		
 			else if (m.getArgAsString( 0 ) == "activate")				{
@@ -802,6 +823,12 @@ void liveApp::update()	{
 	}	
 }
 void liveApp::draw()	{
+	if	(playVideo)				{
+		//ofSetHexColor(0xFFFFFF);
+		ofSetColor(rVideo,gVideo,bVideo,aVideo);		
+		myVideo.idleMovie();
+		myVideo.draw(0,0);
+	}	//  Play Video
 	if	(noiseEffect)			{
 		ofBackground(255,255,255);
 		
@@ -1003,8 +1030,8 @@ void liveApp::seed2(float dotSize, float angle, float x, float y)	{
   }
 }
 void liveApp::keyPressed  (int key)	{
-	if ( key == 'm')	{	ofHideCursor();	}
-	if ( key == 'M')	{	ofShowCursor();	}
+	if ( key == 'm')	ofHideCursor();
+	if ( key == 'M')	ofShowCursor();
 	if ( key == 'g')	{
 		for (int t = 0; t < 1; t++)	{
 			int x1i = int(ofRandom(0,63));
