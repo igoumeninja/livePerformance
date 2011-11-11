@@ -209,7 +209,7 @@ void liveApp::setup()	{
                 particleSystem.add(particle);
         }
 		 */
-
+		rConColor=gConColor=bConColor=rDotColor=gDotColor=bDotColor=255;
         ofBackground(0, 0, 0);
 
         timeStep = 1;
@@ -528,6 +528,34 @@ void liveApp::update()	{
 				Particle particle(m.getArgAsInt32(1), m.getArgAsInt32(2), m.getArgAsFloat(3), m.getArgAsFloat(3));
 				particleSystem.add(particle);
 			}
+			else if	(m.getArgAsString( 0 ) == "dotColor")					{
+				switch (m.getNumArgs())	{
+					case 2:
+						aDotColor = m.getArgAsInt32( 1 );
+						cout << aDotColor;
+						break;				
+					case 5:
+						rDotColor = m.getArgAsInt32( 1 );
+						gDotColor = m.getArgAsInt32( 2 );
+						bDotColor = m.getArgAsInt32( 3 );
+						aDotColor = m.getArgAsInt32( 4 );
+					break;
+				}
+			}
+			else if	(m.getArgAsString( 0 ) == "conColor")					{
+				switch (m.getNumArgs())	{
+					case 2:
+						aConColor = m.getArgAsInt32( 1 );
+						//cout << aConColor;
+						break;				
+					case 5:
+						rConColor = m.getArgAsInt32( 1 );
+						gConColor = m.getArgAsInt32( 2 );
+						bConColor = m.getArgAsInt32( 3 );
+						aConColor = m.getArgAsInt32( 4 );
+						break;
+				}
+			}			
 			else if	(m.getArgAsString( 0 ) == "bounce")					{
 				bounceXstart = m.getArgAsInt32(1);
 				bounceYstart = m.getArgAsInt32(2); 
@@ -545,10 +573,25 @@ void liveApp::update()	{
 			}
 		}	//	feedback		
 		if ( m.getAddress() == "background" )			{
-			int rBack = m.getArgAsInt32(0);
-			int gBack = m.getArgAsInt32(1);
-			int bBack = m.getArgAsInt32(2);								
-			ofBackground(rBack, gBack, bBack);
+			switch (m.getNumArgs())	{
+				case 1:
+					aBack = m.getArgAsInt32( 0 );
+					//cout << aBack;
+					break;				
+				case 3:
+					rBack = m.getArgAsInt32( 0 );
+					gBack = m.getArgAsInt32( 1 );
+					bBack = m.getArgAsInt32( 2 );
+					ofBackground(rBack,gBack,bBack);
+					break;				
+				case 4:
+					rBack = m.getArgAsInt32( 0 );
+					gBack = m.getArgAsInt32( 1 );
+					bBack = m.getArgAsInt32( 2 );
+					aBack = m.getArgAsInt32( 3 );	
+					break;
+			}
+			//ofBackground(rBack, gBack, bBack);
 		}	//	background						
 		if ( m.getAddress() == "writeString" )			{
 
@@ -614,19 +657,6 @@ void liveApp::update()	{
 			else if ( m.getArgAsString( 0 ) == "5")	{ r5 = m.getArgAsInt32( 1 );	g5 = m.getArgAsInt32( 2 );	b5 = m.getArgAsInt32( 3 );	a5 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "4")	{ r4 = m.getArgAsInt32( 1 );	g4 = m.getArgAsInt32( 2 );	b4 = m.getArgAsInt32( 3 );	a4 = m.getArgAsInt32( 4 );	}
 			else if ( m.getArgAsString( 0 ) == "object")	{ r3 = m.getArgAsInt32( 1 );	g3 = m.getArgAsInt32( 2 );	b3 = m.getArgAsInt32( 3 );	a3 = m.getArgAsInt32( 4 );	}								
-			else if ( m.getArgAsString( 0 ) == "particles")	{ r2 = m.getArgAsInt32( 1 );	g2 = m.getArgAsInt32( 2 );	b2 = m.getArgAsInt32( 3 );	}
-			else if ( m.getArgAsString( 0 ) == "particlesColor")	{ r2 = m.getArgAsInt32( 1 );	g2 = m.getArgAsInt32( 2 );	b2 = m.getArgAsInt32( 3 );	a2 = m.getArgAsInt32( 4 );}			
-			else if ( m.getArgAsString( 0 ) == "particleConnections")	{ r1 = m.getArgAsInt32( 1 );	g1 = m.getArgAsInt32( 2 );	b1 = m.getArgAsInt32( 3 );	} 
-			else if ( m.getArgAsString( 0 ) == "particleConnectionsColor")	{ r1 = m.getArgAsInt32( 1 );	g1 = m.getArgAsInt32( 2 );	b1 = m.getArgAsInt32( 3 ); a1 = m.getArgAsInt32( 4 );	} 			
-			else if ( m.getArgAsString( 0 ) == "iperatou")	{ r9 = m.getArgAsInt32( 1 );	g9 = m.getArgAsInt32( 2 );	b9 = m.getArgAsInt32( 3 );	a9 = m.getArgAsInt32( 4 );	}
-			else if ( m.getArgAsString( 0 ) == "r1" )			r1 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g1" )			g1 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b1" )			b1 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a1" )			a1 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "r2" )			r2 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g2" )			g2 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b2" )			b2 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a2" )			a2 = m.getArgAsInt32(1);
 			else if ( m.getArgAsString( 0 ) == "r3" )			r3 = m.getArgAsInt32(1);
 			else if ( m.getArgAsString( 0 ) == "g3" )			g3 = m.getArgAsInt32(1);	
 			else if ( m.getArgAsString( 0 ) == "b3" )			b3 = m.getArgAsInt32(1);
@@ -825,7 +855,7 @@ void liveApp::draw()	{
 	}	//	The best Mirrow Effect	
 	if	(viewParticles)			{
         particleSystem.setTimeStep(timeStep);
-		ofSetColor(r1, g1, b1, a1);	
+		ofSetColor(rConColor, gConColor, bConColor, aConColor);	
         particleSystem.setupForces();
         glBegin(GL_LINES);
         for(int i = 0; i < particleSystem.size(); i++) {
@@ -856,7 +886,7 @@ void liveApp::draw()	{
 		}
 		particleSystem.update();
 
-        ofSetColor(r2, g2, b2, a2);
+        ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
         particleSystem.draw();
 	}	//  Particles
 	if	(sketchPhrase)			{
@@ -877,7 +907,7 @@ void liveApp::draw()	{
 	if	(view_fillBackground)	{
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
 		ofFill();	
-		ofSetColor(r8, g8, b8, a8);
+		ofSetColor(rBack, gBack, bBack, aBack);
 		ofRect(0,0,ofGetWidth(),ofGetHeight());			
 	}	//	background
 	if	(viewSoundChanels)		{

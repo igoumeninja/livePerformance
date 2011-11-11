@@ -2,7 +2,7 @@
 //:=======================
 //:Live Coding
 OF.background(40,40,40);
-OF.rgb("background",0,0,0,30);
+OF.rgb("background",0,0,0,40);
 OF.background(0,0,0);
 OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 
@@ -10,7 +10,7 @@ OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 //:TYPOGRAPHY
 //:========================
 //:~typo
-~typo = Task({
+~typoNormal = Task({
 	var xPos, yPos = 20, count = 0;
 	11500.do	{|i|
 		xPos = 8*count;
@@ -20,12 +20,12 @@ OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 		count = count + 1;			
 	}
 });
-~typo.play;
+~typoNormal.play;
 //:stop typo
-~typo.stop;
+~typoNormal.stop;
 
 //:~reverseTypo
-~reverseTypo = Task({
+~typoInverse = Task({
 	var xPos, yPos = ~height, count = 0;
 	11500.do	{|i|
 		xPos = (~width - (8*count));
@@ -36,9 +36,9 @@ OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
 		//xPos.postln;		
 	}
 });
-~reverseTypo.play;
+~typoInverse.play;
 //:stop typo
-~reverseTypo.stop;
+~typoInverse.stop;
 //:typo auto loop
 OF.background(0,0,0);
 OF.rgb("background",0,0,0,0);	//OF.rgb("background",R,G,B,A);
@@ -67,7 +67,7 @@ At this phrase we will stop everything else and we will make a transport to part
 Initially the particles will be connected
 */
 {
-	OF.rgb("background",0,0,0,20);
+	OF.rgb("background",0,0,0,25);
 	1.wait;
 	OF.particle("activate", 1);					
 	OF.particle("particleNeighborhood", 25);		
@@ -144,7 +144,7 @@ Initially the particles will be connected
 ~rotate2d.stop;
 //==============
 //:position
-~position = Task({
+~positions = Task({
 	var imageSize = 200, waitTime = 0.02;
 	inf.do	{ |i|
 		OF.img(rrand(0,60).asInteger,~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		
@@ -157,11 +157,11 @@ Initially the particles will be connected
 		waitTime.wait;
 	}
 });
-~position.play;
+~positions.play;
 //:play position
-~position.play;
+~positions.play;
 //:stop position
-~position.stop;
+~positions.stop;
 //:=================
 //:EFFECTS
 //:=================

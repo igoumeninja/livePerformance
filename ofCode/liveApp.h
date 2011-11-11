@@ -83,6 +83,7 @@ public:
 	float		countX;
 	
 	// Particles
+	int rConColor,gConColor,bConColor,aConColor,rDotColor,gDotColor,bDotColor,aDotColor;
 	int bounceXstart, bounceYstart, bounceXend, bounceYend;
 	bool isMousePressed, slowMotion, viewParticles, iPodPush, pushParticles;
 	float timeStep, pushX, pushY;
@@ -173,6 +174,7 @@ public:
 	
 	//		background
 	float			fillRate;
+	int				aBack, rBack, bBack, gBack; 
 	
 private:
 	int windowWidth, windowHeight; 

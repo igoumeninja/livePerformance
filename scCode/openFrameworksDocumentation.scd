@@ -5,8 +5,9 @@
 
 BACKGROUND
 ----------
-OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
-OF.rgb("background",0,0,0,2);	//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,20);		//OF.rgb("background",R,G,B,A);
+OF.background(0);		//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
 
 SKETCH
 ------
@@ -29,8 +30,10 @@ OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
-OF.rgb("particleConnections",255,255,255,255);		//	RGBA
-OF.rgb("particlesColor",255,255,255,255);			//	RGBA
+OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
+
+OF.rgb("particleConnections",255,255,255,0);		//	RGBA
+OF.rgb("particlesColor",255,255,255,0);			//	RGBA
 OF.particle("bounce", 100, 100, 800, 1500);					
 
 TYPOGRAPHY
