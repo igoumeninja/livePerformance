@@ -34,7 +34,7 @@ void liveApp::setup()	{
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
-		ofSetWindowTitle("Joda: AudioVisual Performance at Lyon");
+		ofSetWindowTitle("hbut: High But Under Control");
 		ofSetFrameRate(60); // if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps.
 		ofSetVerticalSync(false);
 		
@@ -167,12 +167,12 @@ void liveApp::setup()	{
 		
 		//image[0].loadImage("/Users/ari/Media/images/bibliOdyssey/Australian-Places/Cape-Otway-Ranges.jpg");
 		// Video
-		myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
-		myVideo.setLoopState(OF_LOOP_PALINDROME);
-		//myVideo.setUseTexture(false);
+		myVideo = new ofVideoPlayer();
+		myVideo->loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
+		myVideo->play();
 		playVideo = 0;
 		rVideo = gVideo = bVideo = aVideo = 255;
-		myVideo.play();
+		
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
@@ -265,7 +265,6 @@ void liveApp::setup()	{
 		
 }
 void liveApp::update()	{ 
-
 	for ( int i=0; i<NUM_MSG_STRINGS; i++ )	{
 		if ( timers[i] < ofGetElapsedTimef() )
 			msg_strings[i] = "";
@@ -509,19 +508,31 @@ void liveApp::update()	{
 		}	//  .obj
 		if ( m.getAddress() == "video")					{
 			if (m.getArgAsString(0) == "playVideo") playVideo = m.getArgAsInt32(1);
-			else if (m.getArgAsString(0) == "setSpeed") myVideo.setSpeed(m.getArgAsFloat(1));
+			else if (m.getArgAsString(0) == "setSpeed") myVideo->setSpeed(m.getArgAsFloat(1));
 			else if (m.getArgAsString(0) == "rVideo") rVideo = m.getArgAsInt32(1);			
 			else if (m.getArgAsString(0) == "gVideo") gVideo = m.getArgAsInt32(1);			
 			else if (m.getArgAsString(0) == "bVideo") bVideo = m.getArgAsInt32(1);			
-			else if (m.getArgAsString(0) == "aVideo") aVideo = m.getArgAsInt32(1);						\
+			else if (m.getArgAsString(0) == "aVideo") aVideo = m.getArgAsInt32(1);						
 			else if (m.getArgAsString(0) == "colorVideo") {
 				rVideo = m.getArgAsInt32(1);
 				gVideo = m.getArgAsInt32(2);
 				bVideo = m.getArgAsInt32(3);
 				aVideo = m.getArgAsInt32(4);
 			}
-			else if (m.getArgAsString(0) == "deleteVideo") myVideo.loadMovie("/Users/ari/Media/videos/maps/smallVideo.mov");
-			else if (m.getArgAsString(0) == "reloadVideo") myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
+			else if (m.getArgAsString(0) == "deleteVideo")		{
+				myVideo->stop();
+				myVideo->close();
+				delete myVideo;
+				myVideo = 0;
+				//myVideo.closeMovie();//();myVideo.loadMovie("/Users/ari/Media/videos/maps/smallVideo.mov");
+			}
+			else if (m.getArgAsString(0) == "reloadVideo")		{
+				myVideo = new ofVideoPlayer();
+				myVideo->loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
+				myVideo->play();
+				//myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
+				
+			}
 		}	//	video
 		if ( m.getAddress() == "particle" )				{
 			if (m.getArgAsString( 0 ) == "type")						objType = m.getArgAsInt32( 1 );		
@@ -533,9 +544,9 @@ void liveApp::update()	{
 			else if (m.getArgAsString( 0 ) == "particleNeighborhood")	particleNeighborhood = m.getArgAsInt32( 1 );
 			else if (m.getArgAsString( 0 ) == "forceRadius")			forceRadius = m.getArgAsInt32( 1 );		
 			else if (m.getArgAsString( 0 ) == "forceScale")				forceScale = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "iPodPush")				{
-				if (m.getArgAsInt32(1) == 1)	iPodPush = true;	
-				else if (m.getArgAsInt32(1) == 0)	iPodPush = false;	
+			else if (m.getArgAsString( 0 ) == "iPadPush")				{
+				if (m.getArgAsInt32(1) == 1)	iPadPush = true;	
+				else if (m.getArgAsInt32(1) == 0)	iPadPush = false;	
 			}
 			else if (m.getArgAsString( 0 ) == "pushParticles")			{
 				if (m.getArgAsInt32(1) == 1)	pushParticles = true;	
@@ -652,16 +663,14 @@ void liveApp::update()	{
 							noiseEffect = false;
 						}
 				}	else if ( m.getArgAsString(0) == "mirrowEffect1" ) {
-						if (m.getArgAsString(1) == "true") {
+						if (m.getArgAsInt32(1) == 1) {
 							mirrowEffect1 = true;
-							//cout << "mirrow!";
 						} else {
 							mirrowEffect1 = false;
 						}
 				}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
-					if (m.getArgAsString(1) == "true") {
+					if (m.getArgAsInt32(1) == 1) {
 						mirrowEffect2 = true;
-						//cout << "mirrow!";
 					} else {
 						mirrowEffect2 = false;
 					}				
@@ -743,7 +752,7 @@ void liveApp::update()	{
 				if (m.getArgAsInt32(1) == 1)	drawWithMouse = true;	
 				else if (m.getArgAsInt32(1) == 0)	drawWithMouse = false;	
 			}
-			else if ( m.getArgAsString(0) == "padXY" )	{	padX = m.getArgAsFloat(1);	padY = m.getArgAsFloat(2);	}
+			else if ( m.getArgAsString(0) == "padSketchXY" )	{	padX = m.getArgAsFloat(1);	padY = m.getArgAsFloat(2);	}
 			else if ( m.getArgAsString(0) == "mouseLines" )		mouseLines = m.getArgAsInt32(1);
 			else if ( m.getArgAsString(0) == "numMouseSketches" )	numMouseSketches = m.getArgAsFloat(1);			
 			else if ( m.getArgAsString(0) == "minMouseElasticity" )	{
@@ -824,10 +833,9 @@ void liveApp::update()	{
 }
 void liveApp::draw()	{
 	if	(playVideo)				{
-		//ofSetHexColor(0xFFFFFF);
+		myVideo->idleMovie();
 		ofSetColor(rVideo,gVideo,bVideo,aVideo);		
-		myVideo.idleMovie();
-		myVideo.draw(0,0);
+		myVideo->draw(0,0);
 	}	//  Play Video
 	if	(noiseEffect)			{
 		ofBackground(255,255,255);
@@ -899,7 +907,7 @@ void liveApp::draw()	{
 			Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 			particleSystem.addRepulsionForce(Xfreq0, Yamp0, forceRadius, forceScale);											
 		}
-        if(iPodPush)	{
+        if(iPadPush)	{
 			particleSystem.addRepulsionForce( ofGetWidth() / 2, ofGetHeight() / 2, forceRadius, forceScale);
 		}		
         if(pushParticles)	{

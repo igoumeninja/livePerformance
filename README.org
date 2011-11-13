@@ -12,6 +12,9 @@ https://github.com/igoumeninja/Joda/tree/lyon
 * log
 ** <2011-11-04 Fri> Add second group of photos 
 * TODO TODO stuff
+** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
+** TODO Typography CPU at SuperCollider increase deagerus
+** TODO Add fftTrigger to iPad
 ** TODO mathematical poetics
 *** Infinity Plus
     At my shared items

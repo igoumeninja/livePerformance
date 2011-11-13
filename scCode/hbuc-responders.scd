@@ -1,11 +1,12 @@
-//:RESPONDERS
+//:RESPONDERS - SETUP
 
 // ==================
 // GENERAL
-OSCresponderNode(n, '/blackBackground', { |t,r,msg| 
+~blackBackgroundResp = OSCresponderNode(n, '/blackBackground', { |t,r,msg| 
 	OF.background(0,0,0);				
 }).add;
-OSCresponderNode(n, '/blackBackgroundAlpha', { |t,r,msg| 
+
+~blackBackgroundAlphaResp = OSCresponderNode(n, '/blackBackgroundAlpha', { |t,r,msg| 
 	if( msg[1] == 1,{
 		OF.background(0,0,0,20);
 	},{
@@ -13,69 +14,57 @@ OSCresponderNode(n, '/blackBackgroundAlpha', { |t,r,msg|
 	});
 }).add;
 
-~alphaBackground = ControlSpec(0, 125, \lin);
-OSCresponderNode(n, '/alphaBackground', { | time, resp, msg| 
-	OF.background(~alphaBackground.map(msg[1]).asInteger);
-	~alphaBackground.map(msg[1]).round.postln;
+~alphaBackgroundSpec = ControlSpec(0, 125, \lin);
+~alphaBackgroundResp = OSCresponderNode(n, '/alphaBackground', { | time, resp, msg| 
+	OF.background(~alphaBackgroundSpec.map(msg[1]).asInteger);
 } ).add; 
 
-OSCresponderNode(n, '/feedback', { |t,r,msg| 
+~feedbackResp = OSCresponderNode(n, '/feedback', { |t,r,msg| 
 	OF.feedback("activate", msg[1]);
 }).add;
 
-~xFeedback = ControlSpec(-5, 5, \lin);
-~yFeedback = ControlSpec(5, -5, \lin);
-	OSCresponderNode(n, '/feedbackXY', { | time, resp, msg| 
-	"test".postln;
-	OF.feedback("speedXY", ~xFeedback.map(msg[1]), ~yFeedback.map(msg[2]));
+~xFeedbackSpec = ControlSpec(-5, 5, \lin);
+~yFeedbackSpec = ControlSpec(5, -5, \lin);
+~feedbackXYResp = OSCresponderNode(n, '/feedbackXY', { | time, resp, msg| 
+	//"test".postln;
+	OF.feedback("speedXY", ~xFeedbackSpec.map(msg[1]), ~yFeedbackSpec.map(msg[2]));
 } ).add; 
 
-OSCresponderNode(n, '/mirrowEffect1', { |t,r,msg|
-	if( msg[1] == 1,{
-		OF.effect("mirrowEffect1", "true"); 
-	},{
-		OF.effect("mirrowEffect1", "false"); 
-	});
+~mirrowEffect1Resp = OSCresponderNode(n, '/mirrowEffect1', { |t,r,msg|
+	OF.effect("mirrowEffect1", msg[1]); 
 }).add;
 
-OSCresponderNode(n, '/mirrowEffect2', { |t,r,msg|
-	if( msg[1] == 1,{
-		OF.effect("mirrowEffect2", "true"); 
-	},{
-		OF.effect("mirrowEffect2", "false"); 
-	});
+~mirrowEffect2Resp = OSCresponderNode(n, '/mirrowEffect2', { |t,r,msg|
+	OF.effect("mirrowEffect2", msg[1]); 
 }).add;
 
-OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
+~thisProcessStopResp = OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
 	thisProcess.stop;
 }).add;
 
 // =================
 // TYPOGRAPHY
 
-
-OSCresponderNode(n, '/typoNormal', { |t,r,msg|
-	~typoNormal = Task({
+~typoNormalResp = OSCresponderNode(n, '/typoNormal', { |t,r,msg|
+	Task({
 		var xPos, yPos = 20, count = 0;
 		11500.do	{|i|
 			xPos = 8*count;
 			OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,225);
-			0.01.wait;
+			0.02.wait;
 			if (xPos > ~width, {xPos = 0; count = 0; yPos = yPos +15} );
 			count = count + 1;			
 		}
-	});
-
-	~typoNormal.play;
+	}).play;
 }).add;
 
-OSCresponderNode(n, '/typoInverse', { |t,r,msg|
+~typoInverseResp = OSCresponderNode(n, '/typoInverse', { |t,r,msg|
 	~typoInverse = Task({
 		var xPos, yPos = ~height, count = 0;
 		11500.do	{|i|
 			xPos = (~width - (8*count));
 			OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,225);
-			0.01.wait;
+			0.03.wait;
 			if (xPos < 0, {xPos = ~width; count = 0; yPos = yPos -15} );
 			count = count + 1;	
 		}
@@ -89,13 +78,7 @@ s.boot.doWhenBooted {
 	b = Buffer.alloc(s, 512);
 };
 
-OSCresponder.new(nil, "onset", { 
-	arg time, resp, msg; 
-	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
-	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
-}).add; 
-
-OSCresponderNode(n, '/fftTriger', { |t,r,msg| 
+~fftTrigerResp = OSCresponderNode(n, '/fftTriger', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~fftTriger = { | threshold = 0.9, out = 100 |
 			var sig, chain, onsets, pips;
@@ -110,9 +93,15 @@ OSCresponderNode(n, '/fftTriger', { |t,r,msg|
 	});
 }).add;
 
-~columns = 40;
+~onsetResp = OSCresponder.new(nil, "onset", { 
+	arg time, resp, msg; 
+	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
+	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
+}).add; 
+
+~columns = 10;
 ~collageRandom = Task({
-	var 	delayTime = 0.02, xPos, yPos, fotoWidth = ~width/~columns, fotoHeight = ~width/~columns;
+	var 	delayTime = 0.04, xPos, yPos, fotoWidth = ~width/~columns, fotoHeight = ~width/~columns;
 	xPos = Array.new(pow(~columns,2));
 	yPos = Array.new(pow(~columns,2));	
 	~columns.do{|j|
@@ -130,7 +119,7 @@ OSCresponderNode(n, '/fftTriger', { |t,r,msg|
 		}
 	}
 });
-OSCresponderNode(n, '/collageRandom', { |t,r,msg| 
+~collageRandomResp = OSCresponderNode(n, '/collageRandom', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~collageRandom.play;
 	},{
@@ -151,10 +140,10 @@ OSCresponderNode(n, '/collageRandom', { |t,r,msg|
 	}
 });
 
-OSCresponderNode(n, '/collageNormal', { |t,r,msg| 
+~collageNormalResp = OSCresponderNode(n, '/collageNormal', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~collageNormal.play;
-	},{
+ 	},{
 		~collageNormal.stop;
 	});
 }).add;
@@ -168,7 +157,7 @@ OSCresponderNode(n, '/collageNormal', { |t,r,msg|
 		OF.img(rrand(0,60).round,4*~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		waitTime.wait;
 	}
 });
-OSCresponderNode(n, '/fourImages', { |t,r,msg| 
+~fourImagesResp = OSCresponderNode(n, '/fourImages', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~fourImages.play;
 	},{
@@ -183,7 +172,7 @@ OSCresponderNode(n, '/fourImages', { |t,r,msg|
 		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~width/4, ~height/2, 0, 0, 0, i);		0.04.wait;
 	}
 });
-OSCresponderNode(n, '/rotate2d', { |t,r,msg| 
+~rotate2dResp = OSCresponderNode(n, '/rotate2d', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~rotate2d.play;
 	},{
@@ -195,15 +184,15 @@ OSCresponderNode(n, '/rotate2d', { |t,r,msg|
 // ==================
 // SOUND INTERACTION
 ~setupSound = Task({
-					if (not(s.serverRunning)) { s.boot };
-					s.doWhenBooted {
-						SendAmpFreq.start;
-						0.1.wait;
-						~soundSynth = Synth("SendAmpPitch");	
-					};					
-				});
+	if (not(s.serverRunning)) { s.boot };
+	s.doWhenBooted {
+		SendAmpFreq.start;
+		0.1.wait;
+		~soundSynth = Synth("SendAmpPitch");	
+	};					
+});
 
-OSCresponderNode(n, '/setupSound', { |t,r,msg| 
+~setupSoundResp = OSCresponderNode(n, '/setupSound', { |t,r,msg| 
 	if( msg[1] == 1,{
 		"start posting".postln;
 		~soundSynth = Synth("SendAmpPitch");
@@ -213,32 +202,32 @@ OSCresponderNode(n, '/setupSound', { |t,r,msg|
 	});
 }).add;
 
-OSCresponderNode(n, '/viewSound', { |t,r,msg| 
-	OF.interactWithSound("activate", msg[1].round);
+~viewSoundResp = OSCresponderNode(n, '/viewSound', { |t,r,msg| 
+	OF.interactWithSound("activate", msg[1].asInteger);
 }).add;
 
-OSCresponderNode(n, '/glBeginType', { | time, resp, msg| 
-	OF.interactWithSound("glBeginType", msg[1].round);
+~glBeginTypeResp = OSCresponderNode(n, '/glBeginType', { | time, resp, msg| 
+	OF.interactWithSound("glBeginType", msg[1].asInteger);
 } ).add; 
 
-~numSoundSketches = ControlSpec(1, 500, \lin);
-OSCresponderNode(n, '/numSoundSketches', { | time, resp, msg| 
-	OF.interactWithSound("numSoundSketches", ~numSoundSketches.map(msg[1]).round);
+~numSoundSketchesSpec = ControlSpec(1, 500, \lin);
+~numSoundSketchesResp = OSCresponderNode(n, '/numSoundSketches', { | time, resp, msg| 
+	OF.interactWithSound("numSoundSketches", ~numSoundSketchesSpec.map(msg[1]).asInteger);
 } ).add; 
 
-~maxFreqIn = ControlSpec(20, 2000, \lin);
-OSCresponderNode(n, '/maxFreqIn', { | time, resp, msg| 
-	OF.interactWithSound("maxFreqIn", ~maxFreqIn.map(msg[1]));
+~maxFreqInSpec = ControlSpec(20, 2000, \lin);
+~maxFreqInResp = OSCresponderNode(n, '/maxFreqIn', { | time, resp, msg| 
+	OF.interactWithSound("maxFreqIn", ~maxFreqInSpec.map(msg[1]));
 } ).add; 
 
-~maxAmpIn = ControlSpec(0.001, 0.5, \lin);
-OSCresponderNode(n, '/maxAmpIn', { | time, resp, msg| 
-	OF.interactWithSound("maxAmpIn", ~maxAmpIn.map(msg[1]));
+~maxAmpInSpec = ControlSpec(0.001, 0.5, \lin);
+~maxAmpInResp = OSCresponderNode(n, '/maxAmpIn', { | time, resp, msg| 
+	OF.interactWithSound("maxAmpIn", ~maxAmpInSpec.map(msg[1]));
 }).add; 
 
-~elasticity = ControlSpec(0.001, 2, \lin);
-OSCresponderNode(n, '/elasticity', { | time, resp, msg| 
-	OF.interactWithSound("maxSoundElasticity", ~elasticity.map(msg[1]));
+~elasticitySpec = ControlSpec(0.001, 2, \lin);
+~elasticityResp = OSCresponderNode(n, '/elasticity', { | time, resp, msg| 
+	OF.interactWithSound("maxSoundElasticity", ~elasticitySpec.map(msg[1]));
 } ).add; 
 
 ~btw1 = Task({
@@ -255,7 +244,7 @@ OSCresponderNode(n, '/elasticity', { | time, resp, msg|
 });
 
 
-OSCresponderNode(n, '/btw1', { |t,r,msg| 
+~btw1Resp = OSCresponderNode(n, '/btw1', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~btw1.play;
 	},{
@@ -277,7 +266,7 @@ OSCresponderNode(n, '/btw1', { |t,r,msg|
 });
 
 
-OSCresponderNode(n, '/btw2', { |t,r,msg| 
+~btw2Resp = OSCresponderNode(n, '/btw2', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~btw2.play;
 	},{
@@ -301,7 +290,7 @@ OSCresponderNode(n, '/btw2', { |t,r,msg|
 });
 
 
-OSCresponderNode(n, '/btw3', { |t,r,msg| 
+~btw3Resp = OSCresponderNode(n, '/btw3', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~btw3.play;
 	},{
@@ -311,11 +300,11 @@ OSCresponderNode(n, '/btw3', { |t,r,msg|
 
 ~elastTask = Task({
 	inf.do({
-		OF.interactWithSound("maxSoundElasticity",1);			0.5.wait;	
+		OF.interactWithSound("maxSoundElasticity",1.0);			0.5.wait;	
 		OF.interactWithSound("maxSoundElasticity",0.01);		0.5.wait;			
 	});
 });
-OSCresponderNode(n, '/elastTask', { |t,r,msg| 
+~elastTaskResp = OSCresponderNode(n, '/elastTask', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~elastTask.play;
 	},{
@@ -323,7 +312,7 @@ OSCresponderNode(n, '/elastTask', { |t,r,msg|
 	});
 }).add;
 
-OSCresponderNode(n, '/blackWhiteSound', { |t,r,msg| 
+~blackWhiteSoundResp = OSCresponderNode(n, '/blackWhiteSound', { |t,r,msg| 
 	if( msg[1] == 1,{
 		OF.rgb("sound",255,255,255,120);
 	},{
@@ -331,49 +320,49 @@ OSCresponderNode(n, '/blackWhiteSound', { |t,r,msg|
 	});
 }).add;
 
-~aSound = ControlSpec(0, 255, \lin);
-OSCresponderNode(n, '/aSound', { | time, resp, msg| 
-	OF.rgb("sound",255,255,255,~aSound.map(msg[1]).round);
+~aSoundSpec = ControlSpec(0, 255, \lin);
+~aSoundResp = OSCresponderNode(n, '/aSound', { | time, resp, msg| 
+	OF.rgb("sound",255,255,255,~aSoundSpec.map(msg[1]).round);
 } ).add; 
 
-OSCresponderNode(n, '/pad', { |t,r,msg| 
-	OF.interactWithSketch("activate", msg[1]);	
+~padSketchResp = OSCresponderNode(n, '/padSketch', { |t,r,msg| 
+	OF.interactWithSketch("activate", msg[1].asInteger);
 }).add;
 
-~xPad = ControlSpec(0, ~width, \lin);
-~yPad = ControlSpec(~height, 0, \lin);
-OSCresponderNode(n, '/padXY', { | time, resp, msg| 
-	OF.interactWithSketch("padXY", ~xPad.map(msg[2]).round, ~yPad.map(msg[1]).round);
+~xPadSpec = ControlSpec(0, ~width, \lin);
+~yPadSpec = ControlSpec(~height, 0, \lin);
+~padSketchXYResp = OSCresponderNode(n, '/padSketchXY', { | time, resp, msg| 
+	OF.interactWithSketch("padXY", ~xPadSpec.map(msg[2]).asInteger, ~yPadSpec.map(msg[1]).asInteger);
 } ).add; 
 
 // ==================
 // PARTICLES
 
-OSCresponderNode(n, '/activateParticles', { |t,r,msg| 
+~activateParticlesResp = OSCresponderNode(n, '/activateParticles', { |t,r,msg| 
 	OF.particle("activate", msg[1].round);
 }).add;
 
-~forceRadius = ControlSpec(0, 255, \lin);
-OSCresponderNode(n, '/forceRadius', { | time, resp, msg|
-	OF.particle("forceRadius", ~forceRadius.map(msg[1]).round);
+~forceRadiusSpec = ControlSpec(0, 500, \lin);
+~forceRadiusResp = OSCresponderNode(n, '/forceRadius', { | time, resp, msg|
+	OF.particle("forceRadius", ~forceRadiusSpec.map(msg[1]).round);
 }).add; 
 
-~particleNeighborhood = ControlSpec(0, 30, \lin);
-OSCresponderNode(n, '/particleNeighborhood', { | time, resp, msg|
-	OF.particle("particleNeighborhood", ~particleNeighborhood.map(msg[1]).round);
+~particleNeighborhoodSpec = ControlSpec(0, 30, \lin);
+~particleNeighborhoodResp = OSCresponderNode(n, '/particleNeighborhood', { | time, resp, msg|
+	OF.particle("particleNeighborhood", ~particleNeighborhoodSpec.map(msg[1]).round);
 }).add; 
 
-~particleConnectionsAlpha = ControlSpec(0, 25, \lin);
+~particleConnectionsAlphaSpec = ControlSpec(0, 25, \lin);
 OSCresponderNode(n, '/particleConnectionsAlpha', { | time, resp, msg|
-	OF.particle("conColor", ~particleConnectionsAlpha.map(msg[1]).round);
+	OF.particle("conColor", ~particleConnectionsAlphaSpec.map(msg[1]).round);
 }).add; 
 
-~particlesAlpha = ControlSpec(0, 255, \lin);
-OSCresponderNode(n, '/particlesAlpha', { | time, resp, msg|
-	OF.particle("dotColor", ~particlesAlpha.map(msg[1]).round);
+~particlesAlphaSpec = ControlSpec(0, 255, \lin);
+~particlesAlphaResp = OSCresponderNode(n, '/particlesAlpha', { | time, resp, msg|
+	OF.particle("dotColor", ~particlesAlphaSpec.map(msg[1]).round);
 }).add; 
 
-OSCresponderNode(n, '/addParticles', { |t,r,msg| 
+~addParticlesResp = OSCresponderNode(n, '/addParticles', { |t,r,msg| 
 	{
 		500.do{
 			OF.particle("add", ~width/2.asInteger, ~height/2.asInteger, 0.1, 10);
@@ -382,16 +371,53 @@ OSCresponderNode(n, '/addParticles', { |t,r,msg|
 	}.fork
 }).add;
 
-OSCresponderNode(n, '/iPodPush', { |t,r,msg| 
-		OF.particle("iPodPush", msg[1]);
+~iPadPushResp = OSCresponderNode(n, '/iPadPush', { |t,r,msg| 
+	OF.particle("iPadPush", msg[1]);
 }).add;
 
-~xPad = ControlSpec(0, ~width, \lin);
-~yPad = ControlSpec(~height, 0, \lin);
-OSCresponderNode(n, '/padXY', { | time, resp, msg| 
-	OF.interactWithSketch("padXY", ~xPad.map(msg[2]).round, ~yPad.map(msg[1]).round);
-} ).add; 
+//~xPushSpec = ControlSpec(0, ~width, \lin);
+//~yPushSpec = ControlSpec(~height, 0, \lin);
+//OSCresponderNode(n, '/particlesXY', { | time, resp, msg| 
+//	OF.interactWithSketch("padXY", ~xPushSpec.map(msg[2]).asInteger, ~yPushSpec.map(msg[1]).asInteger);
+//} ).add; 
 
+OSCresponder.new(nil, "onset", { 
+	arg time, resp, msg; 
+	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
+	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
+}).add; 
+
+
+// ==================
+// VIDEO
+
+OSCresponderNode(n, '/playVideo', { | time, resp, msg|
+	OF.video("playVideo", msg[1]);
+}).add; 
+
+OSCresponderNode(n, '/deleteVideo', { | time, resp, msg|
+	OF.video("deleteVideo");
+}).add; 
+
+~rVideoSpec = ControlSpec(0, 255, \lin);
+OSCresponderNode(n, '/rVideo', { | time, resp, msg|
+	OF.video("rVideo", ~rVideoSpec.map(msg[1]).asInteger);
+}).add; 
+
+~gVideoSpec = ControlSpec(0, 255, \lin);
+OSCresponderNode(n, '/gVideo', { | time, resp, msg|
+	OF.video("gVideo", ~gVideoSpec.map(msg[1]).asInteger);
+}).add; 
+
+~bVideoSpec = ControlSpec(0, 255, \lin);
+OSCresponderNode(n, '/bVideo', { | time, resp, msg|
+	OF.video("bVideo", ~bVideoSpec.map(msg[1]).asInteger);
+}).add; 
+
+~aVideoSpec = ControlSpec(0, 255, \lin);
+OSCresponderNode(n, '/aVideo', { | time, resp, msg|
+	OF.video("aVideo", ~aVideoSpec.map(msg[1]).asInteger);
+}).add; 
 
 //:==================
 

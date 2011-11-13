@@ -48,7 +48,7 @@ public:
 	//========================
 	//   VIDEO
 	int						playVideo, rVideo, gVideo, bVideo, aVideo;
-	ofVideoPlayer			myVideo;
+	ofVideoPlayer*			myVideo;
 	
 	//	addons objects
 	ofxVec2f				p;
@@ -90,7 +90,7 @@ public:
 	// Particles
 	int rConColor,gConColor,bConColor,aConColor,rDotColor,gDotColor,bDotColor,aDotColor;
 	int bounceXstart, bounceYstart, bounceXend, bounceYend;
-	bool isMousePressed, slowMotion, viewParticles, iPodPush, pushParticles;
+	bool isMousePressed, slowMotion, viewParticles, iPadPush, pushParticles;
 	float timeStep, pushX, pushY;
 	int lineOpacity, pointOpacity;
 	float particleNeighborhood, particleRepulsion;

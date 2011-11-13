@@ -1,5 +1,5 @@
 //:Joda Performance
-//:------------------
+	//:------------------
 //:OSC messages dictionary
 
 
@@ -7,7 +7,7 @@ BACKGROUND
 ----------
 OF.background(0,0,0,20);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
-OF.rgb("background",0,0,0,10);	//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 
 SKETCH
 ------
@@ -42,8 +42,8 @@ OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A)
 
 FEEDBACK
 --------
-OF.feedback("activate", 1);
-OF.feedback("speedXY", 0.1,0);
+OF.feedback("activate", 0);
+OF.feedback("speedXY", 0.5,0);
 
 EFFECTS
 =======
@@ -51,7 +51,7 @@ OF.effect("noiseEffect", "false");
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.effect("noiseEffect", "true");
 OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
-OF.effect("mirrowEffect2", "true");	// 4-D copy mirrow
+OF.effect("mirrowEffect2", 1);	// 4-D copy mirrow
 
 WFAE
 ----
@@ -78,9 +78,6 @@ OF.image(image
 {
 	inf.do{|i|
 		OF.img(rrand(0,60).asInteger,0, 0, 400, 400, 400, 200, 0, 0, 0, i);
-//		OF.img(rrand(0,60).asInteger,1280,0,400,400, 0,0, i);
-//		OF.img(rrand(0,60).asInteger,0,1024,400,400, 0,0, i);
-//		OF.img(rrand(0,60).asInteger,1280,1024,400,400, 0,0, i);
 		i.postln;
 		0.05.wait;
 	}
@@ -92,8 +89,8 @@ OF.video("playVideo",0)
 OF.video("setSpeed",1)
 OF.video("deleteVideo")
 OF.video("reloadVideo")
-OF.video("rVideo", 115)
+OF.video("rVideo", 255)
 OF.video("gVideo", 115)
 OF.video("bVideo", 5)
-OF.video("aVideo", 5)
+OF.video("aVideo", 255)
 OF.video("colorVideo", 255,255,255,255)
