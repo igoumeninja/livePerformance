@@ -1,14 +1,13 @@
-Joda: High, but under control.
-
-AudioVisual electroacoustic group.
+*High, but under control.*
 
 Jerome - Omer - Damian - Aris
 
 Commit history:
-https://github.com/igoumeninja/Joda/commits/lyon
+https://github.com/igoumeninja/hbuc/commits/lyon
 
 Source Code:
-https://github.com/igoumeninja/Joda/tree/lyon
+https://github.com/igoumeninja/hbuc/tree/lyon
+
 * log
 ** <2011-11-04 Fri> Add second group of photos 
 * TODO TODO stuff
@@ -32,6 +31,7 @@ https://github.com/igoumeninja/Joda/tree/lyon
 ** TODO Brush Effect
    [[http://www.samburford.com/Painting.html][Inspiration]]
 * DONE DONE stuff
+** DONE Load and UnLoad video (data) with Pointers
 ** DONE texture effect 
    inspiration: http://igoumeninja.tumblr.com/post/12249929468
    Implement also a 4 copy mirrow effect
