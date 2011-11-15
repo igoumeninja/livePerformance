@@ -76,28 +76,7 @@ void liveApp::setup()	{
 		angleOffsetA = (1.5*3.14)/180; // Convert 1.5 degrees to radians
 		angleOffsetB = (50*3.14)/180;  // Convert 50 degrees to radians
 		
-		//	RGB - MIDI
-		obj_a = 10;
-		obj_r = obj_g = obj_b = 255;
-		a1 = 255;
-		a2 = 0;
-		a3 = 18;
-		a4 = 8;
-		a5 = 70;
-		a6 = 40;
-		a7 = 140;
-		a8 = 0; //for Blending:  GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA  a8=18 (oriaka)
-		r1 = g1 = b1 = 255;
-		r2 = g2 = b2 = 0;
-		r3 = g3 = b3 = 255;
-		r4 = g4 = b4 = 255;
-		r5 = g5 = b5 = 0;
-		r6 = g6 = b6 = 0;
-		r7 = g7 = b7 = 255;
-		r8 = g8 = b8 = 0;				
-		r9 = g9 = b9 =  a9 = 255;						
 		viewSoundChanels = 0;
-		midi85 = midi93 = 127;
 		
 		drawWithMouse = 1;
 		numMouseSketches = 99;
@@ -120,7 +99,6 @@ void liveApp::setup()	{
 		freqInLow = 20;
 		freqInHigh = 4000;
 		
-		snapCounter = 3;
 		feedbackView = 0;
 		feedbackSpeedX = 0;
 		feedbackSpeedY = 0;
@@ -129,7 +107,6 @@ void liveApp::setup()	{
 				
 		view_fillBackground = 1;
 			
-		strPosX = strPosY = 200;
 		}	// Initial Values
 	{
 		// Imagenes
@@ -189,6 +166,7 @@ void liveApp::setup()	{
 
 	}	// sKeTch
 	{
+		playSpectro = 1;
 		rSound = gSound = bSound = aSound = 255;
 		
 		soundEffectNoto = false;
@@ -263,7 +241,6 @@ void liveApp::setup()	{
 		}
 		texGray.loadData(grayPixels, w,h, GL_LUMINANCE); 
 	}	// Texture effects
-	{typoEffect = false;}	// Typography
 		
 }
 void liveApp::update()	{ 
@@ -275,8 +252,8 @@ void liveApp::update()	{
 	{
 		ofxOscMessage m;
 		receiver.getNextMessage( &m ); 
-		
-		if ( m.getAddress() == "/fftpixels" )			{
+		if (playSpectro)								{
+			if ( m.getAddress() == "/fftpixels" )			{
 			switch ( mirrorMode )
 			{
 					// full screen normal spectro
@@ -422,6 +399,7 @@ void liveApp::update()	{
 			}
 			
 		}	//	spectro
+		}	//  Spectro
 		if ( m.getAddress() == "rotate" )				{
 			ofBeginShape();		
 			ofRotateX(m.getArgAsInt32(0));
@@ -496,16 +474,6 @@ void liveApp::update()	{
 					
 			}
 		}	//  images	
-		if ( m.getAddress() == "obj" )					{
-			if (m.getArgAsString( 0 ) == "activate")	viewOBJ = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "type")	objType = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "distrurbance")	distrurbance = m.getArgAsFloat( 1 );
-			else if (m.getArgAsString( 0 ) == "viewControl")	{
-				viewControlY = m.getArgAsFloat( 1 );
-				viewControlX = m.getArgAsFloat( 2 );				
-			}
-			else if (m.getArgAsString( 0 ) == "transparence")	obj_a = m.getArgAsInt32( 1 );					
-		}	//  .obj
 		if ( m.getAddress() == "video")					{
 			if (m.getArgAsString(0) == "playVideo")		{
 				
@@ -539,8 +507,7 @@ void liveApp::update()	{
 			}
 		}	//	video
 		if ( m.getAddress() == "particle" )				{
-			if (m.getArgAsString( 0 ) == "type")						objType = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "activate")				{
+			if (m.getArgAsString( 0 ) == "activate")				{
 					if (m.getArgAsInt32(1) == 1)	viewParticles = true;	
 					else if (m.getArgAsInt32(1) == 0)	viewParticles = false;	
 			}
@@ -640,81 +607,38 @@ void liveApp::update()	{
 			ofPopMatrix();
 			
 		}	//	Write a string
-		if ( m.getAddress() == "renderString" )			{
-			if (m.getArgAsString( 0 ) == "string")	{
-				renderString = m.getArgAsString( 1 );
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-				ofFill();
-				float redRandom = ofRandom(0.0,1.0);
-				if (redRandom <	0.10) ofSetColor(255,0,0,255);	
-				else ofSetColor(255,255,255,255);	// even
-				float strPosX = ofRandom(0, ofGetWidth());
-				float strPosY = ofRandom(0, ofGetHeight());
-				ofPushMatrix();
-				ofTranslate(strPosX, strPosY, 0);
-				myFont11.drawString(renderString, 0, 0);		
-				ofPopMatrix();
-			}
-			}	//	Write a string
 		if ( m.getAddress() == "effect" )				{
-				if ( m.getArgAsString(0) == "tree" )		{
-					glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
-					seed1(dotSize, (270*3.1415926)/180, 0, 0);
-				}	else if ( m.getArgAsString(0) == "noiseEffect" ) {
-						if (m.getArgAsString(1) == "true") {
-							noiseEffect = true;
-						} else {
-							noiseEffect = false;
-						}
-				}	else if ( m.getArgAsString(0) == "mirrowEffect1" ) {
-						if (m.getArgAsInt32(1) == 1) {
-							mirrowEffect1 = true;
-						} else {
-							mirrowEffect1 = false;
-						}
-				}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
-					if (m.getArgAsInt32(1) == 1) {
-						mirrowEffect2 = true;
+			if ( m.getArgAsString(0) == "tree" )		{
+				glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
+				seed1(dotSize, (270*3.1415926)/180, 0, 0);
+			}	else if ( m.getArgAsString(0) == "noiseEffect" ) {
+					if (m.getArgAsString(1) == "true") {
+						noiseEffect = true;
 					} else {
-						mirrowEffect2 = false;
-					}				
-				}	else {
-					cout << "Write a new effect";
-				}
+						noiseEffect = false;
+					}
+			}	else if ( m.getArgAsString(0) == "mirrowEffect1" ) {
+					if (m.getArgAsInt32(1) == 1) {
+						mirrowEffect1 = true;
+					} else {
+						mirrowEffect1 = false;
+					}
+			}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
+				if (m.getArgAsInt32(1) == 1) {
+					mirrowEffect2 = true;
+				} else {
+					mirrowEffect2 = false;
+				}				
+			}	else {
+				cout << "Write a new effect";
+			}
 
 		}	//	effects
 		if ( m.getAddress() == "rgb" )					{
-				 if ( m.getArgAsString( 0 ) == "background")	{ r8 = m.getArgAsInt32( 1 );	g8 = m.getArgAsInt32( 2 );	b8 = m.getArgAsInt32( 3 );	a8 = m.getArgAsInt32( 4 );	}
-			else if ( m.getArgAsString( 0 ) == "sketch")	{ r7 = m.getArgAsInt32( 1 );	g7 = m.getArgAsInt32( 2 );	b7 = m.getArgAsInt32( 3 );	a7 = m.getArgAsInt32( 4 );	}
-			else if ( m.getArgAsString( 0 ) == "sketchBW")	{ r7 = m.getArgAsInt32( 1 );	g7 = m.getArgAsInt32( 2 );	b7 = m.getArgAsInt32( 3 );	}			
+			if ( m.getArgAsString( 0 ) == "sketch")	{ rSketch = m.getArgAsInt32( 1 );	gSketch = m.getArgAsInt32( 2 );	bSketch = m.getArgAsInt32( 3 );	aSketch = m.getArgAsInt32( 4 );	}
+			
 			else if ( m.getArgAsString( 0 ) == "sound")	{ rSound = m.getArgAsInt32( 1 );	gSound = m.getArgAsInt32( 2 );	bSound = m.getArgAsInt32( 3 );	aSound = m.getArgAsInt32( 4 );	}
-			else if ( m.getArgAsString( 0 ) == "5")	{ r5 = m.getArgAsInt32( 1 );	g5 = m.getArgAsInt32( 2 );	b5 = m.getArgAsInt32( 3 );	a5 = m.getArgAsInt32( 4 );	}
-			else if ( m.getArgAsString( 0 ) == "4")	{ r4 = m.getArgAsInt32( 1 );	g4 = m.getArgAsInt32( 2 );	b4 = m.getArgAsInt32( 3 );	a4 = m.getArgAsInt32( 4 );	}
-			else if ( m.getArgAsString( 0 ) == "object")	{ r3 = m.getArgAsInt32( 1 );	g3 = m.getArgAsInt32( 2 );	b3 = m.getArgAsInt32( 3 );	a3 = m.getArgAsInt32( 4 );	}								
-			else if ( m.getArgAsString( 0 ) == "r3" )			r3 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g3" )			g3 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b3" )			b3 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a3" )			a3 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "r4" )			r4 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g4" )			g4 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b4" )			b4 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a4" )			a4 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "r5" )			r5 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g5" )			g5 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b5" )			b5 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a5" )			a5 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "r6" )			r6 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g6" )			g6 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b6" )			b6 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a6" )			a6 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "r7" )			r7 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g7" )			g7 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b7" )			b7 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a7" )			a7 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "r8" )			r8 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "g8" )			g8 = m.getArgAsInt32(1);	
-			else if ( m.getArgAsString( 0 ) == "b8" )			b8 = m.getArgAsInt32(1);
-			else if ( m.getArgAsString( 0 ) == "a8" )			a8 = m.getArgAsInt32(1);
+
 		}	//	rgb directamente		
 		if ( m.getAddress() == "interactWithSound" )	{
 			if ( m.getArgAsString(0) == "activate" )	{
@@ -937,7 +861,7 @@ void liveApp::draw()	{
 	}	//	Sketch
 	if	(drawWithMouse)			{
 		for( int i=1000; i<1000 + numMouseSketches; i++ ) {
-			sketch[i].drawMouse(padX, padY, 0, r7, g7, b7, a7/3, mouseLines);	
+			sketch[i].drawMouse(padX, padY, 0, rSketch, gSketch, bSketch, aSketch/3, mouseLines);	
 		}
 		//		for( int i=2000; i<2000 + numMouseSketches; i++ ) {
 		//			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
@@ -963,16 +887,6 @@ void liveApp::draw()	{
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
 		}
 	}  	//  viewSoundChanels 
-	if	(typoEffect)			{
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-		ofFill();
-		ofSetColor(255, 255, 0);
-		ofPushMatrix();
-		ofTranslate(w/2, h/2, 0);
-		myFont11.drawString("ALE ALE ALE OOOOOOO", 0, 0);		
-		ofPopMatrix();
-		
-	}	//  Typography
 	if	(feedbackView)			{
 		texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							
@@ -1064,25 +978,14 @@ void liveApp::keyPressed  (int key)	{
 		}
 	}	
 	if ( key == 'G')	{
-		//ofBackground(0,0,0);
 	    glPushMatrix();
-        //draw in middle of the screen
         glTranslatef(ofGetWidth()/2,ofGetHeight()/2,0);
-		//glScalef(0.5, 0.5, 1);
 		gluLookAt(2*mouseX, 2*mouseY, 2*mouseX, // eyeX, eyeY, eyeZ
          0.0, 0.0, 0.0, // centerX, centerY, centerZ
-         0.0, 1.0, 0.0);		
-		
-        //tumble according to mouse
+         0.0, 1.0, 0.0);				
         glRotatef(-2*mouseY,1,0,0);
         glRotatef(2*mouseX,0,1,0);
-//        glTranslatef(-ofGetWidth()/2,-ofGetHeight()/2,0);
-
-//		glEdgeFlag(GL_TRUE);
-//		glEnable(GL_BLEND);
-//		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//		glEnable(GL_LINE_SMOOTH);       
-		ofSetColor(r4,g4,b4,a4);
+		ofSetColor(255,255,255,255);
 		glBegin(GL_POINTS);	//GL_POINTS,GL_LINE_LOOP, GL_LINE_STRIP  (http://pyopengl.sourceforge.net/documentation/manual/glBegin.3G.xml)
 		for (int i = 0; i < MAX_MATRIX; i++)	{
 			for (int j = 0; j < MAX_MATRIX; j++)	{			

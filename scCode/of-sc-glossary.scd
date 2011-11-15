@@ -5,7 +5,7 @@
 
 BACKGROUND
 ----------
-OF.background(0,0,0,20);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 
@@ -52,6 +52,7 @@ OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.effect("noiseEffect", "true");
 OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
 OF.effect("mirrowEffect2", 0);	// 4-D copy mirrow
+OF.effect("tree");
 
 WFAE
 ----
@@ -64,10 +65,10 @@ OF.rgb("particlesColor",255,255,255,255);			//	RGBA
 
 CUTMOTION
 ---------
-OF.image(imageID, xPos, yPos, width, height);
-OF.image(imageID, xPos, yPos, width, height, rotX,rotY,rotZ);
-OF.image(imageID, xPos, yPos, width, height, translateX, translateY, translateZ, rotX,rotY,rotZ);
-OF.image(image
+OF.img(imageID, xPos, yPos, width, height);
+OF.img(imageID, xPos, yPos, width, height, rotX,rotY,rotZ);
+OF.img(imageID, xPos, yPos, width, height, translateX, translateY, translateZ, rotX,rotY,rotZ);
+OF.img(image
 	ID, 
 	xPos, yPos, 
 	width, height, 
@@ -85,7 +86,7 @@ OF.image(image
 
 VIDEO
 -----
-OF.video("playVideo",1)
+OF.video("playVideo",0)
 OF.video("setSpeed",1)
 OF.video("deleteVideo")
 OF.video("reloadVideo")
@@ -94,3 +95,10 @@ OF.video("gVideo", 115)
 OF.video("bVideo", 5)
 OF.video("aVideo", 255)
 OF.video("colorVideo", 255,255,255,255)
+
+SPECTROGRAPH
+------------
+~ter = SendSpectrogramData.new;
+SendSpectrogramData.new;
+~ter.stopPoller
+{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.5))}.play  //!!!!FEEDBACK!!!!!!

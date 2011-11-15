@@ -19,33 +19,6 @@
 	OF.background(~alphaBackgroundSpec.map(msg[1]).asInteger);
 } ).add; 
 
-~feedbackResp.remove;~feedbackResp = OSCresponderNode(n, '/feedback', { |t,r,msg| 
-	OF.feedback("activate", msg[1]);
-}).add;
-
-~xFeedbackSpec = ControlSpec(-5, 5, \lin);
-~yFeedbackSpec = ControlSpec(5, -5, \lin);
-~feedbackXYResp.remove;
-~feedbackXYResp = OSCresponderNode(n, '/feedbackXY', { | time, resp, msg| 
-	//"test".postln;
-	OF.feedback("speedXY", ~xFeedbackSpec.map(msg[1]), ~yFeedbackSpec.map(msg[2]));
-} ).add; 
-
-~mirrowEffect1Resp.remove;
-~mirrowEffect1Resp = OSCresponderNode(n, '/mirrowEffect1', { |t,r,msg|
-	OF.effect("mirrowEffect1", msg[1]); 
-}).add;
-
-~mirrowEffect2Resp.remove;
-~mirrowEffect2Resp = OSCresponderNode(n, '/mirrowEffect2', { |t,r,msg|
-	OF.effect("mirrowEffect2", msg[1]); 
-}).add;
-
-~thisProcessStopResp.remove;
-~thisProcessStopResp = OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
-	thisProcess.stop;
-}).add;
-
 // =================
 // TYPOGRAPHY
 
@@ -80,6 +53,7 @@
 
 // ==================
 // CUT MOTION
+
 ~myBufferForCutMotion = Buffer.alloc(s, 512);
 
 ~fftImageTriggerResp.remove;
@@ -350,7 +324,7 @@
 ~yPadSpec = ControlSpec(~height, 0, \lin);
 ~padSketchXYResp.remove;
 ~padSketchXYResp = OSCresponderNode(n, '/padSketchXY', { | time, resp, msg| 
-	OF.interactWithSketch("padXY", ~xPadSpec.map(msg[2]).asInteger, ~yPadSpec.map(msg[1]).asInteger);
+	OF.interactWithSketch("padSketchXY", ~xPadSpec.map(msg[2]).asInteger, ~yPadSpec.map(msg[1]).asInteger);
 } ).add; 
 
 // ==================
@@ -478,11 +452,68 @@
 	OF.video("aVideo", ~aVideoSpec.map(msg[1]).asInteger);
 }).add; 
 
+// :==================
+// EFFECTS
+
+~feedbackResp.remove;~feedbackResp = OSCresponderNode(n, '/feedback', { |t,r,msg| 
+	OF.feedback("activate", msg[1]);
+}).add;
+
+~xFeedbackSpec = ControlSpec(-5, 5, \lin);
+~yFeedbackSpec = ControlSpec(5, -5, \lin);
+~feedbackXYResp.remove;
+~feedbackXYResp = OSCresponderNode(n, '/feedbackXY', { | time, resp, msg| 
+	//"test".postln;
+	OF.feedback("speedXY", ~xFeedbackSpec.map(msg[1]), ~yFeedbackSpec.map(msg[2]));
+} ).add; 
+
+~mirrowEffect1Resp.remove;
+~mirrowEffect1Resp = OSCresponderNode(n, '/mirrowEffect1', { |t,r,msg|
+	OF.effect("mirrowEffect1", msg[1]); 
+}).add;
+
+~mirrowEffect2Resp.remove;
+~mirrowEffect2Resp = OSCresponderNode(n, '/mirrowEffect2', { |t,r,msg|
+	OF.effect("mirrowEffect2", msg[1]); 
+}).add;
+
+~thisProcessStopResp.remove;
+~thisProcessStopResp = OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
+	thisProcess.stop;
+}).add;
+
+~treeEffectResp.remove;~treeEffectResp = OSCresponderNode(n, '/treeEffect', { | time, resp, msg|
+	OF.effect("tree");
+}).add; 
+
 
 //:==================
 //:OTHER STUFF
 //:===================
 
+
+/*
+//:-
+~phrase01.stop;
+~phrase01 = {
+	~imgID = Pxrand((1..30), inf).asStream;
+	~kP01 = Pxrand(~karcigar, inf).asStream;
+	~amp = Pseries(1, 1, 1).asStream;
+	~dur = Pxrand([
+		Pseq([1, 1, 1, 1],1),
+		Pseq([1/2, 1/2, 2, 1],2),
+		Pseq([1/4, 1/4, 1/2, 1, 1],1),
+		Pseq([1/8, 1/8, 1/4, 1/2, 1],2)
+	
+	]/4, inf).asStream;
+	inf.do{
+		OF.img(rrand(100,130).asInteger, 0,0,~width,~height);
+		~kontraBass.brt_(~kP01.next *0.89000).playBuf(0.001, 1.1, 1.1, mul:~amp.next, loop:0);
+		~dur.next.wait;
+	};
+}.fork;
+//:-
+*/
 // colorMode
 OSCresponderNode(n, '/colorMode', { |t,r,msg| 
 	if( msg[1] == 1,{
