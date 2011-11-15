@@ -1,6 +1,6 @@
 *High, but under control.*
-
-Jerome - Omer - Damian - Aris
+Performers:
+*Jérôme Bertholon - Omer Chatziserif - Damian Marhulets - Aris Bezas*
 
 Commit history:
 https://github.com/igoumeninja/hbuc/commits/lyon
@@ -9,7 +9,6 @@ Source Code:
 https://github.com/igoumeninja/hbuc/tree/lyon
 
 * log
-** <2011-11-04 Fri> Add second group of photos 
 * TODO TODO stuff
 ** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
 ** TODO Typography CPU at SuperCollider increase deagerus
@@ -44,3 +43,4 @@ https://github.com/igoumeninja/hbuc/tree/lyon
 ** DONE kill all Processes with SC (create responder) 
 ** DONE Random image gollage
 ** DONE Trigger photos with FFT 
+** DONE Add second group of photos 

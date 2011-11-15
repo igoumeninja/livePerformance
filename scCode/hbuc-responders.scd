@@ -2,11 +2,11 @@
 
 // ==================
 // GENERAL
-~blackBackgroundResp = OSCresponderNode(n, '/blackBackground', { |t,r,msg| 
+~blackBackgroundResp.remove;~blackBackgroundResp = OSCresponderNode(n, '/blackBackground', { |t,r,msg| 
 	OF.background(0,0,0);				
 }).add;
 
-~blackBackgroundAlphaResp = OSCresponderNode(n, '/blackBackgroundAlpha', { |t,r,msg| 
+~blackBackgroundAlpha.remove;~blackBackgroundAlphaResp = OSCresponderNode(n, '/blackBackgroundAlpha', { |t,r,msg| 
 	if( msg[1] == 1,{
 		OF.background(0,0,0,20);
 	},{
@@ -15,29 +15,33 @@
 }).add;
 
 ~alphaBackgroundSpec = ControlSpec(0, 125, \lin);
-~alphaBackgroundResp = OSCresponderNode(n, '/alphaBackground', { | time, resp, msg| 
+~alphaBackgroundResp.remove;~alphaBackgroundResp = OSCresponderNode(n, '/alphaBackground', { | time, resp, msg| 
 	OF.background(~alphaBackgroundSpec.map(msg[1]).asInteger);
 } ).add; 
 
-~feedbackResp = OSCresponderNode(n, '/feedback', { |t,r,msg| 
+~feedbackResp.remove;~feedbackResp = OSCresponderNode(n, '/feedback', { |t,r,msg| 
 	OF.feedback("activate", msg[1]);
 }).add;
 
 ~xFeedbackSpec = ControlSpec(-5, 5, \lin);
 ~yFeedbackSpec = ControlSpec(5, -5, \lin);
+~feedbackXYResp.remove;
 ~feedbackXYResp = OSCresponderNode(n, '/feedbackXY', { | time, resp, msg| 
 	//"test".postln;
 	OF.feedback("speedXY", ~xFeedbackSpec.map(msg[1]), ~yFeedbackSpec.map(msg[2]));
 } ).add; 
 
+~mirrowEffect1Resp.remove;
 ~mirrowEffect1Resp = OSCresponderNode(n, '/mirrowEffect1', { |t,r,msg|
 	OF.effect("mirrowEffect1", msg[1]); 
 }).add;
 
+~mirrowEffect2Resp.remove;
 ~mirrowEffect2Resp = OSCresponderNode(n, '/mirrowEffect2', { |t,r,msg|
 	OF.effect("mirrowEffect2", msg[1]); 
 }).add;
 
+~thisProcessStopResp.remove;
 ~thisProcessStopResp = OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
 	thisProcess.stop;
 }).add;
@@ -45,6 +49,7 @@
 // =================
 // TYPOGRAPHY
 
+~typoNormalResp.remove;
 ~typoNormalResp = OSCresponderNode(n, '/typoNormal', { |t,r,msg|
 	Task({
 		var xPos, yPos = 20, count = 0;
@@ -58,6 +63,7 @@
 	}).play;
 }).add;
 
+~typoInverseResp.remove;
 ~typoInverseResp = OSCresponderNode(n, '/typoInverse', { |t,r,msg|
 	~typoInverse = Task({
 		var xPos, yPos = ~height, count = 0;
@@ -74,51 +80,47 @@
 
 // ==================
 // CUT MOTION
-s.boot.doWhenBooted {
-	b = Buffer.alloc(s, 512);
-};
+~myBufferForCutMotion = Buffer.alloc(s, 512);
 
-~fftTrigerResp = OSCresponderNode(n, '/fftTriger', { |t,r,msg| 
+~fftImageTriggerResp.remove;
+~fftImageTriggerResp = OSCresponderNode(n, '/imageTrigger', { |t,r,msg| 
 	if( msg[1] == 1,{
-		~fftTriger = { | threshold = 0.9, out = 100 |
+		~fftImageTrigger = { | threshold = 1.9 |
 			var sig, chain, onsets, pips;
 			sig = In.ar(8);	
-			chain = FFT(b, sig);
+			chain = FFT(~myBufferForCutMotion, sig);
 			onsets = Onsets.kr(chain, threshold, \rcomplex);
-			SendReply.kr(onsets, \onset);
+			SendReply.kr(onsets, \trigImage);
 		}.play;
 
 	},{
-		~fftTriger.free;
+		~fftImageTrigger.free;
 	});
 }).add;
 
-~onsetResp = OSCresponder.new(nil, "onset", { 
-	arg time, resp, msg; 
-	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
-	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
+~trigImageResp.remove;~trigImageResp = OSCresponderNode(n, 'trigImage', { |time, resp, msg| 
+	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))], ~yPos[rrand(0,pow(~columns,2))], ~fotoSize, ~fotoSize);
+	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))], ~yPos[rrand(0,pow(~columns,2))], ~fotoSize, ~fotoSize);
 }).add; 
 
 ~columns = 10;
-~collageRandom = Task({
-	var 	delayTime = 0.04, xPos, yPos, fotoWidth = ~width/~columns, fotoHeight = ~width/~columns;
-	xPos = Array.new(pow(~columns,2));
-	yPos = Array.new(pow(~columns,2));	
-	~columns.do{|j|
-		~columns.do{|i|
-			xPos.add((~width*(i)/~columns).round);
-			yPos.add((~width*(i)/~columns).round);
-		};
+~xPos = Array.new(pow(~columns,2));
+~yPos = Array.new(pow(~columns,2));	
+~columns.do{|j|
+	~columns.do{|i|
+		~xPos.add((~width*(i)/~columns).round);
+		~yPos.add((~width*(i)/~columns).round);
 	};
-	//xPos = xPos.scramble.postln;
-	//yPos = yPos.scramble;	
+};
+~fotoSize = ~width/~columns;
+~collageRandom = Task({
+	var 	delayTime = 0.04;
 	loop	{
-		pow(~columns,2).do	{ |i|
-			OF.img(rrand(0,60).asInteger, xPos[rrand(0,pow(~columns,2))], yPos[rrand(0,pow(~columns,2))], fotoWidth, fotoHeight);
-			delayTime.wait;
-		}
+		OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))].asInteger, ~yPos[rrand(0,pow(~columns,2))].asInteger, ~fotoSize.asInteger, ~fotoSize.asInteger);
+		delayTime.wait;
 	}
 });
+~collageRandomResp.remove;
 ~collageRandomResp = OSCresponderNode(n, '/collageRandom', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~collageRandom.play;
@@ -131,7 +133,7 @@ s.boot.doWhenBooted {
 	var 	delayTime = 0.04, countX = 0, countY = 0, fotoWidth = ~width/15, fotoHeight = ~width/15;
 	loop	{
 		60.do	{ |i|
-			OF.img(rrand(0,60).asInteger, countX, countY, fotoWidth, fotoHeight);
+			OF.img(rrand(0,60).asInteger, countX.asInteger, countY.asInteger, fotoWidth.asInteger, fotoHeight.asInteger);
 			countX = countX + fotoWidth;
 			if (countX>~width, {countX = 0;countY = countY + fotoHeight});
 			if (countY>~height, {countY = 0;});
@@ -140,6 +142,7 @@ s.boot.doWhenBooted {
 	}
 });
 
+~collageNormalResp.remove;
 ~collageNormalResp = OSCresponderNode(n, '/collageNormal', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~collageNormal.play;
@@ -151,12 +154,13 @@ s.boot.doWhenBooted {
 ~fourImages = Task({
 	var imageSize = 200, waitTime = 0.02;
 	inf.do	{ |i|
-		OF.img(rrand(0,60).round,~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		waitTime.wait;
-		OF.img(rrand(0,60).round,2*~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		waitTime.wait;
-		OF.img(rrand(0,60).round,3*~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		waitTime.wait;
-		OF.img(rrand(0,60).round,4*~width/5-(imageSize/2), ~height/2-(imageSize/2), imageSize, imageSize);		waitTime.wait;
+		OF.img(rrand(0,60).asInteger,(~width/5-(imageSize/2)).asInteger, (~height/2-(imageSize/2)).asInteger, imageSize.asInteger, imageSize.asInteger);		waitTime.wait;
+		OF.img(rrand(0,60).asInteger,(2*~width/5-(imageSize/2)).asInteger, (~height/2-(imageSize/2)).asInteger, imageSize.asInteger, imageSize.asInteger);		waitTime.wait;
+		OF.img(rrand(0,60).asInteger,(3*~width/5-(imageSize/2)).asInteger, (~height/2-(imageSize/2)).asInteger, imageSize.asInteger, imageSize.asInteger);		waitTime.wait;
+		OF.img(rrand(0,60).asInteger,(4*~width/5-(imageSize/2)).asInteger, (~height/2-(imageSize/2)).asInteger, imageSize.asInteger, imageSize.asInteger);		waitTime.wait;
 	}
 });
+~fourImagesResp.remove;
 ~fourImagesResp = OSCresponderNode(n, '/fourImages', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~fourImages.play;
@@ -167,11 +171,12 @@ s.boot.doWhenBooted {
 
 ~rotate2d = Task({
 	inf.do	{ |i|
-		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, 3*~width/4, ~height/2, 0, 0, 0, i);
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, (3*~width/4).asInteger, (~height/2).asInteger, 0, 0, 0, i.asInteger);
 		0.04.wait;
-		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, ~width/4, ~height/2, 0, 0, 0, i);		0.04.wait;
+		OF.img(rrand(0,60).asInteger,0, 0, 200, 200, (~width/4).asInteger, (~height/2).asInteger, 0, 0, 0, i.asInteger);		0.04.wait;
 	}
 });
+~rotate2dResp.remove;
 ~rotate2dResp = OSCresponderNode(n, '/rotate2d', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~rotate2d.play;
@@ -192,6 +197,7 @@ s.boot.doWhenBooted {
 	};					
 });
 
+~setupSoundResp.remove;
 ~setupSoundResp = OSCresponderNode(n, '/setupSound', { |t,r,msg| 
 	if( msg[1] == 1,{
 		"start posting".postln;
@@ -202,30 +208,36 @@ s.boot.doWhenBooted {
 	});
 }).add;
 
+~viewSoundResp.remove;
 ~viewSoundResp = OSCresponderNode(n, '/viewSound', { |t,r,msg| 
 	OF.interactWithSound("activate", msg[1].asInteger);
 }).add;
 
+~glBeginTypeResp.remove;
 ~glBeginTypeResp = OSCresponderNode(n, '/glBeginType', { | time, resp, msg| 
 	OF.interactWithSound("glBeginType", msg[1].asInteger);
 } ).add; 
 
 ~numSoundSketchesSpec = ControlSpec(1, 500, \lin);
+~numSoundSketchesResp.remove;
 ~numSoundSketchesResp = OSCresponderNode(n, '/numSoundSketches', { | time, resp, msg| 
 	OF.interactWithSound("numSoundSketches", ~numSoundSketchesSpec.map(msg[1]).asInteger);
 } ).add; 
 
 ~maxFreqInSpec = ControlSpec(20, 2000, \lin);
+~maxFreqInResp.remove;
 ~maxFreqInResp = OSCresponderNode(n, '/maxFreqIn', { | time, resp, msg| 
 	OF.interactWithSound("maxFreqIn", ~maxFreqInSpec.map(msg[1]));
 } ).add; 
 
 ~maxAmpInSpec = ControlSpec(0.001, 0.5, \lin);
+~maxAmpInResp.remove;
 ~maxAmpInResp = OSCresponderNode(n, '/maxAmpIn', { | time, resp, msg| 
 	OF.interactWithSound("maxAmpIn", ~maxAmpInSpec.map(msg[1]));
 }).add; 
 
 ~elasticitySpec = ControlSpec(0.001, 2, \lin);
+~elasticityResp.remove;
 ~elasticityResp = OSCresponderNode(n, '/elasticity', { | time, resp, msg| 
 	OF.interactWithSound("maxSoundElasticity", ~elasticitySpec.map(msg[1]));
 } ).add; 
@@ -243,7 +255,7 @@ s.boot.doWhenBooted {
 	});
 });
 
-
+~btw1Resp.remove;
 ~btw1Resp = OSCresponderNode(n, '/btw1', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~btw1.play;
@@ -265,7 +277,7 @@ s.boot.doWhenBooted {
 	});
 });
 
-
+~btw2Resp.remove;
 ~btw2Resp = OSCresponderNode(n, '/btw2', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~btw2.play;
@@ -289,7 +301,7 @@ s.boot.doWhenBooted {
 	});
 });
 
-
+~btw3Resp.remove;
 ~btw3Resp = OSCresponderNode(n, '/btw3', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~btw3.play;
@@ -304,6 +316,8 @@ s.boot.doWhenBooted {
 		OF.interactWithSound("maxSoundElasticity",0.01);		0.5.wait;			
 	});
 });
+
+~elastTaskResp.remove;
 ~elastTaskResp = OSCresponderNode(n, '/elastTask', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~elastTask.play;
@@ -312,6 +326,7 @@ s.boot.doWhenBooted {
 	});
 }).add;
 
+~blackWhiteSoundResp.remove;
 ~blackWhiteSoundResp = OSCresponderNode(n, '/blackWhiteSound', { |t,r,msg| 
 	if( msg[1] == 1,{
 		OF.rgb("sound",255,255,255,120);
@@ -321,16 +336,19 @@ s.boot.doWhenBooted {
 }).add;
 
 ~aSoundSpec = ControlSpec(0, 255, \lin);
+~aSoundResp.remove;
 ~aSoundResp = OSCresponderNode(n, '/aSound', { | time, resp, msg| 
-	OF.rgb("sound",255,255,255,~aSoundSpec.map(msg[1]).round);
+	OF.rgb("sound",255,255,255,~aSoundSpec.map(msg[1]).asInteger);
 } ).add; 
 
+~padSketchResp.remove;
 ~padSketchResp = OSCresponderNode(n, '/padSketch', { |t,r,msg| 
 	OF.interactWithSketch("activate", msg[1].asInteger);
 }).add;
 
 ~xPadSpec = ControlSpec(0, ~width, \lin);
 ~yPadSpec = ControlSpec(~height, 0, \lin);
+~padSketchXYResp.remove;
 ~padSketchXYResp = OSCresponderNode(n, '/padSketchXY', { | time, resp, msg| 
 	OF.interactWithSketch("padXY", ~xPadSpec.map(msg[2]).asInteger, ~yPadSpec.map(msg[1]).asInteger);
 } ).add; 
@@ -338,39 +356,46 @@ s.boot.doWhenBooted {
 // ==================
 // PARTICLES
 
+~activateParticlesResp.remove;
 ~activateParticlesResp = OSCresponderNode(n, '/activateParticles', { |t,r,msg| 
 	OF.particle("activate", msg[1].round);
 }).add;
 
 ~forceRadiusSpec = ControlSpec(0, 500, \lin);
+~forceRadiusResp.remove;
 ~forceRadiusResp = OSCresponderNode(n, '/forceRadius', { | time, resp, msg|
-	OF.particle("forceRadius", ~forceRadiusSpec.map(msg[1]).round);
+	OF.particle("forceRadius", ~forceRadiusSpec.map(msg[1]).asInteger);
 }).add; 
 
 ~particleNeighborhoodSpec = ControlSpec(0, 30, \lin);
+~particleNeighborhoodResp.remove;
 ~particleNeighborhoodResp = OSCresponderNode(n, '/particleNeighborhood', { | time, resp, msg|
-	OF.particle("particleNeighborhood", ~particleNeighborhoodSpec.map(msg[1]).round);
+	OF.particle("particleNeighborhood", ~particleNeighborhoodSpec.map(msg[1]).asInteger);
 }).add; 
 
 ~particleConnectionsAlphaSpec = ControlSpec(0, 25, \lin);
-OSCresponderNode(n, '/particleConnectionsAlpha', { | time, resp, msg|
-	OF.particle("conColor", ~particleConnectionsAlphaSpec.map(msg[1]).round);
+~particleConnectionsAlphaResp.remove;
+~particleConnectionsAlphaResp = OSCresponderNode(n, '/particleConnectionsAlpha', { | time, resp, msg|
+	OF.particle("conColor", ~particleConnectionsAlphaSpec.map(msg[1]).asInteger);
 }).add; 
 
 ~particlesAlphaSpec = ControlSpec(0, 255, \lin);
+~particlesAlphaResp.remove;
 ~particlesAlphaResp = OSCresponderNode(n, '/particlesAlpha', { | time, resp, msg|
-	OF.particle("dotColor", ~particlesAlphaSpec.map(msg[1]).round);
+	OF.particle("dotColor", ~particlesAlphaSpec.map(msg[1]).asInteger);
 }).add; 
 
+~addParticlesResp.remove;
 ~addParticlesResp = OSCresponderNode(n, '/addParticles', { |t,r,msg| 
 	{
 		500.do{
-			OF.particle("add", ~width/2.asInteger, ~height/2.asInteger, 0.1, 10);
+			OF.particle("add", (~width/2).asInteger, (~height/2).asInteger, 0.1, 10.1);
 			0.04.wait;
 		}	
 	}.fork
 }).add;
 
+~iPadPushResp.remove;
 ~iPadPushResp = OSCresponderNode(n, '/iPadPush', { |t,r,msg| 
 	OF.particle("iPadPush", msg[1]);
 }).add;
@@ -381,47 +406,81 @@ OSCresponderNode(n, '/particleConnectionsAlpha', { | time, resp, msg|
 //	OF.interactWithSketch("padXY", ~xPushSpec.map(msg[2]).asInteger, ~yPushSpec.map(msg[1]).asInteger);
 //} ).add; 
 
-OSCresponder.new(nil, "onset", { 
-	arg time, resp, msg; 
-	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
-	OF.img(rrand(0,60).asInteger,0,0,~width, ~height);
+~myBufferForPushParticles = Buffer.alloc(s, 512);
+~fftPushParticlesResp.remove;
+~fftPushParticlesResp = OSCresponderNode(n, '/pushParticlesTriger', { |t,r,msg| 
+	if( msg[1] == 1,{
+		OF.particle("pushParticles",1);
+		~fftPushParticlesTriger = { | threshold = 0.1 |
+			var sig, chain, onsets, pips;
+			sig = In.ar(8);	
+			chain = FFT(~myBufferForPushParticles, sig);
+			onsets = Onsets.kr(chain, threshold, \rcomplex);
+			SendReply.kr(onsets, \pushParticles);
+		}.play;
+
+	},{
+		~fftPushParticlesTriger.free;
+		OF.particle("pushParticles",0);
+	});
+}).add;
+
+~pushParticlesResp.remove;
+~pushParticlesResp = OSCresponderNode(n, 'pushParticles', { |time, resp, msg| 
+	OF.particle("push",rrand(0,~width).asInteger, rrand(0,~height).asInteger);
+	OF.particle("forceRadius", rrand(50,100).asInteger);
+}).add; 
+
+~pushParticlesThresholdSpec = ControlSpec(0.0, 1.5, \lin);
+~pushParticlesThresholdResp.remove;
+~pushParticlesThresholdResp = OSCresponderNode(n, 'pushParticlesThreshold', { |time, resp, msg| 
+	~fftPushParticlesTriger.set(\threshold, ~pushParticlesThresholdSpec.map(msg[1]));
+	~fftImageTrigger.set(\threshold, ~pushParticlesThresholdSpec.map(msg[1]));
 }).add; 
 
 
 // ==================
 // VIDEO
 
-OSCresponderNode(n, '/playVideo', { | time, resp, msg|
+~playVideoResp.remove;~playVideoResp = OSCresponderNode(n, '/playVideo', { | time, resp, msg|
 	OF.video("playVideo", msg[1]);
 }).add; 
 
-OSCresponderNode(n, '/deleteVideo', { | time, resp, msg|
-	OF.video("deleteVideo");
+~deleteVideoResp.remove;~deleteVideoResp = OSCresponderNode(n, '/deleteVideo', { | time, resp, msg|
+	if( msg[1] == 1,{
+		OF.video("deleteVideo");
+	});
+}).add; 
+
+~reloadVideoResp.remove;~reloadVideoResp = OSCresponderNode(n, '/reloadVideo', { | time, resp, msg|
+	if( msg[1] == 1,{
+		OF.video("reloadVideo");
+	});
 }).add; 
 
 ~rVideoSpec = ControlSpec(0, 255, \lin);
-OSCresponderNode(n, '/rVideo', { | time, resp, msg|
+~rVideoResp.remove;~rVideoResp = OSCresponderNode(n, '/rVideo', { | time, resp, msg|
 	OF.video("rVideo", ~rVideoSpec.map(msg[1]).asInteger);
 }).add; 
 
 ~gVideoSpec = ControlSpec(0, 255, \lin);
-OSCresponderNode(n, '/gVideo', { | time, resp, msg|
+~gVideoResp.remove;~gVideoResp = OSCresponderNode(n, '/gVideo', { | time, resp, msg|
 	OF.video("gVideo", ~gVideoSpec.map(msg[1]).asInteger);
 }).add; 
 
 ~bVideoSpec = ControlSpec(0, 255, \lin);
-OSCresponderNode(n, '/bVideo', { | time, resp, msg|
+~bVideoResp.remove;~bVideoResp = OSCresponderNode(n, '/bVideo', { | time, resp, msg|
 	OF.video("bVideo", ~bVideoSpec.map(msg[1]).asInteger);
 }).add; 
 
 ~aVideoSpec = ControlSpec(0, 255, \lin);
-OSCresponderNode(n, '/aVideo', { | time, resp, msg|
+~aVideoResp.remove;~aVideoResp = OSCresponderNode(n, '/aVideo', { | time, resp, msg|
 	OF.video("aVideo", ~aVideoSpec.map(msg[1]).asInteger);
 }).add; 
 
-//:==================
 
-//:WIREFACE RESPONDERS
+//:==================
+//:OTHER STUFF
 //:===================
 
 // colorMode

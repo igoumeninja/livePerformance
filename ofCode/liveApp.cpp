@@ -173,6 +173,8 @@ void liveApp::setup()	{
 		playVideo = 0;
 		rVideo = gVideo = bVideo = aVideo = 255;
 		
+		//===================================
+		
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
@@ -448,8 +450,6 @@ void liveApp::update()	{
 						
 					}	else	{
 						
-						
-						
 					}
 					
 					break;
@@ -507,7 +507,11 @@ void liveApp::update()	{
 			else if (m.getArgAsString( 0 ) == "transparence")	obj_a = m.getArgAsInt32( 1 );					
 		}	//  .obj
 		if ( m.getAddress() == "video")					{
-			if (m.getArgAsString(0) == "playVideo") playVideo = m.getArgAsInt32(1);
+			if (m.getArgAsString(0) == "playVideo")		{
+				
+				playVideo = m.getArgAsInt32(1);
+
+			}
 			else if (m.getArgAsString(0) == "setSpeed") myVideo->setSpeed(m.getArgAsFloat(1));
 			else if (m.getArgAsString(0) == "rVideo") rVideo = m.getArgAsInt32(1);			
 			else if (m.getArgAsString(0) == "gVideo") gVideo = m.getArgAsInt32(1);			
@@ -557,7 +561,7 @@ void liveApp::update()	{
 				pushY = m.getArgAsFloat( 2 );
 			}
 			else if	(m.getArgAsString( 0 ) == "add")					{
-				Particle particle(m.getArgAsInt32(1), m.getArgAsInt32(2), m.getArgAsFloat(3), m.getArgAsFloat(3));
+				Particle particle(m.getArgAsInt32(1), m.getArgAsInt32(2), m.getArgAsFloat(3), m.getArgAsFloat(4));
 				particleSystem.add(particle);
 			}
 			else if	(m.getArgAsString( 0 ) == "dotColor")					{

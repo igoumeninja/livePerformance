@@ -51,7 +51,7 @@ OF.effect("noiseEffect", "false");
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.effect("noiseEffect", "true");
 OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
-OF.effect("mirrowEffect2", 1);	// 4-D copy mirrow
+OF.effect("mirrowEffect2", 0);	// 4-D copy mirrow
 
 WFAE
 ----
@@ -85,7 +85,7 @@ OF.image(image
 
 VIDEO
 -----
-OF.video("playVideo",0)
+OF.video("playVideo",1)
 OF.video("setSpeed",1)
 OF.video("deleteVideo")
 OF.video("reloadVideo")
