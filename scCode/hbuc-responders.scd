@@ -57,7 +57,7 @@
 ~myBufferForCutMotion = Buffer.alloc(s, 512);
 
 ~fftImageTriggerResp.remove;
-~fftImageTriggerResp = OSCresponderNode(n, '/imageTrigger', { |t,r,msg| 
+~fftImageTriggerResp = OSCresponderNode(n, '/imageTriger', { |t,r,msg| 
 	if( msg[1] == 1,{
 		~fftImageTrigger = { | threshold = 1.9 |
 			var sig, chain, onsets, pips;
@@ -177,7 +177,7 @@
 		"start posting".postln;
 		~soundSynth = Synth("SendAmpPitch");
 	},{
-		"free synth from SendAmpFreq".postln;
+		"Stop posting and free synth from SendAmpFreq".postln;
 		~soundSynth.free;
 	});
 }).add;

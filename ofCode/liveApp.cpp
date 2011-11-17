@@ -70,6 +70,8 @@ void liveApp::setup()	{
 	}
 	}	// memAlloc
 	{
+		//sketch
+		aSound = 25;
 		 		
 		// Tree
 		dotSize = 15;
@@ -142,11 +144,8 @@ void liveApp::setup()	{
 			imageDir = "/Users/ari/Media/images/maps/google/grenoble/";
 		}
 		
-		//image[0].loadImage("/Users/ari/Media/images/bibliOdyssey/Australian-Places/Cape-Otway-Ranges.jpg");
 		// Video
 		myVideo = new ofVideoPlayer();
-		myVideo->loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
-		myVideo->play();
 		playVideo = 0;
 		rVideo = gVideo = bVideo = aVideo = 255;
 		
@@ -219,7 +218,7 @@ void liveApp::setup()	{
 	{		
 		textureRed = textureGreen = textureBlue = textureAlpha = 255;
 		reverseEllipse = ofGetWidth();	reverseTexture = -1;
-		mirrorMode = -2;
+		mirrorMode = 111116;
 		spectroRed = spectroGreen = spectroBlue = 1;	
 	}	// Spectro	
 	{
@@ -257,6 +256,19 @@ void liveApp::update()	{
 			switch ( mirrorMode )
 			{
 					// full screen normal spectro
+				case 111116:
+					for (int i=0; i<512; i++)	{
+						//data[i] = m.getArgAsFloat( i );
+						glColor3f(m.getArgAsFloat( i ), 0, 0);
+						ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
+					}
+					
+					
+					
+					
+					break;
+					
+					
 				case -20:
 					for (int i=0; i<512; i++)	{
 						data[i] = m.getArgAsFloat( i );

@@ -5,7 +5,7 @@
 
 BACKGROUND
 ----------
-OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,20);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 
@@ -51,7 +51,7 @@ OF.effect("noiseEffect", "false");
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.effect("noiseEffect", "true");
 OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
-OF.effect("mirrowEffect2", 0);	// 4-D copy mirrow
+OF.effect("mirrowEffect2", 1);	// 4-D copy mirrow
 OF.effect("tree");
 
 WFAE
@@ -98,7 +98,7 @@ OF.video("colorVideo", 255,255,255,255)
 
 SPECTROGRAPH
 ------------
-~ter = SendSpectrogramData.new;
+SendSpectrogramData.new;
 SendSpectrogramData.new;
 ~ter.stopPoller
 {Out.ar(0, Pan2.ar(In.ar(8), 0, 0.5))}.play  //!!!!FEEDBACK!!!!!!
