@@ -11,6 +11,11 @@ OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 
 SKETCH
 ------
+OF.interactWithSketch("activate", 1);
+OF.interactWithSketch("padSketchXY", 200,200);
+OF.interactWithSketch("mouseLines",0);
+OF.rgb("sketch",255,255,255,20);
+
 OF.interactWithSound("activate",1); 			//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 7);		//	RANGE: 1 -> 999
 OF.interactWithSound("glBeginType",0);			//	0:POINTS, Ê Ê 1: LINES
@@ -32,8 +37,11 @@ OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
-OF.rgb("particleConnections",255,255,255,0);		//	RGBA
-OF.rgb("particlesColor",255,255,255,0);			//	RGBA
+OF.particle("dotColor",255,255,255,225);		//	RGBA
+OF.particle("dotColor",255,255,0);		//	RGB
+OF.particle("conColor",255,0,255,225);		//	RGBA
+OF.particle("conColor",255,0,0);				//	RGB
+
 OF.particle("bounce", 100, 100, 800, 1500);					
 
 TYPOGRAPHY
@@ -47,7 +55,10 @@ OF.feedback("speedXY", 0.5,0);
 
 EFFECTS
 =======
-OF.effect("noiseEffect", "false");
+OF.effect("destruct","activate",1)
+OF.effect("destruct","case",2)
+
+OF.effect("noiseEffect", 0); // with z0re is clearing the background
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.effect("noiseEffect", "true");
 OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
@@ -86,7 +97,7 @@ OF.img(image
 
 VIDEO
 -----
-OF.video("playVideo",0)
+OF.video("playVideo",1)
 OF.video("setSpeed",1)
 OF.video("deleteVideo")
 OF.video("reloadVideo")
@@ -102,3 +113,22 @@ SendSpectrogramData.new;
 SendSpectrogramData.new;
 ~ter.stopPoller
 {Out.ar(0, Pan2.ar(In.ar(8), 0, 0.5))}.play  //!!!!FEEDBACK!!!!!!
+
+SUPERFORMULA
+------------
+m=int(random(3,40));
+n1=random(.5);
+n2=random(6.);
+n3=random(6.);
+epi=random(100,360);
+step=random(.05,10);
+
+OF.superformula("activate",0)
+OF.superformula("num",20)
+OF.superformula("epi",1600)
+OF.superformula("mi",19)
+OF.superformula("n1",9)
+OF.superformula("n2",14)
+OF.superformula("n3",18)
+OF.superformula("step",36)
+OF.superformula("alpha",0)

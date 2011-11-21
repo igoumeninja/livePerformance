@@ -8,11 +8,8 @@ https://github.com/igoumeninja/hbuc/commits/lyon
 Source Code:
 https://github.com/igoumeninja/hbuc/tree/lyon
 
-* log
 * TODO TODO stuff
 ** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
-** TODO Typography CPU at SuperCollider increase deagerus
-** TODO Add fftTrigger to iPad
 ** TODO mathematical poetics
 *** Infinity Plus
     At my shared items
@@ -20,8 +17,6 @@ https://github.com/igoumeninja/hbuc/tree/lyon
 *** life-death
 
     \int_{birth}^{death}{what happens*how you feel about it dt}
-** TODO Video effect (saturation, contrast ...)
-** TODO Create interfaces
 ** TODO Create Masks [[http://www.flickr.com/photos/24538271@N04/4187408437/][link]]
 ** TODO Develop typography. 
    It has to be more delicant, more beatiful, more precise.
@@ -44,3 +39,7 @@ https://github.com/igoumeninja/hbuc/tree/lyon
 ** DONE Random image gollage
 ** DONE Trigger photos with FFT 
 ** DONE Add second group of photos 
+** DONE Typography CPU at SuperCollider increase deagerus
+** DONE Create interfaces
+** DONE Video effect (saturation, contrast ...)
+** DONE Add fftTrigger to iPad

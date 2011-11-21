@@ -70,17 +70,32 @@ void liveApp::setup()	{
 	}
 	}	// memAlloc
 	{
+		//destruct
+		destruct = 0;
+		destructCase = 1;
+		//camera
+		camera=false;
+		
+		//superformula
+		superformula = false;
+		
 		//sketch
 		aSound = 25;
+		rSketch = gSketch = bSketch = aSketch = 255;
 		 		
 		// Tree
 		dotSize = 15;
 		angleOffsetA = (1.5*3.14)/180; // Convert 1.5 degrees to radians
 		angleOffsetB = (50*3.14)/180;  // Convert 50 degrees to radians
 		
+		//background
+		aBack = 15;
+		view_fillBackground = 1;
+		
+		//sound
 		viewSoundChanels = 0;
 		
-		drawWithMouse = 1;
+		drawWithMouse = 0;
 		numMouseSketches = 99;
 		minMouseElasticity = 0.0;
 		maxMouseElasticity = 0.99;
@@ -105,9 +120,7 @@ void liveApp::setup()	{
 		feedbackSpeedX = 0;
 		feedbackSpeedY = 0;
 		timeLine = 0;
-		viewRotate = 0;
-				
-		view_fillBackground = 1;
+		viewRotate = 0;				
 			
 		}	// Initial Values
 	{
@@ -249,586 +262,605 @@ void liveApp::update()	{
 	}	
 	while( receiver.hasWaitingMessages() )
 	{
-		ofxOscMessage m;
-		receiver.getNextMessage( &m ); 
-		if (playSpectro)								{
-			if ( m.getAddress() == "/fftpixels" )			{
-			switch ( mirrorMode )
-			{
-					// full screen normal spectro
-				case 111116:
-					for (int i=0; i<512; i++)	{
-						//data[i] = m.getArgAsFloat( i );
-						glColor3f(m.getArgAsFloat( i ), 0, 0);
-						ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
-					}
-					
-					
-					
-					
-					break;
-					
-					
-				case -20:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],0,0);
-						ofEllipse(reverseEllipse,ofMap(i, 512, 0, 0.0, ofGetWidth()),2,2);
-						glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
-						ofEllipse(reverseEllipse,ofMap(i, 512, 0, 0.0, ofGetWidth()),2,2);
-						
-					}
-					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
-					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
-					
-					break;
-					
-					// fire colors
-				case -2:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],0,0);
-						ofEllipse(reverseEllipse,512-i,2,2);
-						ofEllipse(reverseEllipse,512+i,2,2);
-						glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
-						ofEllipse(reverseEllipse,512-i,2,2);
-						ofEllipse(reverseEllipse,512+i,2,2);						
-						
-					}
-					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
-					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
-					
-					break;
-					
-				case -1:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],0,0);
-						ofEllipse(reverseEllipse,512-i,2,2);
-						glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
-						ofEllipse(reverseEllipse,512-i,2,2);
-						
-					}
-					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
-					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
-					
-					break;
-					
-				case 0:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-						ofEllipse(reverseEllipse,512-i,2,2);
-						//glColor3f(0,0,0);
-						//ofEllipse(reverseEllipse,512+i,2,2);				
-					}
-					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
-					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
-					
-					break;
-				case 1:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-						ofEllipse(reverseEllipse,512-i,2,2);
-						ofEllipse(reverseEllipse,512+i,2,2);				
-					}
-					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
-					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
-					break;
-				case 2:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-						ofEllipse(0,512-i,2,2);
-						ofEllipse(0,512+i,2,2);				
-					}
-					texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
-					texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
-					break;
-					
-				case 3:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-						ofEllipse(ofGetWidth()/2,512-i,2,2);
-						ofEllipse(ofGetWidth()/2,512+i,2,2);						
-					}
-					texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
-					texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
-					texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
-					ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
-					texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
-					break;
-				case 4:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-						
-						ofEllipse(ofGetWidth()/4,256-i/2,2,2);
-						ofEllipse(ofGetWidth()/4,256+i/2,2,2);						
-						
-						ofEllipse(ofGetWidth()/4,776-i/2,2,2);
-						ofEllipse(ofGetWidth()/4,776+i/2,2,2);						
-						
-						ofEllipse(3*ofGetWidth()/4,256-i/2,2,2);
-						ofEllipse(3*ofGetWidth()/4,256+i/2,2,2);						
-						
-						ofEllipse(3*ofGetWidth()/4,776-i/2,2,2);
-						ofEllipse(3*ofGetWidth()/4,776+i/2,2,2);						
-						
-					}
-					ofSetColor(255,255,255,255);
-					texScreen.loadScreenData(0,0,ofGetWidth()/4, ofGetHeight());
-					texScreen.draw(-1,0);					
-					texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
-					texScreen.draw(ofGetWidth()/4 + 1,0);					
-					
-					texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
-					texScreen.draw(3*ofGetWidth()/4 + 1,0);					
-					//
-					texScreen.loadScreenData(ofGetWidth()/2, 0, ofGetWidth()/4, ofGetHeight());
-					texScreen.draw(ofGetWidth()/2 - 1,0);
-					
-					break;
-				case 5:
-					for (int i=0; i<512; i++)	{
-						data[i] = m.getArgAsFloat( i );
-						glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-						ofLine(0,i,ofGetWidth(),i);
-					}
-					break;
-					
-				default:
-					cout << "default";
-			}
-			
-		}	//	spectro
-		}	//  Spectro
-		if ( m.getAddress() == "rotate" )				{
-			ofBeginShape();		
-			ofRotateX(m.getArgAsInt32(0));
-			ofRotateY(m.getArgAsInt32(1));
-			ofRotateZ(m.getArgAsInt32(2));										
-			ofEndShape();					
-		}	//	rotate
-		if ( m.getAddress() == "img" )					{
-			
-			//cout << m.getNumArgs() << endl;
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE			
-			switch (m.getNumArgs())	{
-				case 1:
-					ofSetHexColor(0xFFFFFF);				
-					image[m.getArgAsInt32(0)].draw(0,0);
-					break;
-				case 3:
-					ofSetHexColor(0xFFFFFF);				
-					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2));
-					break;
-					
-				case 4:
-					if (image[m.getArgAsInt32(0)].width/image[m.getArgAsInt32(0)].height > 1.25)	{
-						
-						//image[id].draw(x,y,width,height);	
-						
-					}	else	{
-						
-					}
-					
-					break;
-				case 5:
-					//ofFill();
-					ofSetHexColor(0xFFFFFF);				
-					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
-					break;
-				case 8:
-					ofNoFill();
-					ofSetHexColor(0xFFFFFF);		
-					ofBeginShape();		
-					ofRotateX(m.getArgAsInt32(5));
-					ofRotateY(m.getArgAsInt32(6));
-					ofRotateZ(m.getArgAsInt32(7));										
-					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
-					ofEndShape();
-					break;
-				case 11:
-					//cout << m.getNumArgs() << endl;
-					ofNoFill();
-					ofSetHexColor(0xFFFFFF);		
-					ofBeginShape();		
-					ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
-					ofRotateX(m.getArgAsInt32(8));
-					ofRotateY(m.getArgAsInt32(9));
-					ofRotateZ(m.getArgAsInt32(10));										
-					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));					
-					ofEndShape();
-					break;
-				case 14:
-					//cout << m.getNumArgs() << endl;
-					ofNoFill();
-					ofSetHexColor(0xFFFFFF);		
-					ofBeginShape();		
-					ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
-					ofScale(m.getArgAsInt32(8),m.getArgAsInt32(9),m.getArgAsInt32(10));										
-					ofRotateX(m.getArgAsInt32(11));
-					ofRotateY(m.getArgAsInt32(12));
-					ofRotateZ(m.getArgAsInt32(13));										
-					image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
-					ofEndShape();
-					break;
-					
-			}
-		}	//  images	
-		if ( m.getAddress() == "video")					{
-			if (m.getArgAsString(0) == "playVideo")		{
-				
-				playVideo = m.getArgAsInt32(1);
-
-			}
-			else if (m.getArgAsString(0) == "setSpeed") myVideo->setSpeed(m.getArgAsFloat(1));
-			else if (m.getArgAsString(0) == "rVideo") rVideo = m.getArgAsInt32(1);			
-			else if (m.getArgAsString(0) == "gVideo") gVideo = m.getArgAsInt32(1);			
-			else if (m.getArgAsString(0) == "bVideo") bVideo = m.getArgAsInt32(1);			
-			else if (m.getArgAsString(0) == "aVideo") aVideo = m.getArgAsInt32(1);						
-			else if (m.getArgAsString(0) == "colorVideo") {
-				rVideo = m.getArgAsInt32(1);
-				gVideo = m.getArgAsInt32(2);
-				bVideo = m.getArgAsInt32(3);
-				aVideo = m.getArgAsInt32(4);
-			}
-			else if (m.getArgAsString(0) == "deleteVideo")		{
-				myVideo->stop();
-				myVideo->close();
-				delete myVideo;
-				myVideo = 0;
-				//myVideo.closeMovie();//();myVideo.loadMovie("/Users/ari/Media/videos/maps/smallVideo.mov");
-			}
-			else if (m.getArgAsString(0) == "reloadVideo")		{
-				myVideo = new ofVideoPlayer();
-				myVideo->loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
-				myVideo->play();
-				//myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
-				
-			}
-		}	//	video
-		if ( m.getAddress() == "particle" )				{
-			if (m.getArgAsString( 0 ) == "activate")				{
-					if (m.getArgAsInt32(1) == 1)	viewParticles = true;	
-					else if (m.getArgAsInt32(1) == 0)	viewParticles = false;	
-			}
-			else if (m.getArgAsString( 0 ) == "lineOpacity")			lineOpacity = m.getArgAsInt32( 1 );	
-			else if (m.getArgAsString( 0 ) == "particleNeighborhood")	particleNeighborhood = m.getArgAsInt32( 1 );
-			else if (m.getArgAsString( 0 ) == "forceRadius")			forceRadius = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "forceScale")				forceScale = m.getArgAsInt32( 1 );		
-			else if (m.getArgAsString( 0 ) == "iPadPush")				{
-				if (m.getArgAsInt32(1) == 1)	iPadPush = true;	
-				else if (m.getArgAsInt32(1) == 0)	iPadPush = false;	
-			}
-			else if (m.getArgAsString( 0 ) == "pushParticles")			{
-				if (m.getArgAsInt32(1) == 1)	pushParticles = true;	
-				else if (m.getArgAsInt32(1) == 0)	pushParticles = false;	
-			}
-			else if (m.getArgAsString( 0 ) == "push")					{
-				pushX = m.getArgAsFloat( 1 );
-				pushY = m.getArgAsFloat( 2 );
-			}
-			else if	(m.getArgAsString( 0 ) == "add")					{
-				Particle particle(m.getArgAsInt32(1), m.getArgAsInt32(2), m.getArgAsFloat(3), m.getArgAsFloat(4));
-				particleSystem.add(particle);
-			}
-			else if	(m.getArgAsString( 0 ) == "dotColor")					{
-				switch (m.getNumArgs())	{
-					case 2:
-						aDotColor = m.getArgAsInt32( 1 );
-						cout << aDotColor;
-						break;				
-					case 5:
-						rDotColor = m.getArgAsInt32( 1 );
-						gDotColor = m.getArgAsInt32( 2 );
-						bDotColor = m.getArgAsInt32( 3 );
-						aDotColor = m.getArgAsInt32( 4 );
-					break;
+	ofxOscMessage m;
+	receiver.getNextMessage( &m ); 
+	if (playSpectro)								{
+		if ( m.getAddress() == "/fftpixels" )			{
+		switch ( mirrorMode )
+		{
+				// full screen normal spectro
+			case 111116:
+				for (int i=0; i<512; i++)	{
+					//data[i] = m.getArgAsFloat( i );
+					glColor3f(m.getArgAsFloat( i ), 0, 0);
+					ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
 				}
-			}
-			else if	(m.getArgAsString( 0 ) == "conColor")					{
-				switch (m.getNumArgs())	{
-					case 2:
-						aConColor = m.getArgAsInt32( 1 );
-						//cout << aConColor;
-						break;				
-					case 5:
-						rConColor = m.getArgAsInt32( 1 );
-						gConColor = m.getArgAsInt32( 2 );
-						bConColor = m.getArgAsInt32( 3 );
-						aConColor = m.getArgAsInt32( 4 );
-						break;
+				
+				
+				
+				
+				break;
+				
+				
+			case -20:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],0,0);
+					ofEllipse(reverseEllipse,ofMap(i, 512, 0, 0.0, ofGetWidth()),2,2);
+					glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+					ofEllipse(reverseEllipse,ofMap(i, 512, 0, 0.0, ofGetWidth()),2,2);
+					
 				}
-			}			
-			else if	(m.getArgAsString( 0 ) == "bounce")					{
-				bounceXstart = m.getArgAsInt32(1);
-				bounceYstart = m.getArgAsInt32(2); 
-				bounceXend = m.getArgAsInt32(3);
-				bounceYend = m.getArgAsInt32(4);
-			}			
-		}	//  particles
-		if ( m.getAddress() == "feedback" )				{
-			if (m.getArgAsString( 0 ) == "activate")	{
-				feedbackView = m.getArgAsInt32( 1 );
-			} else if (m.getArgAsString( 0 ) == "speedXY")		{
-				feedbackSpeedY = m.getArgAsFloat( 1 );
-				feedbackSpeedX = m.getArgAsFloat( 2 );
-				//cout << feedbackSpeedY << endl;
-			}
-		}	//	feedback		
-		if ( m.getAddress() == "background" )			{
-			switch (m.getNumArgs())	{
-				case 1:
-					aBack = m.getArgAsInt32( 0 );
-					//cout << aBack;
-					break;				
-				case 3:
-					rBack = m.getArgAsInt32( 0 );
-					gBack = m.getArgAsInt32( 1 );
-					bBack = m.getArgAsInt32( 2 );
-					ofBackground(rBack,gBack,bBack);
-					break;				
-				case 4:
-					rBack = m.getArgAsInt32( 0 );
-					gBack = m.getArgAsInt32( 1 );
-					bBack = m.getArgAsInt32( 2 );
-					aBack = m.getArgAsInt32( 3 );	
-					break;
-			}
-			//ofBackground(rBack, gBack, bBack);
-		}	//	background						
-		if ( m.getAddress() == "writeString" )			{
-
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-			ofFill();
-			ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
-			ofPushMatrix();
-			ofTranslate(m.getArgAsInt32( 1 ), m.getArgAsInt32(2), 0);
-			myFont11.drawString(m.getArgAsString( 0 ), 0, 0);		
-			ofPopMatrix();
-			
-		}	//	Write a string
-		if ( m.getAddress() == "effect" )				{
-			if ( m.getArgAsString(0) == "tree" )		{
-				glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
-				seed1(dotSize, (270*3.1415926)/180, 0, 0);
-			}	else if ( m.getArgAsString(0) == "noiseEffect" ) {
-					if (m.getArgAsString(1) == "true") {
-						noiseEffect = true;
-					} else {
-						noiseEffect = false;
-					}
-			}	else if ( m.getArgAsString(0) == "mirrowEffect1" ) {
-					if (m.getArgAsInt32(1) == 1) {
-						mirrowEffect1 = true;
-					} else {
-						mirrowEffect1 = false;
-					}
-			}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
-				if (m.getArgAsInt32(1) == 1) {
-					mirrowEffect2 = true;
-				} else {
-					mirrowEffect2 = false;
-				}				
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+				
+				break;
+				
+				// fire colors
+			case -2:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],0,0);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					ofEllipse(reverseEllipse,512+i,2,2);
+					glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					ofEllipse(reverseEllipse,512+i,2,2);						
+					
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+				
+				break;
+				
+			case -1:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],0,0);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+				
+				break;
+				
+			case 0:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					//glColor3f(0,0,0);
+					//ofEllipse(reverseEllipse,512+i,2,2);				
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+				
+				break;
+			case 1:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					ofEllipse(reverseEllipse,512+i,2,2);				
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+				break;
+			case 2:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+					ofEllipse(0,512-i,2,2);
+					ofEllipse(0,512+i,2,2);				
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+				break;
+				
+			case 3:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+					ofEllipse(ofGetWidth()/2,512-i,2,2);
+					ofEllipse(ofGetWidth()/2,512+i,2,2);						
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+				texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
+				texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+				texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
+				break;
+			case 4:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+					
+					ofEllipse(ofGetWidth()/4,256-i/2,2,2);
+					ofEllipse(ofGetWidth()/4,256+i/2,2,2);						
+					
+					ofEllipse(ofGetWidth()/4,776-i/2,2,2);
+					ofEllipse(ofGetWidth()/4,776+i/2,2,2);						
+					
+					ofEllipse(3*ofGetWidth()/4,256-i/2,2,2);
+					ofEllipse(3*ofGetWidth()/4,256+i/2,2,2);						
+					
+					ofEllipse(3*ofGetWidth()/4,776-i/2,2,2);
+					ofEllipse(3*ofGetWidth()/4,776+i/2,2,2);						
+					
+				}
+				ofSetColor(255,255,255,255);
+				texScreen.loadScreenData(0,0,ofGetWidth()/4, ofGetHeight());
+				texScreen.draw(-1,0);					
+				texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
+				texScreen.draw(ofGetWidth()/4 + 1,0);					
+				
+				texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
+				texScreen.draw(3*ofGetWidth()/4 + 1,0);					
+				//
+				texScreen.loadScreenData(ofGetWidth()/2, 0, ofGetWidth()/4, ofGetHeight());
+				texScreen.draw(ofGetWidth()/2 - 1,0);
+				
+				break;
+			case 5:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+					ofLine(0,i,ofGetWidth(),i);
+				}
+				break;
+				
+			default:
+				cout << "default";
+		}
+		
+	}	//	spectro
+	}	//  Spectro
+	if ( m.getAddress() == "rotate" )				{
+		ofBeginShape();		
+		ofRotateX(m.getArgAsInt32(0));
+		ofRotateY(m.getArgAsInt32(1));
+		ofRotateZ(m.getArgAsInt32(2));										
+		ofEndShape();					
+	}	//	rotate
+	if ( m.getAddress() == "superformula" )			{
+		if (m.getArgAsString(0) == "activate") {
+			if (m.getArgAsInt32(1) == 1) {
+				superformula = true;
 			}	else {
-				cout << "Write a new effect";
+				superformula = false;
 			}
-
-		}	//	effects
-		if ( m.getAddress() == "rgb" )					{
-			if ( m.getArgAsString( 0 ) == "sketch")	{ rSketch = m.getArgAsInt32( 1 );	gSketch = m.getArgAsInt32( 2 );	bSketch = m.getArgAsInt32( 3 );	aSketch = m.getArgAsInt32( 4 );	}
+		}
+		if (m.getArgAsString(0) == "mi") {
+			myform.mi = m.getArgAsFloat(1);
+		}
+		if (m.getArgAsString(0) == "n1") {
+			myform.n1 = m.getArgAsFloat(1);
+		}
+		if (m.getArgAsString(0) == "n2") {
+			myform.n2 = m.getArgAsFloat(1);
+		}
+		if (m.getArgAsString(0) == "n3") { 
+			myform.n3 = m.getArgAsFloat(1);
+		}
+		if (m.getArgAsString(0) == "epi") {
+			myform.epi = m.getArgAsFloat(1);
+		}
+		if (m.getArgAsString(0) == "step") {
+			myform.step = m.getArgAsFloat(1);
+		}
+		if (m.getArgAsString(0) == "num") {
+			myform.num = m.getArgAsInt32(1);
+		}		
+		if (m.getArgAsString(0) == "alpha") {
+			myform.alpha = m.getArgAsFloat(1);
+			cout << m.getArgAsString(0);
+		}
+		if (m.getArgAsString(0) == "bita") {
+			myform.bita = m.getArgAsFloat(1);
+		}
+	}	//	superformula		
+	if ( m.getAddress() == "img" )					{
+		
+		//cout << m.getNumArgs() << endl;
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE			
+		switch (m.getNumArgs())	{
+			case 1:
+				ofSetHexColor(0xFFFFFF);				
+				image[m.getArgAsInt32(0)].draw(0,0);
+				break;
+			case 3:
+				ofSetHexColor(0xFFFFFF);				
+				image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2));
+				break;
+				
+			case 4:
+				if (image[m.getArgAsInt32(0)].width/image[m.getArgAsInt32(0)].height > 1.25)	{
+					
+					//image[id].draw(x,y,width,height);	
+					
+				}	else	{
+					
+				}
+				
+				break;
+			case 5:
+				//ofFill();
+				ofSetHexColor(0xFFFFFF);				
+				image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+				break;
+			case 8:
+				ofNoFill();
+				ofSetHexColor(0xFFFFFF);		
+				ofBeginShape();		
+				ofRotateX(m.getArgAsInt32(5));
+				ofRotateY(m.getArgAsInt32(6));
+				ofRotateZ(m.getArgAsInt32(7));										
+				image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+				ofEndShape();
+				break;
+			case 11:
+				//cout << m.getNumArgs() << endl;
+				ofNoFill();
+				ofSetHexColor(0xFFFFFF);		
+				ofBeginShape();		
+				ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
+				ofRotateX(m.getArgAsInt32(8));
+				ofRotateY(m.getArgAsInt32(9));
+				ofRotateZ(m.getArgAsInt32(10));										
+				image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));					
+				ofEndShape();
+				break;
+			case 14:
+				//cout << m.getNumArgs() << endl;
+				ofNoFill();
+				ofSetHexColor(0xFFFFFF);		
+				ofBeginShape();		
+				ofTranslate(m.getArgAsInt32(5),m.getArgAsInt32(6),m.getArgAsInt32(7));
+				ofScale(m.getArgAsInt32(8),m.getArgAsInt32(9),m.getArgAsInt32(10));										
+				ofRotateX(m.getArgAsInt32(11));
+				ofRotateY(m.getArgAsInt32(12));
+				ofRotateZ(m.getArgAsInt32(13));										
+				image[m.getArgAsInt32(0)].draw(m.getArgAsInt32(1), m.getArgAsInt32(2),m.getArgAsInt32(3),m.getArgAsInt32(4));
+				ofEndShape();
+				break;
+				
+		}
+	}	//  images	
+	if ( m.getAddress() == "video")					{
+		if (m.getArgAsString(0) == "playVideo")		{
 			
-			else if ( m.getArgAsString( 0 ) == "sound")	{ rSound = m.getArgAsInt32( 1 );	gSound = m.getArgAsInt32( 2 );	bSound = m.getArgAsInt32( 3 );	aSound = m.getArgAsInt32( 4 );	}
+			playVideo = m.getArgAsInt32(1);
 
-		}	//	rgb directamente		
-		if ( m.getAddress() == "interactWithSound" )	{
-			if ( m.getArgAsString(0) == "activate" )	{
-				if (m.getArgAsInt32(1) == 1)	viewSoundChanels = true;	
-				else if (m.getArgAsInt32(1) == 0)	viewSoundChanels = false;	
+		}
+		else if (m.getArgAsString(0) == "setSpeed") myVideo->setSpeed(m.getArgAsFloat(1));
+		else if (m.getArgAsString(0) == "rVideo") rVideo = m.getArgAsInt32(1);			
+		else if (m.getArgAsString(0) == "gVideo") gVideo = m.getArgAsInt32(1);			
+		else if (m.getArgAsString(0) == "bVideo") bVideo = m.getArgAsInt32(1);			
+		else if (m.getArgAsString(0) == "aVideo") aVideo = m.getArgAsInt32(1);						
+		else if (m.getArgAsString(0) == "colorVideo") {
+			rVideo = m.getArgAsInt32(1);
+			gVideo = m.getArgAsInt32(2);
+			bVideo = m.getArgAsInt32(3);
+			aVideo = m.getArgAsInt32(4);
+		}
+		else if (m.getArgAsString(0) == "deleteVideo")		{
+			myVideo->stop();
+			myVideo->close();
+			delete myVideo;
+			myVideo = 0;
+			//myVideo.closeMovie();//();myVideo.loadMovie("/Users/ari/Media/videos/maps/smallVideo.mov");
+		}
+		else if (m.getArgAsString(0) == "reloadVideo")		{
+			myVideo = new ofVideoPlayer();
+			myVideo->loadMovie("/Users/ari/Media/videos/maps/grenoble.mov");
+			myVideo->setSpeed(4);
+			myVideo->play();
+			//myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
+			
+		}
+	}	//	video
+	if ( m.getAddress() == "particle" )				{
+		if (m.getArgAsString( 0 ) == "activate")				{
+				if (m.getArgAsInt32(1) == 1)	viewParticles = true;	
+				else if (m.getArgAsInt32(1) == 0)	viewParticles = false;	
+		}
+		else if (m.getArgAsString( 0 ) == "lineOpacity")			lineOpacity = m.getArgAsInt32( 1 );	
+		else if (m.getArgAsString( 0 ) == "particleNeighborhood")	particleNeighborhood = m.getArgAsInt32( 1 );
+		else if (m.getArgAsString( 0 ) == "forceRadius")			forceRadius = m.getArgAsInt32( 1 );		
+		else if (m.getArgAsString( 0 ) == "forceScale")				forceScale = m.getArgAsInt32( 1 );		
+		else if (m.getArgAsString( 0 ) == "iPadPush")				{
+			if (m.getArgAsInt32(1) == 1)	iPadPush = true;	
+			else if (m.getArgAsInt32(1) == 0)	iPadPush = false;	
+		}
+		else if (m.getArgAsString( 0 ) == "pushParticles")			{
+			if (m.getArgAsInt32(1) == 1)	pushParticles = true;	
+			else if (m.getArgAsInt32(1) == 0)	pushParticles = false;	
+		}
+		else if (m.getArgAsString( 0 ) == "push")					{
+			pushX = m.getArgAsFloat( 1 );
+			pushY = m.getArgAsFloat( 2 );
+		}
+		else if	(m.getArgAsString( 0 ) == "add")					{
+			Particle particle(m.getArgAsInt32(1), m.getArgAsInt32(2), m.getArgAsFloat(3), m.getArgAsFloat(4));
+			particleSystem.add(particle);
+		}
+		else if	(m.getArgAsString( 0 ) == "dotColor")				{
+			switch (m.getNumArgs())	{
+				case 2:
+					aDotColor = m.getArgAsInt32( 1 );
+					cout << aDotColor;
+					break;				
+				case 4:
+					rDotColor = m.getArgAsInt32( 1 );
+					gDotColor = m.getArgAsInt32( 2 );
+					bDotColor = m.getArgAsInt32( 3 );
+					break;
+				case 5:
+					rDotColor = m.getArgAsInt32( 1 );
+					gDotColor = m.getArgAsInt32( 2 );
+					bDotColor = m.getArgAsInt32( 3 );
+					aDotColor = m.getArgAsInt32( 4 );
+				break;
 			}
-			else if ( m.getArgAsString(0) == "deactivate" )	viewSoundChanels = false;					
-			else if ( m.getArgAsString(0) == "glBeginType" )	soundLines = m.getArgAsInt32(1);
-			else if ( m.getArgAsString(0) == "numSoundSketches" )	numSoundSketches = m.getArgAsInt32(1);				
-			else if ( m.getArgAsString(0) == "minSoundElasticity" )	{
-				minSoundElasticity = m.getArgAsFloat( 1 );
-				for( int i=1000; i<1000+numSoundSketches; i++ ) {
-					sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
-				}
-			}				
-			else if ( m.getArgAsString(0) == "maxSoundElasticity" )	{
-				maxSoundElasticity = m.getArgAsFloat( 1 );
-				for( int i=1000; i<1000+numSoundSketches; i++ ) {
-					sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
-				}
-			}				
-			else if ( m.getArgAsString(0) == "minSoundDamping" )	{
-				minSoundDamping = m.getArgAsFloat( 1 );
-				for( int i=1000; i<1000+numSoundSketches; i++ ) {
-					sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
-				}
-			}				
-			else if ( m.getArgAsString(0) == "maxSoundDamping" )	{
-				maxSoundDamping = m.getArgAsFloat( 1 );
-				for( int i=1000; i<1000+numSoundSketches; i++ ) {
-					sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
-				}
-			}				
-			else if ( m.getArgAsString(0) == "maxAmpIn" )	ampInHigh =  m.getArgAsFloat(1);	
-			else if ( m.getArgAsString(0) == "maxFreqIn" )	freqInHigh =  m.getArgAsFloat(1);					
-		}	//	sound interaction
-		if ( m.getAddress() == "interactWithSketch" )	{
-			if ( m.getArgAsString(0) == "activate" )	{
-				if (m.getArgAsInt32(1) == 1)	drawWithMouse = true;	
-				else if (m.getArgAsInt32(1) == 0)	drawWithMouse = false;	
+		}
+		else if	(m.getArgAsString( 0 ) == "conColor")				{
+			switch (m.getNumArgs())	{
+				case 2:
+					aConColor = m.getArgAsInt32( 1 );
+					//cout << aConColor;
+					break;				
+				case 4:
+					rConColor = m.getArgAsInt32( 1 );
+					gConColor = m.getArgAsInt32( 2 );
+					bConColor = m.getArgAsInt32( 3 );
+					break;
+				case 5:
+					rConColor = m.getArgAsInt32( 1 );
+					gConColor = m.getArgAsInt32( 2 );
+					bConColor = m.getArgAsInt32( 3 );
+					aConColor = m.getArgAsInt32( 4 );
+					break;
 			}
-			else if ( m.getArgAsString(0) == "padSketchXY" )	{	padX = m.getArgAsFloat(1);	padY = m.getArgAsFloat(2);	}
-			else if ( m.getArgAsString(0) == "mouseLines" )		mouseLines = m.getArgAsInt32(1);
-			else if ( m.getArgAsString(0) == "numMouseSketches" )	numMouseSketches = m.getArgAsFloat(1);			
-			else if ( m.getArgAsString(0) == "minMouseElasticity" )	{
-				minMouseElasticity = m.getArgAsFloat( 1 );			
-				for( int i=1000; i<1000 + numMouseSketches; i++ ) {
-					sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
-				}		
-			}		
-			else if ( m.getArgAsString(0) == "maxMouseElasticity" )	{
-				maxMouseElasticity = m.getArgAsFloat( 1 );
-				for( int i=1000; i<1000 + numMouseSketches; i++ ) {
-					sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
-				}		
-			}		
-			else if ( m.getArgAsString(0) == "minMouseDamping" )	{
-				minMouseDamping = m.getArgAsFloat( 1 );
-				for( int i=1000; i<1000 + numMouseSketches; i++ ) {
-					sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
-				}		
-			}		
-			else if ( m.getArgAsString(0) == "maxMouseDamping" )	{
-				maxMouseDamping = m.getArgAsFloat( 1 );
-				for( int i=1000; i<1000 + numMouseSketches; i++ ) {
-					sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
-				}		
+		}			
+		else if	(m.getArgAsString( 0 ) == "bounce")					{
+			bounceXstart = m.getArgAsInt32(1);
+			bounceYstart = m.getArgAsInt32(2); 
+			bounceXend = m.getArgAsInt32(3);
+			bounceYend = m.getArgAsInt32(4);
+		}			
+	}	//  particles
+	if ( m.getAddress() == "feedback" )				{
+		if (m.getArgAsString( 0 ) == "activate")	{
+			feedbackView = m.getArgAsInt32( 1 );
+		} else if (m.getArgAsString( 0 ) == "speedXY")		{
+			feedbackSpeedY = m.getArgAsFloat( 1 );
+			feedbackSpeedX = m.getArgAsFloat( 2 );
+			//cout << feedbackSpeedY << endl;
+		}
+	}	//	feedback		
+	if ( m.getAddress() == "background" )			{
+		switch (m.getNumArgs())	{
+			case 1:
+				aBack = m.getArgAsInt32( 0 );
+				//cout << aBack;
+				break;				
+			case 3:
+				rBack = m.getArgAsInt32( 0 );
+				gBack = m.getArgAsInt32( 1 );
+				bBack = m.getArgAsInt32( 2 );
+				ofBackground(rBack,gBack,bBack);
+				break;				
+			case 4:
+				rBack = m.getArgAsInt32( 0 );
+				gBack = m.getArgAsInt32( 1 );
+				bBack = m.getArgAsInt32( 2 );
+				aBack = m.getArgAsInt32( 3 );	
+				break;
+		}
+		//ofBackground(rBack, gBack, bBack);
+	}	//	background						
+	if ( m.getAddress() == "writeString" )			{
+
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+		ofFill();
+		ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
+		ofPushMatrix();
+		ofTranslate(m.getArgAsInt32( 1 ), m.getArgAsInt32(2), 0);
+		myFont11.drawString(m.getArgAsString( 0 ), 0, 0);		
+		ofPopMatrix();
+		
+	}	//	Write a string
+	if ( m.getAddress() == "effect" )				{
+		if ( m.getArgAsString(0) == "tree" )		{
+			glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
+			seed1(dotSize, (270*3.1415926)/180, 0, 0);
+		}	else if ( m.getArgAsString(0) == "noiseEffect" ) {
+				if (m.getArgAsInt32(1) == 1) {
+					noiseEffect = true;
+				} else {
+					noiseEffect = false;
+				}
+		}	else if ( m.getArgAsString(0) == "destruct" ) {
+			if (m.getArgAsString(1) == "activate") {
+				if (m.getArgAsInt32(2) == 1) {
+					destruct = true;
+				} else {
+					destruct = false;
+				}
+			} else if (m.getArgAsString(1) == "case") {
+				destructCase = m.getArgAsInt32(2);
 			}
-		}	//	Mouse Interaction		
-		if	(viewSoundChanels)							{			
-				if ( m.getAddress() == "/ampChan0" )	{
-					ampChan0 = m.getArgAsFloat( 0 );
-					//printf(" %f \n", ampChan0);			
+		}	else if ( m.getArgAsString(0) == "mirrowEffect1" ) {
+				if (m.getArgAsInt32(1) == 1) {
+					mirrowEffect1 = true;
+				} else {
+					mirrowEffect1 = false;
 				}
-				if ( m.getAddress() == "/ampChan1" )	{
-					ampChan1 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/ampChan2" )	{
-					ampChan2 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/ampChan4" )	{
-					ampChan3 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/ampChan5" )	{
-					ampChan3 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/ampChan6" )	{
-					ampChan3 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/ampChan7" )	{
-					ampChan3 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/freqChan0" )	{
-					freqChan0 = m.getArgAsFloat( 0 );
-					//printf(" %f \n", ampChan0);			
-				}
-				if ( m.getAddress() == "/freqChan1" )	{
-					freqChan1 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/freqChan2" )	{
-					freqChan2 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/freqChan3" )	{
-					freqChan3 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/freqChan4" )	{
-					freqChan0 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/freqChan5" )	{
-					freqChan1 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/freqChan6" )	{
-					freqChan2 = m.getArgAsFloat( 0 );
-				}
-				if ( m.getAddress() == "/freqChan7" )	{
-					freqChan3 = m.getArgAsFloat( 0 );
-				}							
-		}	//	Sound Interaction //sound lines characteristics (channel I)
+		}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
+			if (m.getArgAsInt32(1) == 1) {
+				mirrowEffect2 = true;
+			} else {
+				mirrowEffect2 = false;
+			}				
+		}	else {
+			cout << "Write a new effect";
+		}
+
+	}	//	effects
+	if ( m.getAddress() == "rgb" )					{
+		if ( m.getArgAsString( 0 ) == "sketch")	{ rSketch = m.getArgAsInt32( 1 );	gSketch = m.getArgAsInt32( 2 );	bSketch = m.getArgAsInt32( 3 );	aSketch = m.getArgAsInt32( 4 );	}
+		
+		else if ( m.getArgAsString( 0 ) == "sound")	{ rSound = m.getArgAsInt32( 1 );	gSound = m.getArgAsInt32( 2 );	bSound = m.getArgAsInt32( 3 );	aSound = m.getArgAsInt32( 4 );	}
+
+	}	//	rgb directamente		
+	if ( m.getAddress() == "interactWithSound" )	{
+		if ( m.getArgAsString(0) == "activate" )	{
+			if (m.getArgAsInt32(1) == 1)	viewSoundChanels = true;	
+			else if (m.getArgAsInt32(1) == 0)	viewSoundChanels = false;	
+		}
+		else if ( m.getArgAsString(0) == "deactivate" )	viewSoundChanels = false;					
+		else if ( m.getArgAsString(0) == "glBeginType" )	soundLines = m.getArgAsInt32(1);
+		else if ( m.getArgAsString(0) == "numSoundSketches" )	numSoundSketches = m.getArgAsInt32(1);				
+		else if ( m.getArgAsString(0) == "minSoundElasticity" )	{
+			minSoundElasticity = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "maxSoundElasticity" )	{
+			maxSoundElasticity = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "minSoundDamping" )	{
+			minSoundDamping = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "maxSoundDamping" )	{
+			maxSoundDamping = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "maxAmpIn" )	ampInHigh =  m.getArgAsFloat(1);	
+		else if ( m.getArgAsString(0) == "maxFreqIn" )	freqInHigh =  m.getArgAsFloat(1);					
+	}	//	sound interaction
+	if ( m.getAddress() == "interactWithSketch" )	{
+		if ( m.getArgAsString(0) == "activate" )	{
+			if (m.getArgAsInt32(1) == 1)	drawWithMouse = true;	
+			else if (m.getArgAsInt32(1) == 0)	drawWithMouse = false;	
+		}
+		else if ( m.getArgAsString(0) == "padSketchXY" )	{	padX = m.getArgAsInt32(1);	padY = m.getArgAsInt32(2);}
+		else if ( m.getArgAsString(0) == "mouseLines" )		mouseLines = m.getArgAsInt32(1);
+		else if ( m.getArgAsString(0) == "numMouseSketches" )	numMouseSketches = m.getArgAsFloat(1);			
+		else if ( m.getArgAsString(0) == "minMouseElasticity" )	{
+			minMouseElasticity = m.getArgAsFloat( 1 );			
+			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
+			}		
+		}		
+		else if ( m.getArgAsString(0) == "maxMouseElasticity" )	{
+			maxMouseElasticity = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
+			}		
+		}		
+		else if ( m.getArgAsString(0) == "minMouseDamping" )	{
+			minMouseDamping = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
+			}		
+		}		
+		else if ( m.getArgAsString(0) == "maxMouseDamping" )	{
+			maxMouseDamping = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
+			}		
+		}
+	}	//	Mouse Interaction		
+	if	(viewSoundChanels)							{			
+			if ( m.getAddress() == "/ampChan0" )	{
+				ampChan0 = m.getArgAsFloat( 0 );
+				//printf(" %f \n", ampChan0);			
+			}
+			if ( m.getAddress() == "/ampChan1" )	{
+				ampChan1 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/ampChan2" )	{
+				ampChan2 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/ampChan4" )	{
+				ampChan3 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/ampChan5" )	{
+				ampChan3 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/ampChan6" )	{
+				ampChan3 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/ampChan7" )	{
+				ampChan3 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/freqChan0" )	{
+				freqChan0 = m.getArgAsFloat( 0 );
+				//printf(" %f \n", ampChan0);			
+			}
+			if ( m.getAddress() == "/freqChan1" )	{
+				freqChan1 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/freqChan2" )	{
+				freqChan2 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/freqChan3" )	{
+				freqChan3 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/freqChan4" )	{
+				freqChan0 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/freqChan5" )	{
+				freqChan1 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/freqChan6" )	{
+				freqChan2 = m.getArgAsFloat( 0 );
+			}
+			if ( m.getAddress() == "/freqChan7" )	{
+				freqChan3 = m.getArgAsFloat( 0 );
+			}							
+	}	//	Sound Interaction //sound lines characteristics (channel I)
 	}	
 }
 void liveApp::draw()	{
-	if	(playVideo)				{
+	if (camera) {
+		ofPushMatrix();
+		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
+		ofRotateX(mouseY);
+		ofRotateY(mouseX);
+	}
+	if (view_fillBackground)	{
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+		ofFill();	
+		ofSetColor(rBack, gBack, bBack, aBack);
+		ofRect(0,0,ofGetWidth(),ofGetHeight());			
+	}	//	background	
+	if (playVideo)				{
 		myVideo->idleMovie();
 		ofSetColor(rVideo,gVideo,bVideo,aVideo);		
 		myVideo->draw(0,0);
 	}	//  Play Video
-	if	(noiseEffect)			{
-		ofBackground(255,255,255);
-		
-		for (int i = 0; i < w; i = i+ 1){
-			for (int j = 0; j < h; j=j+1){
-				grayPixels[j*w+i] = (unsigned char)(ofRandomuf() * 255);
-			}
-		}
-		texGray.loadData(grayPixels, w, h, GL_LUMINANCE); 
-		ofSetHexColor(0xffffff);
-		texGray.draw(0, 0, w, h);
-	}	//  Noise Effect
-	if	(mirrowEffect1)			{
-//		ofSetHexColor(0xffffff);
-//		image[21].draw(0, 0,w,h);
-		texMirrow.loadScreenData(0, 0,	w/2, h);
-
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(w,0,0);
-		glRotatef(180, 0, 1.0f, 0);
-		texMirrow.draw(0,0,w/2,h);
-		glPopMatrix();
-	}	//	Mirrow Effect
-	if	(mirrowEffect2)			{
-//		ofSetHexColor(0xffffff);
-//		image[62].draw(0, 0);
-		texMirrow.loadScreenData(0, 0,	w/2, h/2);
-		
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(w,0,0);
-		glRotatef(180, 0, 1.0f, 0);
-		texMirrow.draw(0,0,w/2,h/2);
-		glPopMatrix();
-
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(0,h,0);
-		glRotatef(180, 1.0f, 0, 0);
-		texMirrow.draw(0,0,w/2,h/2);
-		glPopMatrix();
-
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(w,h,0);
-		glRotatef(180, 0,0,1.0f);
-		texMirrow.draw(0,0,w/2,h/2);
-		glPopMatrix();
-		
-	}	//	The best Mirrow Effect	
-	if	(viewParticles)			{
+	if (viewParticles)			{
         particleSystem.setTimeStep(timeStep);
 		ofSetColor(rConColor, gConColor, bConColor, aConColor);	
         particleSystem.setupForces();
@@ -864,42 +896,38 @@ void liveApp::draw()	{
         ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
         particleSystem.draw();
 	}	//  Particles
-	if	(sketchPhrase)			{
+	if (sketchPhrase)			{
 		
 		for( int i=0; i<100; i++ ) {
 			
 			sketch[i].drawMouse(i, 100+ i, 0, 255,255,255,255, 0);	
 		}		
 	}	//	Sketch
-	if	(drawWithMouse)			{
-		for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+	if (drawWithMouse)			{
+		//cout << padY;
+		for( int i=0; i<numMouseSketches; i++ ) {
 			sketch[i].drawMouse(padX, padY, 0, rSketch, gSketch, bSketch, aSketch/3, mouseLines);	
+			
 		}
 		//		for( int i=2000; i<2000 + numMouseSketches; i++ ) {
 		//			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
 		//		}	
 	}	//	sketch with mouse	
-	if	(view_fillBackground)	{
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-		ofFill();	
-		ofSetColor(rBack, gBack, bBack, aBack);
-		ofRect(0,0,ofGetWidth(),ofGetHeight());			
-	}	//	background
-	if	(viewSoundChanels)		{
+	if (viewSoundChanels)		{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSoundSketches; i++ ) {
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
 		}
 	}  	//  viewSoundChanels 
-	if	(soundEffectNoto)		{
+	if (soundEffectNoto)		{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSoundSketches; i++ ) {
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
 		}
 	}  	//  viewSoundChanels 
-	if	(feedbackView)			{
+	if (feedbackView)			{
 		texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
 		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							
 		//texScreen.loadScreenData(0,0,1280,1024);							
@@ -913,6 +941,91 @@ void liveApp::draw()	{
 		glPopMatrix();
 		//cout << "test" << endl;
 	}	//	feedback
+	if (superformula)			{
+		myform.draw(ofGetWidth()/2,ofGetHeight()/2);
+	}	//	superformula
+	if (camera)					{
+		ofPopMatrix();
+	}	//	camera
+	if (destruct)				{
+		switch (destructCase) {
+			case 0:
+				for (int i = 0; i < 1; i++) {
+					ofSetColor(255,255,255,255);
+					texScreen.loadScreenData(0,0,ofGetWidth(),ofGetHeight());
+					texScreen.draw(int(ofRandom(0,1400)),int(ofRandom(0,1400)),100,100);
+				} 				
+				break;
+			case 1:
+				texScreen.loadScreenData(0,0,ofGetWidth(),ofGetHeight());
+				ofPushMatrix();
+				ofTranslate(0, ofGetHeight()/2, 0);				
+				ofRotateX(ofGetFrameNum());				
+				ofSetColor(255,255,255,255);
+				texScreen.draw(0,0,ofGetWidth(),ofGetHeight());
+				ofPopMatrix();
+				break;
+			case 2:
+				for (int i = 0; i < 1; i++) {
+					ofSetColor(255,255,255,255);
+					texScreen.loadScreenData(0,0,ofGetWidth(),ofGetHeight());
+					texScreen.draw(int(ofRandom(0,1400)),int(ofRandom(0,1400)),500,500);
+				} 				
+				break;
+			default:
+				break;
+		}
+	}	//	destruct
+	if (noiseEffect)			{
+		ofBackground(255,255,255);
+		
+		for (int i = 0; i < w; i = i+ 1){
+			for (int j = 0; j < h; j=j+1){
+				grayPixels[j*w+i] = (unsigned char)(ofRandomuf() * 255);
+			}
+		}
+		texGray.loadData(grayPixels, w, h, GL_LUMINANCE); 
+		ofSetHexColor(0xffffff);
+		texGray.draw(0, 0, w, h);
+	}	//  Noise Effect
+	if (mirrowEffect1)			{
+		//		ofSetHexColor(0xffffff);
+		//		image[21].draw(0, 0,w,h);
+		texMirrow.loadScreenData(0, 0,	w/2, h);
+		
+		glPushMatrix();
+		ofSetHexColor(0xffffff);
+		glTranslatef(w,0,0);
+		glRotatef(180, 0, 1.0f, 0);
+		texMirrow.draw(0,0,w/2,h);
+		glPopMatrix();
+	}	//	Mirrow Effect
+	if (mirrowEffect2)			{
+		texMirrow.loadScreenData(0, 0,	w/2, h/2);
+		
+		glPushMatrix();
+		ofSetHexColor(0xffffff);
+		glTranslatef(w,0,0);
+		glRotatef(180, 0, 1.0f, 0);
+		texMirrow.draw(0,0,w/2,h/2);
+		glPopMatrix();
+		
+		glPushMatrix();
+		ofSetHexColor(0xffffff);
+		glTranslatef(0,h,0);
+		glRotatef(180, 1.0f, 0, 0);
+		texMirrow.draw(0,0,w/2,h/2);
+		glPopMatrix();
+		
+		glPushMatrix();
+		ofSetHexColor(0xffffff);
+		glTranslatef(w,h,0);
+		glRotatef(180, 0,0,1.0f);
+		texMirrow.draw(0,0,w/2,h/2);
+		glPopMatrix();
+		
+	}	//	The best Mirrow Effect	
+	
 }
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   
@@ -925,7 +1038,7 @@ void liveApp::seed1(float dotSize, float angle, float x, float y)	{
     if (r > 0.04) { 
 		ofFill();	
 		//ofSetColor(coldColor[int(ofRandom(0,11))]);	
-		ofSetColor(255,255,255,125);			
+		ofSetColor(255,255,255,225);			
 		ofEllipse(x, y, dotSize, dotSize);
 		float newx = x + cos(angle) * dotSize;
 		float newy = y + sin(angle) * dotSize;

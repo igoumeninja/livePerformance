@@ -28,7 +28,7 @@ void ofSketch::init(int sketchID, float elast, float aposv) {
 		}
 	}
 }
-void ofSketch::drawMouse(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, float lines) {
+void ofSketch::drawMouse(int xL, int yL, int zL, int redL, int greenL, int blueL, int alphaL, float lines) {
 	ofNoFill();
 	ofSetColor(redL, greenL, blueL, alphaL);
 	glEnable(GL_BLEND);

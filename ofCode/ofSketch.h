@@ -42,7 +42,8 @@ public:
 	float			deltaYMouse[stoixeiaMouse];
 
 	float			elast, aposv;
-	float			xL, yL, zL, value, xC, yC;		
+	int				xL, yL, zL;
+	float			value, xC, yC;		
 	int				redL, greenL, blueL, alphaL;
 	float			delta;
 	float			xp,yp;
@@ -52,7 +53,7 @@ public:
 	ofxVec3f		my3d;
 
     void			init(int sketchID, float elast, float aposv);
-	void			drawMouse(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, float lines);
+	void			drawMouse(int xL, int yL, int zL, int redL, int greenL, int blueL, int alphaL, float lines);
 	void			drawSound(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, float slines);	
     void			update(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL);
 	void			updateClassic(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL);

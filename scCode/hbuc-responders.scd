@@ -59,7 +59,7 @@
 ~fftImageTriggerResp.remove;
 ~fftImageTriggerResp = OSCresponderNode(n, '/imageTriger', { |t,r,msg| 
 	if( msg[1] == 1,{
-		~fftImageTrigger = { | threshold = 1.9 |
+		~fftImageTrigger = { | threshold = 1.0 |
 			var sig, chain, onsets, pips;
 			sig = In.ar(8);	
 			chain = FFT(~myBufferForCutMotion, sig);
@@ -73,8 +73,8 @@
 }).add;
 
 ~trigImageResp.remove;~trigImageResp = OSCresponderNode(n, 'trigImage', { |time, resp, msg| 
-	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))], ~yPos[rrand(0,pow(~columns,2))], ~fotoSize, ~fotoSize);
-	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))], ~yPos[rrand(0,pow(~columns,2))], ~fotoSize, ~fotoSize);
+	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))].asInteger, ~yPos[rrand(0,pow(~columns,2))].asInteger, ~fotoSize.asInteger, ~fotoSize.asInteger);
+	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))].asInteger, ~yPos[rrand(0,pow(~columns,2))].asInteger, ~fotoSize.asInteger, ~fotoSize.asInteger);
 }).add; 
 
 ~columns = 10;
@@ -315,6 +315,9 @@
 	OF.rgb("sound",255,255,255,~aSoundSpec.map(msg[1]).asInteger);
 } ).add; 
 
+// ==================
+// SKETCH
+
 ~padSketchResp.remove;
 ~padSketchResp = OSCresponderNode(n, '/padSketch', { |t,r,msg| 
 	OF.interactWithSketch("activate", msg[1].asInteger);
@@ -325,6 +328,17 @@
 ~padSketchXYResp.remove;
 ~padSketchXYResp = OSCresponderNode(n, '/padSketchXY', { | time, resp, msg| 
 	OF.interactWithSketch("padSketchXY", ~xPadSpec.map(msg[2]).asInteger, ~yPadSpec.map(msg[1]).asInteger);
+} ).add; 
+
+~aPadSpec = ControlSpec(0, 255, \lin);
+~aPadResp.remove;
+~aPadResp = OSCresponderNode(n, '/aPad', { | time, resp, msg| 
+	OF.rgb("sketch",255,255,255,~aPadSpec.map(msg[1]).asInteger);
+} ).add; 
+
+~mouseLinesResp.remove;
+~mouseLinesResp = OSCresponderNode(n, '/mouseLines', { | time, resp, msg| 
+	OF.interactWithSketch("mouseLines",msg[1].asInteger);
 } ).add; 
 
 // ==================
@@ -357,6 +371,26 @@
 ~particlesAlphaResp.remove;
 ~particlesAlphaResp = OSCresponderNode(n, '/particlesAlpha', { | time, resp, msg|
 	OF.particle("dotColor", ~particlesAlphaSpec.map(msg[1]).asInteger);
+}).add; 
+
+~particlesRedConResp.remove;
+~particlesRedConResp = OSCresponderNode(n, '/redCon', { | time, resp, msg|
+	if( msg[1] == 1,{
+		OF.particle("conColor", 255,0,0);
+	},{
+		OF.particle("conColor", 255,255,255);
+	});
+}).add; 
+
+~particlesYellowDotResp.remove;
+~particlesYellowDotResp = OSCresponderNode(n, '/yellowDot', { | time, resp, msg|
+	if( msg[1] == 1,{
+		OF.particle("dotColor", 255,255,0);
+	},{
+		OF.particle("dotColor", 255,255,255);
+	});
+
+	
 }).add; 
 
 ~addParticlesResp.remove;
@@ -405,7 +439,7 @@
 	OF.particle("forceRadius", rrand(50,100).asInteger);
 }).add; 
 
-~pushParticlesThresholdSpec = ControlSpec(0.0, 1.5, \lin);
+~pushParticlesThresholdSpec = ControlSpec(0.0, 1.0, \lin);
 ~pushParticlesThresholdResp.remove;
 ~pushParticlesThresholdResp = OSCresponderNode(n, 'pushParticlesThreshold', { |time, resp, msg| 
 	~fftPushParticlesTriger.set(\threshold, ~pushParticlesThresholdSpec.map(msg[1]));
@@ -455,6 +489,12 @@
 // :==================
 // EFFECTS
 
+~noiseEffectResp.remove;~noiseEffectResp = OSCresponderNode(n, '/noiseEffect', { |t,r,msg| 
+	OF.effect("noiseEffect", msg[1]);
+	OF.background(0,0,0);
+}).add;
+
+
 ~feedbackResp.remove;~feedbackResp = OSCresponderNode(n, '/feedback', { |t,r,msg| 
 	OF.feedback("activate", msg[1]);
 }).add;
@@ -486,6 +526,15 @@
 	OF.effect("tree");
 }).add; 
 
+
+//:SUPERFORMULA
+
+{
+	500.do{|i|
+	OF.superformula("epi",i);
+	0.04.wait;
+	}
+}.fork
 
 //:==================
 //:OTHER STUFF
