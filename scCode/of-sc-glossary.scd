@@ -56,7 +56,7 @@ OF.feedback("speedXY", 0.5,0);
 EFFECTS
 =======
 OF.effect("destruct","activate",1)
-OF.effect("destruct","case",2)
+OF.effect("destruct","case",3)	//0,1,2,3
 
 OF.effect("noiseEffect", 0); // with z0re is clearing the background
 OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);

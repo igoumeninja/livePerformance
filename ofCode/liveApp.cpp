@@ -860,7 +860,7 @@ void liveApp::draw()	{
 		ofSetColor(rVideo,gVideo,bVideo,aVideo);		
 		myVideo->draw(0,0);
 	}	//  Play Video
-	if (viewParticles)			{
+	if (viewParticles)								{
         particleSystem.setTimeStep(timeStep);
 		ofSetColor(rConColor, gConColor, bConColor, aConColor);	
         particleSystem.setupForces();
@@ -896,14 +896,14 @@ void liveApp::draw()	{
         ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
         particleSystem.draw();
 	}	//  Particles
-	if (sketchPhrase)			{
+	if (sketchPhrase)								{
 		
 		for( int i=0; i<100; i++ ) {
 			
 			sketch[i].drawMouse(i, 100+ i, 0, 255,255,255,255, 0);	
 		}		
 	}	//	Sketch
-	if (drawWithMouse)			{
+	if (drawWithMouse)								{
 		//cout << padY;
 		for( int i=0; i<numMouseSketches; i++ ) {
 			sketch[i].drawMouse(padX, padY, 0, rSketch, gSketch, bSketch, aSketch/3, mouseLines);	
@@ -913,41 +913,35 @@ void liveApp::draw()	{
 		//			sketch[i].drawMouse(padX+400, padY, 0, r7, g7, b7, a7/3, mouseLines);	
 		//		}	
 	}	//	sketch with mouse	
-	if (viewSoundChanels)		{
+	if (viewSoundChanels)							{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSoundSketches; i++ ) {
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
 		}
 	}  	//  viewSoundChanels 
-	if (soundEffectNoto)		{
+	if (soundEffectNoto)							{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSoundSketches; i++ ) {
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
 		}
 	}  	//  viewSoundChanels 
-	if (feedbackView)			{
+	if (feedbackView)								{
 		texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
-		//texScreen.loadScreenData(0,0,ofGetScreenWidth(), ofGetScreenHeight());							
-		//texScreen.loadScreenData(0,0,1280,1024);							
 		glPushMatrix();
 		ofSetHexColor(0xffffff);
 		glTranslatef(feedbackSpeedX,feedbackSpeedY,0);
-		//		glTranslatef(2,2,0);		
 		texScreen.draw(0,0,ofGetWidth(), ofGetHeight());
-		//texScreen.draw(0,0,ofGetScreenWidth(), ofGetScreenHeight());
-		//texScreen.draw(0,0,1280,1024);		
 		glPopMatrix();
-		//cout << "test" << endl;
 	}	//	feedback
-	if (superformula)			{
+	if (superformula)								{
 		myform.draw(ofGetWidth()/2,ofGetHeight()/2);
 	}	//	superformula
-	if (camera)					{
+	if (camera)										{
 		ofPopMatrix();
 	}	//	camera
-	if (destruct)				{
+	if (destruct)									{
 		switch (destructCase) {
 			case 0:
 				for (int i = 0; i < 1; i++) {
@@ -972,11 +966,22 @@ void liveApp::draw()	{
 					texScreen.draw(int(ofRandom(0,1400)),int(ofRandom(0,1400)),500,500);
 				} 				
 				break;
+			case 3:		// rotate feedback
+				for (int i = 0; i < 1; i++) {
+					glPushMatrix();
+					ofSetHexColor(0xffffff);
+					glRotatef(5, 0, 1, 0);
+					texScreen.draw(0,0,ofGetWidth(), ofGetHeight());
+					glPopMatrix();
+					
+				} 				
+				break;
+				
 			default:
 				break;
 		}
 	}	//	destruct
-	if (noiseEffect)			{
+	if (noiseEffect)								{
 		ofBackground(255,255,255);
 		
 		for (int i = 0; i < w; i = i+ 1){
@@ -988,7 +993,7 @@ void liveApp::draw()	{
 		ofSetHexColor(0xffffff);
 		texGray.draw(0, 0, w, h);
 	}	//  Noise Effect
-	if (mirrowEffect1)			{
+	if (mirrowEffect1)								{
 		//		ofSetHexColor(0xffffff);
 		//		image[21].draw(0, 0,w,h);
 		texMirrow.loadScreenData(0, 0,	w/2, h);
@@ -1000,7 +1005,7 @@ void liveApp::draw()	{
 		texMirrow.draw(0,0,w/2,h);
 		glPopMatrix();
 	}	//	Mirrow Effect
-	if (mirrowEffect2)			{
+	if (mirrowEffect2)								{
 		texMirrow.loadScreenData(0, 0,	w/2, h/2);
 		
 		glPushMatrix();
