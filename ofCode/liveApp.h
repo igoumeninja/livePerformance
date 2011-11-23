@@ -42,7 +42,8 @@ public:
 	
 	//========================
 	//	VIDEO
-	int						playVideo, rVideo, gVideo, bVideo, aVideo;
+	int		playVideo, rVideo, gVideo, bVideo, aVideo;
+	int		videoX,videoY,videoW,videoH;		
 	ofVideoPlayer*			myVideo;	
 	
 	//========================
@@ -64,18 +65,18 @@ public:
 	//	EFFECTS
 	ofTexture		texScreen2, pixelTexture;
 	float 			feedbackSpeedX,	feedbackSpeedY;
-	int				feedbackView, timeLine, viewRotate, view_fillBackground;	
-	bool noiseEffect, mirrowEffect1, mirrowEffect2, memAlloc;
+	int				feedbackView, timeLine, viewRotate, view_fillBackground, mirrorEffectCase;	
+	bool			mirrorEffect, noiseEffect, mirrowEffect1, mirrowEffect2, mirrowEffect3,mirrowEffect4, memAlloc;
 	ofTexture		texGray;
 	ofTexture 		texMirrow;	
 	int 			w, h;	
 	unsigned char 	* colorPixels;
 	unsigned char 	* grayPixels;
 	unsigned char 	* colorAlphaPixels;
-	float gridX[MAX_MATRIX][MAX_MATRIX], gridY[MAX_MATRIX][MAX_MATRIX];
-	float gridX3d[MAX_MATRIX][MAX_MATRIX][MAX_MATRIX], gridY3d[MAX_MATRIX][MAX_MATRIX][MAX_MATRIX], gridZ3d[MAX_MATRIX][MAX_MATRIX][MAX_MATRIX];
+	float			gridX[MAX_MATRIX][MAX_MATRIX], gridY[MAX_MATRIX][MAX_MATRIX];
+	float			gridX3d[MAX_MATRIX][MAX_MATRIX][MAX_MATRIX], gridY3d[MAX_MATRIX][MAX_MATRIX][MAX_MATRIX], gridZ3d[MAX_MATRIX][MAX_MATRIX][MAX_MATRIX];
 	ofxVec3f		matrix3d;
-	float dotSize, angleOffsetA, angleOffsetB;
+	float			dotSize, angleOffsetA, angleOffsetB;
 	int				aBack, rBack, bBack, gBack; 
 	
 	//================
@@ -106,7 +107,7 @@ public:
 	float	xSolo, ySolo;
 	int		rSound, gSound, bSound, aSound;
 	int		rSketch, gSketch, bSketch, aSketch;
-	int	padX, padY;
+	int		padX, padY;
 	float	Yamp0, Yamp1, Yamp2, Yamp3, Yamp4, Yamp5, Yamp6, Yamp7;
 	float	Xfreq0, Xfreq1, Xfreq2, Xfreq3, Xfreq4, Xfreq5, Xfreq6,Xfreq7;
 	bool	bSmooth;

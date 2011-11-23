@@ -72,9 +72,10 @@
 	});
 }).add;
 
-~trigImageResp.remove;~trigImageResp = OSCresponderNode(n, 'trigImage', { |time, resp, msg| 
-	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))].asInteger, ~yPos[rrand(0,pow(~columns,2))].asInteger, ~fotoSize.asInteger, ~fotoSize.asInteger);
-	OF.img(rrand(0,60).asInteger, ~xPos[rrand(0,pow(~columns,2))].asInteger, ~yPos[rrand(0,pow(~columns,2))].asInteger, ~fotoSize.asInteger, ~fotoSize.asInteger);
+~trigImageResp.remove;
+~trigImageResp = OSCresponderNode(n, 'trigImage', { |time, resp, msg| 
+	OF.img(rrand(0,60).asInteger, (~xPos[rrand(0,pow(~columns,2))]/4).asInteger, (~yPos[rrand(0,pow(~columns,2))]/4).asInteger, ~fotoSize.asInteger, ~fotoSize.asInteger);
+	OF.img(rrand(0,60).asInteger, (~xPos[rrand(0,pow(~columns,2))]/4).asInteger, (~yPos[rrand(0,pow(~columns,2))]/4).asInteger, ~fotoSize.asInteger, ~fotoSize.asInteger);
 }).add; 
 
 ~columns = 10;
@@ -217,10 +218,6 @@
 } ).add; 
 
 ~btw1 = Task({
-	OF.background(0, 0, 0, 0);
-	OF.rgb("a8",0);
-	OF.interactWithSound("numSoundSketches", 800);
-	OF.interactWithSound("glBeginType", 1);	
 	inf.do({
 		OF.rgb("sound",255,255,255,55);				
 		0.04.wait;	
@@ -232,17 +229,21 @@
 ~btw1Resp.remove;
 ~btw1Resp = OSCresponderNode(n, '/btw1', { |t,r,msg| 
 	if( msg[1] == 1,{
+		OF.background(0, 0, 0, 0);
+		OF.interactWithSound("numSoundSketches", 800);
+		OF.interactWithSound("glBeginType", 1);	
 		~btw1.play;
 	},{
 		~btw1.stop;
+		OF.background(0, 0, 0, 20);
+		OF.interactWithSound("numSoundSketches", 800);
+		OF.interactWithSound("glBeginType", 0);
+		OF.rgb("sound",255,255,255,55);	
+		
 	});
 }).add;
 
 ~btw2 = Task({
-	OF.background(0, 0, 0);
-	OF.rgb("a8",0);
-	OF.interactWithSound("numSoundSketches", 800);
-	OF.interactWithSound("glBeginType", 1);	
 	inf.do({
 		OF.rgb("sound",255,255,255,255);				
 		0.04.wait;	
@@ -254,8 +255,15 @@
 ~btw2Resp.remove;
 ~btw2Resp = OSCresponderNode(n, '/btw2', { |t,r,msg| 
 	if( msg[1] == 1,{
-		~btw2.play;
+		OF.background(0, 0, 0, 0);
+		OF.rgb("a8",0);
+		OF.interactWithSound("numSoundSketches", 800);
+		OF.interactWithSound("glBeginType", 1);				~btw2.play;
 	},{
+		OF.background(0, 0, 0, 20);
+		OF.interactWithSound("numSoundSketches", 800);
+		OF.interactWithSound("glBeginType", 0);	
+		OF.rgb("sound",255,255,255,55);			
 		~btw2.stop;
 	});
 }).add;
@@ -389,8 +397,6 @@
 	},{
 		OF.particle("dotColor", 255,255,255);
 	});
-
-	
 }).add; 
 
 ~addParticlesResp.remove;
@@ -408,11 +414,33 @@
 	OF.particle("iPadPush", msg[1]);
 }).add;
 
-//~xPushSpec = ControlSpec(0, ~width, \lin);
-//~yPushSpec = ControlSpec(~height, 0, \lin);
-//OSCresponderNode(n, '/particlesXY', { | time, resp, msg| 
-//	OF.interactWithSketch("padXY", ~xPushSpec.map(msg[2]).asInteger, ~yPushSpec.map(msg[1]).asInteger);
-//} ).add; 
+~iPadPushXYResp.remove;
+~iPadPushXYResp = OSCresponderNode(n, '/iPadPushXY', { |t,r,msg| 
+	OF.particle("pushParticles", msg[1]);
+}).add;
+
+
+~xPushPadSpec = ControlSpec(0, ~width, \lin);
+~yPushPadSpec = ControlSpec(~height, 0, \lin);
+OSCresponderNode(n, '/pushXY', { | time, resp, msg| 
+	OF.particle("push", ~xPushPadSpec.map(msg[2]).asInteger, ~yPushPadSpec.map(msg[1]).asInteger);
+} ).add; 
+
+~redConTaskResp.remove;
+~redConTaskResp = OSCresponderNode(n, '/redConTask', { | time, resp, msg|
+	if( msg[1] == 1,{
+		OF.particle("conColor", 255,0,0);
+		OF.particle("particleNeighborhood", 0);		
+		OF.particle("push", 100,400);				
+		OF.particle("pushParticles", 1);				
+
+	},{
+		OF.particle("conColor", 255,255,255);
+		OF.particle("particleNeighborhood", 15);		
+		OF.particle("pushParticles", 0);					
+	});
+}).add; 
+
 
 ~myBufferForPushParticles = Buffer.alloc(s, 512);
 ~fftPushParticlesResp.remove;
@@ -451,7 +479,13 @@
 // VIDEO
 
 ~playVideoResp.remove;~playVideoResp = OSCresponderNode(n, '/playVideo', { | time, resp, msg|
+	OF.effect("mirrowEffect2", 1);	// 4-D copy mirrow
 	OF.video("playVideo", msg[1]);
+}).add; 
+
+~playVideo4Resp.remove;~playVideo4Resp = OSCresponderNode(n, '/playVideo4', { | time, resp, msg|
+	OF.video("playVideo", msg[1], ~width/4, ~height/4);
+	OF.effect("mirrowEffect4", 1);	// 4-D copy mirrow
 }).add; 
 
 ~deleteVideoResp.remove;~deleteVideoResp = OSCresponderNode(n, '/deleteVideo', { | time, resp, msg|
@@ -507,15 +541,46 @@
 	OF.feedback("speedXY", ~xFeedbackSpec.map(msg[1]), ~yFeedbackSpec.map(msg[2]));
 } ).add; 
 
-~mirrowEffect1Resp.remove;
-~mirrowEffect1Resp = OSCresponderNode(n, '/mirrowEffect1', { |t,r,msg|
-	OF.effect("mirrowEffect1", msg[1]); 
+~mirrorEffectCase0Resp.remove;
+~mirrorEffectCase0Resp = OSCresponderNode(n, '/mirrorEffect0', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirror", 1);
+		OF.effect("mirror", "case", 0); 
+	},{
+		//OF.effect("mirror", 0);
+	});
 }).add;
 
-~mirrowEffect2Resp.remove;
-~mirrowEffect2Resp = OSCresponderNode(n, '/mirrowEffect2', { |t,r,msg|
-	OF.effect("mirrowEffect2", msg[1]); 
+~mirrorEffectCase1Resp.remove;
+~mirrorEffectCase1Resp = OSCresponderNode(n, '/mirrorEffect1', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirror", 1);
+		OF.effect("mirror", "case", 1); 
+	},{
+		//OF.effect("mirror", 0);
+	});
 }).add;
+
+~mirrorEffectCase2Resp.remove;
+~mirrorEffectCase2Resp = OSCresponderNode(n, '/mirrorEffect2', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirror", 1);
+		OF.effect("mirror", "case", 2); 
+	},{
+		//OF.effect("mirror", 0);
+	});
+}).add;
+
+~mirrorEffectCase3Resp.remove;
+~mirrorEffectCase3Resp = OSCresponderNode(n, '/mirrorEffect3', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirror", 1);
+		OF.effect("mirror", "case", 3); 
+	},{
+		//OF.effect("mirror", 0);
+	});
+}).add;
+
 
 ~thisProcessStopResp.remove;
 ~thisProcessStopResp = OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
@@ -535,6 +600,40 @@
 	0.04.wait;
 	}
 }.fork
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //:==================
 //:OTHER STUFF

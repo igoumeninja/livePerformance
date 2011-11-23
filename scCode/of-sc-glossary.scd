@@ -42,7 +42,10 @@ OF.particle("dotColor",255,255,0);		//	RGB
 OF.particle("conColor",255,0,255,225);		//	RGBA
 OF.particle("conColor",255,0,0);				//	RGB
 
-OF.particle("bounce", 100, 100, 800, 1500);					
+OF.particle("bounce", 100, 100, 800, 1500);			
+
+OF.particle("pushParticles", 0);					//	0:DON'T PUSH, 1: PUSH 
+OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)		
 
 TYPOGRAPHY
 ----------
@@ -56,13 +59,11 @@ OF.feedback("speedXY", 0.5,0);
 EFFECTS
 =======
 OF.effect("destruct","activate",1)
-OF.effect("destruct","case",3)	//0,1,2,3
+OF.effect("destruct","case",2)	// 2: the best 0,1,2,3
 
-OF.effect("noiseEffect", 0); // with z0re is clearing the background
-OF.background(0,0,0);		//OF.rgb("background",R,G,B,A);
-OF.effect("noiseEffect", "true");
-OF.effect("mirrowEffect", "fasle");	// 2 d copy mirrow
-OF.effect("mirrowEffect2", 1);	// 4-D copy mirrow
+OF.effect("noiseEffect", 0); 	// with z0re is clearing the background
+OF.effect("mirror", 1); 	
+OF.effect("mirror", "case", 2); 
 OF.effect("tree");
 
 WFAE
@@ -98,9 +99,10 @@ OF.img(image
 VIDEO
 -----
 OF.video("playVideo",1)
-OF.video("setSpeed",1)
-OF.video("deleteVideo")
 OF.video("reloadVideo")
+OF.video("playVideo",1,~width/8,~height/8)	//width,height
+OF.video("deleteVideo")
+OF.video("setSpeed",1)
 OF.video("rVideo", 255)
 OF.video("gVideo", 115)
 OF.video("bVideo", 5)

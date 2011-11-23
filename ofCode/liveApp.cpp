@@ -1,6 +1,6 @@
 /*
  
- Preapering AudioVisual Performance at Lyon
+ Preapering AudioVisual Performance at Lyon-Grenoble
  
  Aris Bezas 
  Igoumeninja 28-10-2011
@@ -70,9 +70,12 @@ void liveApp::setup()	{
 	}
 	}	// memAlloc
 	{
+		//video
+		videoX=videoY=0;
 		//destruct
 		destruct = 0;
 		destructCase = 1;
+		
 		//camera
 		camera=false;
 		
@@ -240,7 +243,7 @@ void liveApp::setup()	{
 		w = 1280;
 		h = 1024;
 		
-		mirrowEffect2 = false;
+		mirrowEffect4 = false;
 		texMirrow.allocate(w,h, GL_RGB);
 
 		noiseEffect = false;
@@ -538,8 +541,19 @@ void liveApp::update()	{
 	}	//  images	
 	if ( m.getAddress() == "video")					{
 		if (m.getArgAsString(0) == "playVideo")		{
-			
-			playVideo = m.getArgAsInt32(1);
+			switch (m.getNumArgs()) {
+				case 2:
+					playVideo = m.getArgAsInt32(1);
+					break;
+				case 4:
+					playVideo = m.getArgAsInt32(1);
+					videoW = m.getArgAsInt32(2);
+					videoH = m.getArgAsInt32(3);					
+					break;
+				default:
+					break;
+			}
+
 
 		}
 		else if (m.getArgAsString(0) == "setSpeed") myVideo->setSpeed(m.getArgAsFloat(1));
@@ -563,7 +577,10 @@ void liveApp::update()	{
 		else if (m.getArgAsString(0) == "reloadVideo")		{
 			myVideo = new ofVideoPlayer();
 			myVideo->loadMovie("/Users/ari/Media/videos/maps/grenoble.mov");
-			myVideo->setSpeed(4);
+			videoW=myVideo->width;
+			videoH=myVideo->height;
+
+			//myVideo->setSpeed(4);
 			myVideo->play();
 			//myVideo.loadMovie("/Users/ari/Media/videos/maps/grenobleY.mov");
 			
@@ -700,18 +717,22 @@ void liveApp::update()	{
 			} else if (m.getArgAsString(1) == "case") {
 				destructCase = m.getArgAsInt32(2);
 			}
-		}	else if ( m.getArgAsString(0) == "mirrowEffect1" ) {
-				if (m.getArgAsInt32(1) == 1) {
-					mirrowEffect1 = true;
-				} else {
-					mirrowEffect1 = false;
-				}
-		}	else if ( m.getArgAsString(0) == "mirrowEffect2" ) {
-			if (m.getArgAsInt32(1) == 1) {
-				mirrowEffect2 = true;
-			} else {
-				mirrowEffect2 = false;
-			}				
+		}	else if ( m.getArgAsString(0) == "mirror" ) {
+			switch (m.getNumArgs()) {
+				case 2:
+					if (m.getArgAsInt32(1) == 1) {
+						mirrorEffect = true;
+					} else {
+						mirrorEffect = false;
+					}					
+					break;
+				case 3:
+					mirrorEffectCase = m.getArgAsInt32(2);
+					break;
+
+				default:
+					break;
+			}
 		}	else {
 			cout << "Write a new effect";
 		}
@@ -843,22 +864,23 @@ void liveApp::update()	{
 	}	
 }
 void liveApp::draw()	{
-	if (camera) {
+	if (camera)										{
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
 		ofRotateX(mouseY);
 		ofRotateY(mouseX);
-	}
-	if (view_fillBackground)	{
+	}	//	camera
+	if (view_fillBackground)						{
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
 		ofFill();	
 		ofSetColor(rBack, gBack, bBack, aBack);
 		ofRect(0,0,ofGetWidth(),ofGetHeight());			
 	}	//	background	
-	if (playVideo)				{
+	if (playVideo)									{
 		myVideo->idleMovie();
 		ofSetColor(rVideo,gVideo,bVideo,aVideo);		
-		myVideo->draw(0,0);
+		//myVideo->draw(0,0,ofGetWidth()/4,ofGetWidth()/4);
+		myVideo->draw(videoX,videoY,videoW,videoH);
 	}	//  Play Video
 	if (viewParticles)								{
         particleSystem.setTimeStep(timeStep);
@@ -993,44 +1015,164 @@ void liveApp::draw()	{
 		ofSetHexColor(0xffffff);
 		texGray.draw(0, 0, w, h);
 	}	//  Noise Effect
-	if (mirrowEffect1)								{
-		//		ofSetHexColor(0xffffff);
-		//		image[21].draw(0, 0,w,h);
-		texMirrow.loadScreenData(0, 0,	w/2, h);
-		
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(w,0,0);
-		glRotatef(180, 0, 1.0f, 0);
-		texMirrow.draw(0,0,w/2,h);
-		glPopMatrix();
-	}	//	Mirrow Effect
-	if (mirrowEffect2)								{
-		texMirrow.loadScreenData(0, 0,	w/2, h/2);
-		
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(w,0,0);
-		glRotatef(180, 0, 1.0f, 0);
-		texMirrow.draw(0,0,w/2,h/2);
-		glPopMatrix();
-		
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(0,h,0);
-		glRotatef(180, 1.0f, 0, 0);
-		texMirrow.draw(0,0,w/2,h/2);
-		glPopMatrix();
-		
-		glPushMatrix();
-		ofSetHexColor(0xffffff);
-		glTranslatef(w,h,0);
-		glRotatef(180, 0,0,1.0f);
-		texMirrow.draw(0,0,w/2,h/2);
-		glPopMatrix();
-		
-	}	//	The best Mirrow Effect	
-	
+	if (mirrorEffect)								{
+		switch (mirrorEffectCase) {
+			case 0:
+				texMirrow.loadScreenData(0, 0,	w/2, h);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/2,h);
+				glPopMatrix();
+				break;
+			case 1:
+				texMirrow.loadScreenData(0, 0,	w/2, h/2);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,h,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				break;
+			case 2:
+				texMirrow.loadScreenData(0, 0,	w/4, h/4);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/2,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h/2,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/2,h/2,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				texMirrow.loadScreenData(0, 0,	w/2, h/2);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,h,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				break;
+			case 3:
+				texMirrow.loadScreenData(0, 0,	w/8, h/8);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/4,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/8,h/8);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h/4,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/8,h/8);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/4,h/4,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/8,h/8);
+				glPopMatrix();
+				
+				texMirrow.loadScreenData(0, 0,	w/4, h/4);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/2,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h/2,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/2,h/2,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				texMirrow.loadScreenData(0, 0,	w/2, h/2);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,h,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				break;
+
+			default:
+				break;
+		}
+	}	//	Mirrow Effect			
 }
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   
