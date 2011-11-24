@@ -344,8 +344,8 @@
 	OF.rgb("sketch",255,255,255,~aPadSpec.map(msg[1]).asInteger);
 } ).add; 
 
-~mouseLinesResp.remove;
-~mouseLinesResp = OSCresponderNode(n, '/mouseLines', { | time, resp, msg| 
+~padSketchTypeResp.remove;
+~padSketchTypeResp = OSCresponderNode(n, '/padSketchType', { | time, resp, msg| 
 	OF.interactWithSketch("mouseLines",msg[1].asInteger);
 } ).add; 
 
@@ -428,16 +428,31 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 
 ~redConTaskResp.remove;
 ~redConTaskResp = OSCresponderNode(n, '/redConTask', { | time, resp, msg|
-	if( msg[1] == 1,{
-		OF.particle("conColor", 255,0,0);
-		OF.particle("particleNeighborhood", 0);		
-		OF.particle("push", 100,400);				
-		OF.particle("pushParticles", 1);				
+	{
+	OF.particle("conColor", 255,0,0);
+	OF.particle("particleNeighborhood", 0);		
+	OF.particle("push", rrand(0,~width).asInteger, rrand(0, ~height).asInteger);				
+	OF.particle("pushParticles", 1);				
+	0.04.wait;
+	OF.particle("conColor", 255,255,255);
+	OF.particle("particleNeighborhood", 35);		
+	OF.particle("pushParticles", 0);					
+	}.fork;
+}).add; 
 
+~bombsTask = Task({
+	inf.do({
+		OF.particle("push", (~width*0.75).asInteger, (~height/2).asInteger);		0.4.wait;	
+		OF.particle("push",(~width*0.25).asInteger, (~height/2).asInteger);		0.4.wait;			
+	});
+});
+
+~bombsResp.remove;
+~bombsResp = OSCresponderNode(n, '/bombs', { | time, resp, msg|
+	if(msg[1] == 1,{
+		~bombsTask.play;
 	},{
-		OF.particle("conColor", 255,255,255);
-		OF.particle("particleNeighborhood", 15);		
-		OF.particle("pushParticles", 0);					
+		~bombsTask.free;
 	});
 }).add; 
 
@@ -541,13 +556,41 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 	OF.feedback("speedXY", ~xFeedbackSpec.map(msg[1]), ~yFeedbackSpec.map(msg[2]));
 } ).add; 
 
+
+~destructEffect.remove;
+~destructEffect = OSCresponderNode(n, '/destructEffect', { |t,r,msg|
+	OF.effect("destruct", "activate", msg[1]);
+}).add;
+
+~destructEffect0.remove;
+~destructEffect0 = OSCresponderNode(n, '/destructEffect0', { |t,r,msg|
+	OF.effect("destruct", "case", 0);
+}).add;
+
+~destructEffect1.remove;
+~destructEffect1 = OSCresponderNode(n, '/destructEffect1', { |t,r,msg|
+	OF.effect("destruct", "case", 1);
+}).add;
+
+~destructEffect2.remove;
+~destructEffect2 = OSCresponderNode(n, '/destructEffect2', { |t,r,msg|
+	OF.effect("destruct", "case", 2);
+}).add;
+
+~mirrorEffect.remove;
+~mirrorEffect = OSCresponderNode(n, '/mirrorEffect', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirror", 1);
+	},{
+		OF.effect("mirror", 0);
+	});
+}).add;
+
 ~mirrorEffectCase0Resp.remove;
 ~mirrorEffectCase0Resp = OSCresponderNode(n, '/mirrorEffect0', { |t,r,msg|
 	if( msg[1] == 1,{
 		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 0); 
-	},{
-		//OF.effect("mirror", 0);
 	});
 }).add;
 
@@ -556,8 +599,6 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 	if( msg[1] == 1,{
 		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 1); 
-	},{
-		//OF.effect("mirror", 0);
 	});
 }).add;
 
@@ -566,8 +607,6 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 	if( msg[1] == 1,{
 		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 2); 
-	},{
-		//OF.effect("mirror", 0);
 	});
 }).add;
 
@@ -576,8 +615,6 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 	if( msg[1] == 1,{
 		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 3); 
-	},{
-		//OF.effect("mirror", 0);
 	});
 }).add;
 
