@@ -686,17 +686,37 @@ void liveApp::update()	{
 		}
 		//ofBackground(rBack, gBack, bBack);
 	}	//	background						
+	if ( m.getAddress() == "rect" )					{
+		switch (m.getNumArgs())	{
+			case 4:
+				ofFill();
+				ofSetColor(0, 0, 0);
+				ofRect(m.getArgAsInt32(0), m.getArgAsInt32(1), m.getArgAsInt32(2), m.getArgAsInt32(3));
+				break;
+		}
+	}	//	rect
 	if ( m.getAddress() == "writeString" )			{
-
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
-		ofFill();
-		ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
-		ofPushMatrix();
-		ofTranslate(m.getArgAsInt32( 1 ), m.getArgAsInt32(2), 0);
-		myFont11.drawString(m.getArgAsString( 0 ), 0, 0);		
-		ofPopMatrix();
+		if (m.getArgAsString(0) == "bigCenter") {
+			//OF.writeString("bigCenter", "~sadfh",~width/2,~height/2,255,0,0,255); 
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+			ofFill();
+			ofSetColor(m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ),m.getArgAsInt32( 7 ));
+			ofPushMatrix();
+			ofTranslate(m.getArgAsInt32( 2 ), m.getArgAsInt32(3), 0);
+			myFont350.drawString(m.getArgAsString( 1 ), 0, 0);		
+			ofPopMatrix();
+			
+		} else	{
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+			ofFill();
+			ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
+			ofPushMatrix();
+			ofTranslate(m.getArgAsInt32( 1 ), m.getArgAsInt32(2), 0);
+			myFont11.drawString(m.getArgAsString( 0 ), 0, 0);		
+			ofPopMatrix();
+		}		
 		
-	}	//	Write a string
+	}	//	Typography
 	if ( m.getAddress() == "effect" )				{
 		if ( m.getArgAsString(0) == "tree" )		{
 			glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
@@ -708,7 +728,7 @@ void liveApp::update()	{
 					noiseEffect = false;
 				}
 		}	else if ( m.getArgAsString(0) == "destruct" ) {
-			if (m.getArgAsString(1) == "activate") {
+			if (m.getArgAsString(1)	== "activate") {
 				if (m.getArgAsInt32(2) == 1) {
 					destruct = true;
 				} else {
@@ -716,6 +736,13 @@ void liveApp::update()	{
 				}
 			} else if (m.getArgAsString(1) == "case") {
 				destructCase = m.getArgAsInt32(2);
+			} else if (m.getArgAsString(1) == "phrase1") {
+				//cout << "ok" << endl;
+				for (int i = 0; i<10; i++) {
+					ofSetColor(255,255,255,255);
+					texScreen.loadScreenData(0,0,ofGetWidth(),ofGetHeight());
+					texScreen.draw(int(ofRandom(0,1400)),int(ofRandom(0,1400)),500,500);
+				}
 			}
 		}	else if ( m.getArgAsString(0) == "mirror" ) {
 			switch (m.getNumArgs()) {
@@ -1168,7 +1195,99 @@ void liveApp::draw()	{
 				texMirrow.draw(0,0,w/2,h/2);
 				glPopMatrix();
 				break;
-
+			case 4:
+				texMirrow.loadScreenData(0, 0,	w/16, h/16);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/8,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/16,h/16);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h/8,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/16,h/16);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/8,h/8,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/16,h/16);
+				glPopMatrix();
+				texMirrow.loadScreenData(0, 0,	w/16, h/16);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/8,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/16,h/16);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h/8,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/16,h/16);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/8,h/8,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/16,h/16);
+				glPopMatrix();
+				
+				texMirrow.loadScreenData(0, 0,	w/4, h/4);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/2,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h/2,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w/2,h/2,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				texMirrow.loadScreenData(0, 0,	w/2, h/2);
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(0,h,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				ofSetHexColor(0xffffff);
+				glTranslatef(w,h,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				break;
+				
 			default:
 				break;
 		}

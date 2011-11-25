@@ -2,6 +2,13 @@
 
 // ==================
 // GENERAL
+
+~thisProcessStopResp.remove;
+~thisProcessStopResp = OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
+	thisProcess.stop;
+}).add;
+
+
 ~blackBackgroundResp.remove;~blackBackgroundResp = OSCresponderNode(n, '/blackBackground', { |t,r,msg| 
 	OF.background(0,0,0);				
 }).add;
@@ -160,6 +167,12 @@
 	});
 }).add;
 
+
+~upLeftImageResp.remove;
+~upLeftImageResp = OSCresponderNode(n, '/upLeftImage', { |t,r,msg| 
+	//OF.img(rrand(0,60).asInteger, 0, 0, ~width/8, ~height/8);
+	OF.img(rrand(0,60).asInteger, 0, 0, 100,100);
+}).add;
 
 // ==================
 // SOUND INTERACTION
@@ -479,14 +492,16 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 ~pushParticlesResp.remove;
 ~pushParticlesResp = OSCresponderNode(n, 'pushParticles', { |time, resp, msg| 
 	OF.particle("push",rrand(0,~width).asInteger, rrand(0,~height).asInteger);
-	OF.particle("forceRadius", rrand(50,100).asInteger);
 }).add; 
 
+
+// FFT THRESHOLD
 ~pushParticlesThresholdSpec = ControlSpec(0.0, 1.0, \lin);
 ~pushParticlesThresholdResp.remove;
-~pushParticlesThresholdResp = OSCresponderNode(n, 'pushParticlesThreshold', { |time, resp, msg| 
+~pushParticlesThresholdResp = OSCresponderNode(n, 'fftThreshold', { |time, resp, msg| 
 	~fftPushParticlesTriger.set(\threshold, ~pushParticlesThresholdSpec.map(msg[1]));
 	~fftImageTrigger.set(\threshold, ~pushParticlesThresholdSpec.map(msg[1]));
+	~fftDestrucrtTrigger.set(\threshold, ~pushParticlesThresholdSpec.map(msg[1]));
 }).add; 
 
 
@@ -564,17 +579,37 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 
 ~destructEffect0.remove;
 ~destructEffect0 = OSCresponderNode(n, '/destructEffect0', { |t,r,msg|
-	OF.effect("destruct", "case", 0);
+	if( msg[1] == 1,{
+		OF.effect("destruct", "case", 0);
+	});
 }).add;
 
 ~destructEffect1.remove;
 ~destructEffect1 = OSCresponderNode(n, '/destructEffect1', { |t,r,msg|
-	OF.effect("destruct", "case", 1);
+	if( msg[1] == 1,{
+		OF.effect("destruct", "case", 1);
+	});
 }).add;
 
 ~destructEffect2.remove;
 ~destructEffect2 = OSCresponderNode(n, '/destructEffect2', { |t,r,msg|
-	OF.effect("destruct", "case", 2);
+	if( msg[1] == 1,{
+		OF.effect("destruct", "case", 2);
+	});
+}).add;
+
+~destructEffect3.remove;
+~destructEffect3 = OSCresponderNode(n, '/destructEffect3', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("destruct", "case", 3);
+	});
+}).add;
+
+~destructEffect4.remove;
+~destructEffect4 = OSCresponderNode(n, '/destructEffect4', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("destruct", "case", 4);
+	});
 }).add;
 
 ~mirrorEffect.remove;
@@ -589,7 +624,6 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 ~mirrorEffectCase0Resp.remove;
 ~mirrorEffectCase0Resp = OSCresponderNode(n, '/mirrorEffect0', { |t,r,msg|
 	if( msg[1] == 1,{
-		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 0); 
 	});
 }).add;
@@ -597,7 +631,6 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 ~mirrorEffectCase1Resp.remove;
 ~mirrorEffectCase1Resp = OSCresponderNode(n, '/mirrorEffect1', { |t,r,msg|
 	if( msg[1] == 1,{
-		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 1); 
 	});
 }).add;
@@ -605,7 +638,6 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 ~mirrorEffectCase2Resp.remove;
 ~mirrorEffectCase2Resp = OSCresponderNode(n, '/mirrorEffect2', { |t,r,msg|
 	if( msg[1] == 1,{
-		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 2); 
 	});
 }).add;
@@ -613,19 +645,21 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 ~mirrorEffectCase3Resp.remove;
 ~mirrorEffectCase3Resp = OSCresponderNode(n, '/mirrorEffect3', { |t,r,msg|
 	if( msg[1] == 1,{
-		OF.effect("mirror", 1);
 		OF.effect("mirror", "case", 3); 
 	});
 }).add;
 
-
-~thisProcessStopResp.remove;
-~thisProcessStopResp = OSCresponderNode(n, '/thisProcessStop', { |t,r,msg|
-	thisProcess.stop;
+~mirrorEffectCase4Resp.remove;
+~mirrorEffectCase4Resp = OSCresponderNode(n, '/mirrorEffect4', { |t,r,msg|
+	if( msg[1] == 1,{
+		OF.effect("mirror", "case", 4); 
+	});
 }).add;
 
 ~treeEffectResp.remove;~treeEffectResp = OSCresponderNode(n, '/treeEffect', { | time, resp, msg|
-	OF.effect("tree");
+	if(msg[1] == 1,{
+		OF.effect("tree");
+	})
 }).add; 
 
 

@@ -8,6 +8,7 @@ BACKGROUND
 OF.background(0,0,0,20);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
+OF.rect(100,100,200,200)	//x,y,width,height
 
 SKETCH
 ------
@@ -49,7 +50,8 @@ OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 TYPOGRAPHY
 ----------
-OF.writeString("string",100,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);Ê
+OF.writeString("string",500,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);Ê
+OF.writeString("bigCenter", "~sadfh",~width/2,~height/2,255,255,255,255); // BIG 
 
 FEEDBACK
 --------
@@ -60,6 +62,7 @@ EFFECTS
 =======
 OF.effect("destruct","activate",1)
 OF.effect("destruct","case",2)	// 2: the best 0,1,2,3
+OF.effect("destruct","phrase1")	// 2: the best 0,1,2,3
 
 OF.effect("noiseEffect", 0); 	// with z0re is clearing the background
 OF.effect("mirror", 1); 	
