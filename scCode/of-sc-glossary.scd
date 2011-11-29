@@ -108,17 +108,18 @@ OF.video("deleteVideo")
 OF.video("setSpeed",1)
 OF.video("rVideo", 255)
 OF.video("gVideo", 115)
-OF.video("bVideo", 5)
+OF.video( )
 OF.video("aVideo", 255)
 OF.video("colorVideo", 255,255,255,255)
 
 SPECTROGRAPH
 ------------
-SendSpectrogramData.new;
+OF.playSpectro("activate", 1);
 SendSpectrogramData.new;
 ~ter.stopPoller
-{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.5))}.play  //!!!!FEEDBACK!!!!!!
-
+//:-
+{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.3))}.play  //!!!!FEEDBACK!!!!!!
+//:-
 SUPERFORMULA
 ------------
 m=int(random(3,40));

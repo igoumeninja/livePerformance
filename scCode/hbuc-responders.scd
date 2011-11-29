@@ -212,13 +212,13 @@
 	OF.interactWithSound("numSoundSketches", ~numSoundSketchesSpec.map(msg[1]).asInteger);
 } ).add; 
 
-~maxFreqInSpec = ControlSpec(20, 2000, \lin);
+~maxFreqInSpec = ControlSpec(20, 3000, \lin);
 ~maxFreqInResp.remove;
 ~maxFreqInResp = OSCresponderNode(n, '/maxFreqIn', { | time, resp, msg| 
 	OF.interactWithSound("maxFreqIn", ~maxFreqInSpec.map(msg[1]));
 } ).add; 
 
-~maxAmpInSpec = ControlSpec(0.001, 0.5, \lin);
+~maxAmpInSpec = ControlSpec(0.001, 1, \lin);
 ~maxAmpInResp.remove;
 ~maxAmpInResp = OSCresponderNode(n, '/maxAmpIn', { | time, resp, msg| 
 	OF.interactWithSound("maxAmpIn", ~maxAmpInSpec.map(msg[1]));
@@ -496,7 +496,7 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 
 
 // FFT THRESHOLD
-~pushParticlesThresholdSpec = ControlSpec(0.0, 1.0, \lin);
+~pushParticlesThresholdSpec = ControlSpec(0.0, 2.0, \lin);
 ~pushParticlesThresholdResp.remove;
 ~pushParticlesThresholdResp = OSCresponderNode(n, 'fftThreshold', { |time, resp, msg| 
 	~fftPushParticlesTriger.set(\threshold, ~pushParticlesThresholdSpec.map(msg[1]));

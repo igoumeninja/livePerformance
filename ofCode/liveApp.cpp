@@ -234,7 +234,7 @@ void liveApp::setup()	{
 	{		
 		textureRed = textureGreen = textureBlue = textureAlpha = 255;
 		reverseEllipse = ofGetWidth();	reverseTexture = -1;
-		mirrorMode = 111116;
+		mirrorMode = -2;
 		spectroRed = spectroGreen = spectroBlue = 1;	
 	}	// Spectro	
 	{
@@ -267,6 +267,12 @@ void liveApp::update()	{
 	{
 	ofxOscMessage m;
 	receiver.getNextMessage( &m ); 
+	if ( m.getAddress() == "playSpectro")			{
+		if (m.getArgAsString(0) == "activate") {
+			playSpectro = m.getArgAsInt32(1);
+			cout << playSpectro << endl;
+		}
+	}
 	if (playSpectro)								{
 		if ( m.getAddress() == "/fftpixels" )			{
 		switch ( mirrorMode )
@@ -303,6 +309,7 @@ void liveApp::update()	{
 				// fire colors
 			case -2:
 				for (int i=0; i<512; i++)	{
+					cout << "ok" << endl;
 					data[i] = m.getArgAsFloat( i );
 					glColor3f(spectroRed*data[i],0,0);
 					ofEllipse(reverseEllipse,512-i,2,2);
