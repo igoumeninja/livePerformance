@@ -48,7 +48,7 @@ public:
 	
 	//========================
 	//	SOUND
-	int playSpectro,mirrorMode;;
+	int playSpectro,mirrorMode, count;
 	float spectroRed,spectroGreen,spectroBlue,spectroAlpha;
 	float textureRed, textureGreen, textureBlue, textureAlpha, reverseEllipse, reverseTexture ;
 	float	data[1024];

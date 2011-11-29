@@ -24,7 +24,7 @@ void liveApp::setup()	{
 			this->windowHeight = ofGetScreenHeight();  
 		} 
 		
-		ofSetCircleResolution(200);
+		//ofSetCircleResolution(200);
 		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGB);// GL_RGBA); 
 		ofSetBackgroundAuto(false);
 		ofEnableSmoothing();
@@ -72,6 +72,7 @@ void liveApp::setup()	{
 	{
 		//video
 		videoX=videoY=0;
+		
 		//destruct
 		destruct = 0;
 		destructCase = 1;
@@ -92,7 +93,7 @@ void liveApp::setup()	{
 		angleOffsetB = (50*3.14)/180;  // Convert 50 degrees to radians
 		
 		//background
-		aBack = 15;
+		aBack = 0;
 		view_fillBackground = 1;
 		
 		//sound
@@ -171,7 +172,7 @@ void liveApp::setup()	{
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
 	}	// data (images, fonts, video ...)
-	{
+ 	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
 			sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));	//to 1o stoixeio einai to id 0:
 			sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping));	//id:1 => mouse init(int sketchID, float elast, float aposv)
@@ -183,6 +184,11 @@ void liveApp::setup()	{
 	{
 		playSpectro = 1;
 		rSound = gSound = bSound = aSound = 255;
+		textureRed = textureGreen = textureBlue = textureAlpha = 255;
+		reverseEllipse = ofGetWidth();	reverseTexture = -1;
+		mirrorMode = -2;
+		spectroRed = spectroGreen = spectroBlue = 1;	
+		
 		
 		soundEffectNoto = false;
 	}	// Sound Interaction
@@ -231,12 +237,6 @@ void liveApp::setup()	{
 		
 		
 		}	// Particles
-	{		
-		textureRed = textureGreen = textureBlue = textureAlpha = 255;
-		reverseEllipse = ofGetWidth();	reverseTexture = -1;
-		mirrorMode = -2;
-		spectroRed = spectroGreen = spectroBlue = 1;	
-	}	// Spectro	
 	{
 //		w = ofGetWidth();
 //		h = ofGetHeight();
@@ -271,26 +271,43 @@ void liveApp::update()	{
 		if (m.getArgAsString(0) == "activate") {
 			playSpectro = m.getArgAsInt32(1);
 			cout << playSpectro << endl;
+		} else if (m.getArgAsString(0) == "mirrorMode") {
+			mirrorMode = m.getArgAsInt32(1);
 		}
 	}
 	if (playSpectro)								{
 		if ( m.getAddress() == "/fftpixels" )			{
 		switch ( mirrorMode )
 		{
-				// full screen normal spectro
-			case 111116:
+			// CIRCLE !!!!!!!!!!!!!!!!
+			case -4:
 				for (int i=0; i<512; i++)	{
-					//data[i] = m.getArgAsFloat( i );
+					data[i] = m.getArgAsFloat( i );
 					glColor3f(m.getArgAsFloat( i ), 0, 0);
-					ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
+					ofEllipse(ofGetWidth()/2,ofMap(i, 512, 0, 0.0, ofGetWidth()/2),2,2);
 				}
+				texScreen.loadScreenData(ofGetWidth()/2-1, 0, ofGetWidth()/2+1, ofGetHeight()/2);
+				ofPushMatrix();
+				ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
+				ofRotateZ(count);
+				ofSetColor(255,255,255,10);
+				texScreen.draw(ofGetWidth()/2-1, 0, ofGetWidth()/2+1, ofGetHeight()/2);
+				ofPopMatrix();
 				
 				
+//				glPushMatrix();
+//				glTranslatef(ofGetWidth()/2, 0, 0);							
+//				glRotatef(count, 0, 0, 1);
+//				texScreen.draw(ofGetWidth()/2-1, 0, ofGetWidth()/2+1, ofGetHeight()/2);
+//				glPopMatrix();
+
 				
+				count=count+1;
 				
+				//ofPopMatrix();
 				break;
-				
-				
+				// LINES - ALVA NOTO - inspiration
+
 			case -20:
 				for (int i=0; i<512; i++)	{
 					data[i] = m.getArgAsFloat( i );
@@ -309,7 +326,6 @@ void liveApp::update()	{
 				// fire colors
 			case -2:
 				for (int i=0; i<512; i++)	{
-					cout << "ok" << endl;
 					data[i] = m.getArgAsFloat( i );
 					glColor3f(spectroRed*data[i],0,0);
 					ofEllipse(reverseEllipse,512-i,2,2);
@@ -424,11 +440,41 @@ void liveApp::update()	{
 			case 5:
 				for (int i=0; i<512; i++)	{
 					data[i] = m.getArgAsFloat( i );
-					glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-					ofLine(0,i,ofGetWidth(),i);
+					glColor3f(spectroRed*data[i],0,0);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					
 				}
-				break;
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
 				
+				break;
+				// fire colors
+			case 6:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],0,0);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					ofEllipse(reverseEllipse,512+i,2,2);
+					glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+					ofEllipse(reverseEllipse,512-i,2,2);
+					ofEllipse(reverseEllipse,512+i,2,2);						
+					
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+				
+				break;
+			case 7:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(m.getArgAsFloat( i ), 0, 0);
+					ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
+				}
+				break;				
 			default:
 				cout << "default";
 		}

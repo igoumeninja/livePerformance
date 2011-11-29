@@ -5,7 +5,7 @@
 
 BACKGROUND
 ----------
-OF.background(0,0,0,20);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
@@ -61,12 +61,12 @@ OF.feedback("speedXY", 0.5,0);
 EFFECTS
 =======
 OF.effect("destruct","activate",1)
-OF.effect("destruct","case",2)	// 2: the best 0,1,2,3
+OF.effect("destruct","case",1)	// 2: the best 0,1,2,3
 OF.effect("destruct","phrase1")	// 2: the best 0,1,2,3
 
 OF.effect("noiseEffect", 0); 	// with z0re is clearing the background
-OF.effect("mirror", 1); 	
-OF.effect("mirror", "case", 2); 
+OF.effect("mirror", 0); 	
+OF.effect("mirror", "case", 1); 
 OF.effect("tree");
 
 WFAE
@@ -115,10 +115,19 @@ OF.video("colorVideo", 255,255,255,255)
 SPECTROGRAPH
 ------------
 OF.playSpectro("activate", 1);
+OF.playSpectro("mirrorMode", 3);
+cases:
+0 : White from Right
+1 : White from Right - Mirror
+3 : White from Center - two directions - Mirror
+4 : White from Two Centers - Mirror
+5 : Fire Colors from Right
+6 : Fire Colors Mirrow from Right
+7 : Alva Noto Insiration
 SendSpectrogramData.new;
 ~ter.stopPoller
 //:-
-{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.3))}.play  //!!!!FEEDBACK!!!!!!
+{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.9))}.play  //!!!!FEEDBACK!!!!!!
 //:-
 SUPERFORMULA
 ------------
@@ -138,3 +147,19 @@ OF.superformula("n2",14)
 OF.superformula("n3",18)
 OF.superformula("step",36)
 OF.superformula("alpha",0)
+
+SOUND
+-----
+~ataka.stop;
+~ataka = {
+
+	inf.do {
+		~amp = Pseq((1.0..1.0), 2).asStream;
+		~dur = Pseq((1.0..1.0), 2).asStream;
+		~tone = Scale.huzam.degreeToRatio(1, 1);
+		~kontraBass.brt_(~tone).playBuf(0.001, 0.5, 0.3,mul:~amp.next, loop:0);
+		~dur.next.wait;
+	}
+}.fork;
+
+
