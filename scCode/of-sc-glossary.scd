@@ -127,8 +127,9 @@ cases:
 SendSpectrogramData.new;
 ~ter.stopPoller
 //:-
-{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.9))}.play  //!!!!FEEDBACK!!!!!!
+{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.9))}.play  //!!!!FEEDBACK MUTE!!!!!!
 //:-
+
 SUPERFORMULA
 ------------
 m=int(random(3,40));
