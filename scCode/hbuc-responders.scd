@@ -662,6 +662,70 @@ OSCresponderNode(n, '/pushXY', { | time, resp, msg|
 	})
 }).add; 
 
+//:SPECTRO
+{
+OF.background(0,0,0,0);
+0.04.wait;
+OF.playSpectro("activate", 1);
+0.04.wait;
+OF.playSpectro("mirrorMode", 9);
+0.04.wait;		
+SendSpectrogramData.new;
+0.04.wait;		
+k = {Out.ar(0, Pan2.ar(In.ar(8), 0, 0.9))}.play;
+0.04.wait;		
+}.fork;
+
+//:Stop INPUT
+OF.playSpectro("activate", 0);
+k.free;
+
+//:Play Input Again
+{
+OF.playSpectro("activate", 1);
+0.04.wait;
+OF.playSpectro("mirrorMode", 7);
+0.04.wait;		
+k = {Out.ar(0, Pan2.ar(In.ar(8), 0, 0.5))}.play;
+0.04.wait;		
+}.fork;
+
+
+//:Spectro-Responder
+
+~spectroResp.remove;~spectroResp = OSCresponderNode(n, '/spectro', { | time, resp, msg|
+	if(msg[1] == 1,{
+		{
+		OF.playSpectro("activate", 1);
+		0.04.wait;
+		OF.playSpectro("mirrorMode", 9);
+		0.04.wait;		
+		SendSpectrogramData.new;
+		0.04.wait;		
+		0.04.wait;		
+		}.fork;
+	})
+}).add; 
+//:-
+OF.playSpectro("activate", 0);
+k.free
+//:-
+OF.playSpectro("mirrorMode", 7);
+
+cases:
+0 : White from Right
+1 : White from Right - Mirror
+3 : White from Center - two directions - Mirror
+4 : White from Two Centers - Mirror
+5 : Fire Colors from Right
+6 : Fire Colors Mirrow from Right
+7 : Fire Colors Mirrow from Middle
+8 : Alva Noto Insiration
+SendSpectrogramData.new;
+//:-
+{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.9))}.play  //!!!!FEEDBACK MUTE!!!!!!
+//:-
+
 
 //:SUPERFORMULA
 

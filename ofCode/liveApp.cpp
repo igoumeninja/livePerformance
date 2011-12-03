@@ -84,7 +84,7 @@ void liveApp::setup()	{
 		superformula = false;
 		
 		//sketch
-		aSound = 25;
+		aSound = 5;
 		rSketch = gSketch = bSketch = aSketch = 255;
 		 		
 		// Tree
@@ -182,11 +182,11 @@ void liveApp::setup()	{
 
 	}	// sKeTch
 	{
-		playSpectro = 1;
+		playSpectro = 0;
 		rSound = gSound = bSound = aSound = 255;
 		textureRed = textureGreen = textureBlue = textureAlpha = 255;
 		reverseEllipse = ofGetWidth();	reverseTexture = -1;
-		mirrorMode = -2;
+		mirrorMode = 9;
 		spectroRed = spectroGreen = spectroBlue = 1;	
 		
 		
@@ -468,13 +468,53 @@ void liveApp::update()	{
 				texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
 				
 				break;
+				// fire from middle
 			case 7:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],0,0);
+					ofEllipse(ofGetWidth()/2,512-i,2,2);
+					ofEllipse(ofGetWidth()/2,512+i,2,2);
+					glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+					ofEllipse(ofGetWidth()/2,512-i,2,2);
+					ofEllipse(ofGetWidth()/2,512+i,2,2);						
+					
+				}
+				texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+				texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
+				texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+				texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
+				break;
+				
+			case 8:
 				for (int i=0; i<512; i++)	{
 					data[i] = m.getArgAsFloat( i );
 					glColor3f(m.getArgAsFloat( i ), 0, 0);
 					ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
 				}
 				break;				
+			// 768 HEIGHT
+			case 9:
+				for (int i=0; i<512; i++)	{
+					data[i] = m.getArgAsFloat( i );
+					glColor3f(spectroRed*data[i],0,0);
+					ofEllipse(ofGetWidth()/2,512-i,2,2);
+					ofLine(0, 512+i, ofGetWidth(), 512+i);					
+					glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+					ofEllipse(ofGetWidth()/2,512-i,2,2);						
+				}
+				glColor4f(0, 0, 0, 0.1);
+				ofRect(0, 512, ofGetWidth(), ofGetHeight());
+				texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+				texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
+				texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
+				ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+				texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
+				break;
+				
 			default:
 				cout << "default";
 		}

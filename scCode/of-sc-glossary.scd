@@ -5,7 +5,7 @@
 
 BACKGROUND
 ----------
-OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,10);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
@@ -115,7 +115,8 @@ OF.video("colorVideo", 255,255,255,255)
 SPECTROGRAPH
 ------------
 OF.playSpectro("activate", 1);
-OF.playSpectro("mirrorMode", 3);
+OF.playSpectro("mirrorMode", 7);
+
 cases:
 0 : White from Right
 1 : White from Right - Mirror
@@ -123,7 +124,8 @@ cases:
 4 : White from Two Centers - Mirror
 5 : Fire Colors from Right
 6 : Fire Colors Mirrow from Right
-7 : Alva Noto Insiration
+7 : Fire Colors Mirrow from Middle
+8 : Alva Noto Insiration
 SendSpectrogramData.new;
 //:-
 {Out.ar(0, Pan2.ar(In.ar(8), 0, 0.9))}.play  //!!!!FEEDBACK MUTE!!!!!!
