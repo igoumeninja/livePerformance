@@ -5,6 +5,7 @@
  Aris Bezas 
  Igoumeninja 28-10-2011
  
+ ofAppGlutWindow
 */
  
 #include "liveApp.h"
@@ -936,16 +937,21 @@ void liveApp::update()	{
 		if ( m.getAddress() == "mlab" )	{
 			if			( m.getArgAsString(0) == "amp" )		{	ampChan0 = m.getArgAsFloat( 1 );		
 			} else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );
-			} else if	(m.getArgAsString(0) == "loudness" )	{	printf(" %f \n", m.getArgAsFloat( 1 ));		
+			} else if	(m.getArgAsString(0) == "loudness" )	{	
+				glColor3f(1,0,1);
+				ofEllipse(ofGetWidth()/2, ofMap(m.getArgAsFloat( 1 ), 0, 0.5, 512, 0),4,2);				
+				printf(" %f \n", m.getArgAsFloat( 1 ));		
 			} else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		
-			} else if	(m.getArgAsString(0) == "specCentroid" ){	printf(" %f \n", m.getArgAsFloat( 1 ));		
+			} else if	(m.getArgAsString(0) == "specCentroid" ){	
+				glColor3f(1,1,1);
+				ofEllipse(ofGetWidth()/2, ofMap(m.getArgAsFloat( 1 ), 400, 6000, 512, 0),4,2);
+				printf(" %f \n", m.getArgAsFloat( 1 ));		
 			} else if	(m.getArgAsString(0) == "specFlatness" ){	printf(" %f \n", m.getArgAsFloat( 1 ));						
 			} else if	(m.getArgAsString(0) == "fftData" )		{
-	
 				switch ( mirrorMode )
 				{
 					case 0:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
 							ofEllipse(reverseEllipse,512-i,2,2);
@@ -958,7 +964,7 @@ void liveApp::update()	{
 						
 						break;
 					case 1:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
 							ofEllipse(reverseEllipse,512-i,2,2);
@@ -969,7 +975,7 @@ void liveApp::update()	{
 						texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
 						break;
 					case 2:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
 							ofEllipse(0,512-i,2,2);
@@ -981,7 +987,7 @@ void liveApp::update()	{
 						break;
 						
 					case 3:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
 							ofEllipse(ofGetWidth()/2,512-i,2,2);
@@ -995,7 +1001,7 @@ void liveApp::update()	{
 						texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
 						break;
 					case 4:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
 							
@@ -1026,7 +1032,7 @@ void liveApp::update()	{
 						
 						break;
 					case 5:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],0,0);
 							ofEllipse(reverseEllipse,512-i,2,2);
@@ -1041,7 +1047,7 @@ void liveApp::update()	{
 						break;
 						// fire colors
 					case 6:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],0,0);
 							ofEllipse(reverseEllipse,512-i,2,2);
@@ -1058,7 +1064,7 @@ void liveApp::update()	{
 						break;
 						// fire from middle
 					case 7:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],0,0);
 							ofEllipse(ofGetWidth()/2,512-i,2,2);
@@ -1077,7 +1083,7 @@ void liveApp::update()	{
 						break;
 						
 					case 8:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(m.getArgAsFloat( i ), 0, 0);
 							ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
@@ -1085,7 +1091,7 @@ void liveApp::update()	{
 						break;				
 						// 768 HEIGHT
 					case 9:
-						for (int i=0; i<512; i++)	{
+						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],0,0);
 							ofEllipse(ofGetWidth()/2,512-i,2,2);
@@ -1106,8 +1112,6 @@ void liveApp::update()	{
 					default:
 						cout << "default";
 				}
-				
-				printf(" %f \n", m.getArgAsFloat( 1 ));										
 			}
 		}
 

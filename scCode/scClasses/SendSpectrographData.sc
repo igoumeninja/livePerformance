@@ -1,4 +1,7 @@
 /*
+Edit the class from master IZ
+
+Aris Bezas 111216 Igoumeninja
 s.boot;
 f = SendSpectrogramData.new;
 f.stopSending;

@@ -10,6 +10,35 @@ OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
 
+MACHINE LISTENING
+-----------------
+a = SendAmpFreq.new; 	a.start; 	a.stop;  	a.impulseRate(24);
+b = SendOnsets.new;	b.start;	b.stop	b.threshold(1);
+c = SendSpecCentroid.new; 	c.start; 	c.stop; 	c.impulseRate(24);
+d = SendSpecFlatness.new; 	d.start; 	d.stop; 	d.impulseRate(24);
+e = SendLoudness.new;	e.start;	e.stop	e.impulseRate(1);
+
+SPECTROGRAPH
+------------
+OF.playSpectro("activate", 1);
+OF.playSpectro("mirrorMode", 9);
+s.boot;
+f = SendSpectrogramData.new; 
+f.stopSending;
+f.connectToPoller
+x={Out.ar(0,In.ar(8)*0.9)}.play;
+
+cases:
+0 : White from Right
+1 : White from Right - Mirror
+3 : White from Center - two directions - Mirror
+4 : White from Two Centers - Mirror
+5 : Fire Colors from Right
+6 : Fire Colors Mirrow from Right
+7 : Fire Colors Mirrow from Middle
+8 : Alva Noto Insiration
+
+
 SKETCH
 ------
 OF.interactWithSketch("activate", 1);
@@ -17,7 +46,7 @@ OF.interactWithSketch("padSketchXY", 200,200);
 OF.interactWithSketch("mouseLines",0);
 OF.rgb("sketch",255,255,255,20);
 
-OF.interactWithSound("activate",1); 			//	0:DEACTIVATE, 1: ACTIVATE
+OF.interactWithSound("activate",0); 			//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 7);		//	RANGE: 1 -> 999
 OF.interactWithSound("glBeginType",0);			//	0:POINTS, Ê Ê 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
@@ -112,24 +141,6 @@ OF.video( )
 OF.video("aVideo", 255)
 OF.video("colorVideo", 255,255,255,255)
 
-SPECTROGRAPH
-------------
-OF.playSpectro("activate", 1);
-OF.playSpectro("mirrorMode", 9);
-
-cases:
-0 : White from Right
-1 : White from Right - Mirror
-3 : White from Center - two directions - Mirror
-4 : White from Two Centers - Mirror
-5 : Fire Colors from Right
-6 : Fire Colors Mirrow from Right
-7 : Fire Colors Mirrow from Middle
-8 : Alva Noto Insiration
-SendSpectrogramData.new;
-//:-
-{Out.ar(0, Pan2.ar(In.ar(8), 0, 0.9))}.play  //!!!!FEEDBACK MUTE!!!!!!
-//:-
 
 SUPERFORMULA
 ------------
