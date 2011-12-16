@@ -8,6 +8,9 @@ https://github.com/igoumeninja/hbuc/commits/lyon
 Source Code:
 https://github.com/igoumeninja/hbuc/tree/lyon
 
+* SuperCollider link at Extensions
+ln -s /Users/ari/Projects/artistic/AB_Performances/hbuc/scCode/scClasses /Users/ari/Library/Application\ Support/SuperCollider/Extensions
+
 * TODO TODO stuff
 ** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
 ** TODO mathematical poetics

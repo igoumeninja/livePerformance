@@ -97,7 +97,7 @@ void liveApp::setup()	{
 		view_fillBackground = 1;
 		
 		//sound
-		viewSoundChanels = 0;
+		viewSoundChanels = 1;
 		
 		drawWithMouse = 0;
 		numMouseSketches = 99;
@@ -933,56 +933,189 @@ void liveApp::update()	{
 		}
 	}	//	Mouse Interaction		
 	if	(viewSoundChanels)							{			
-			if ( m.getAddress() == "/ampChan0" )	{
-				ampChan0 = m.getArgAsFloat( 0 );
-				//printf(" %f \n", ampChan0);			
+		if ( m.getAddress() == "mlab" )	{
+			if			( m.getArgAsString(0) == "amp" )		{	ampChan0 = m.getArgAsFloat( 1 );		
+			} else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );
+			} else if	(m.getArgAsString(0) == "loudness" )	{	printf(" %f \n", m.getArgAsFloat( 1 ));		
+			} else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		
+			} else if	(m.getArgAsString(0) == "specCentroid" ){	printf(" %f \n", m.getArgAsFloat( 1 ));		
+			} else if	(m.getArgAsString(0) == "specFlatness" ){	printf(" %f \n", m.getArgAsFloat( 1 ));						
+			} else if	(m.getArgAsString(0) == "fftData" )		{
+	
+				switch ( mirrorMode )
+				{
+					case 0:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+							ofEllipse(reverseEllipse,512-i,2,2);
+							//glColor3f(0,0,0);
+							//ofEllipse(reverseEllipse,512+i,2,2);				
+						}
+						texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+						texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+						
+						break;
+					case 1:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+							ofEllipse(reverseEllipse,512-i,2,2);
+							ofEllipse(reverseEllipse,512+i,2,2);				
+						}
+						texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+						texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+						break;
+					case 2:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+							ofEllipse(0,512-i,2,2);
+							ofEllipse(0,512+i,2,2);				
+						}
+						texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+						texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+						break;
+						
+					case 3:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+							ofEllipse(ofGetWidth()/2,512-i,2,2);
+							ofEllipse(ofGetWidth()/2,512+i,2,2);						
+						}
+						texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+						texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
+						texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+						texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
+						break;
+					case 4:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
+							
+							ofEllipse(ofGetWidth()/4,256-i/2,2,2);
+							ofEllipse(ofGetWidth()/4,256+i/2,2,2);						
+							
+							ofEllipse(ofGetWidth()/4,776-i/2,2,2);
+							ofEllipse(ofGetWidth()/4,776+i/2,2,2);						
+							
+							ofEllipse(3*ofGetWidth()/4,256-i/2,2,2);
+							ofEllipse(3*ofGetWidth()/4,256+i/2,2,2);						
+							
+							ofEllipse(3*ofGetWidth()/4,776-i/2,2,2);
+							ofEllipse(3*ofGetWidth()/4,776+i/2,2,2);						
+							
+						}
+						ofSetColor(255,255,255,255);
+						texScreen.loadScreenData(0,0,ofGetWidth()/4, ofGetHeight());
+						texScreen.draw(-1,0);					
+						texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
+						texScreen.draw(ofGetWidth()/4 + 1,0);					
+						
+						texScreen.loadScreenData(ofGetWidth()/4, 0,ofGetWidth()/4, ofGetHeight());
+						texScreen.draw(3*ofGetWidth()/4 + 1,0);					
+						//
+						texScreen.loadScreenData(ofGetWidth()/2, 0, ofGetWidth()/4, ofGetHeight());
+						texScreen.draw(ofGetWidth()/2 - 1,0);
+						
+						break;
+					case 5:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],0,0);
+							ofEllipse(reverseEllipse,512-i,2,2);
+							glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+							ofEllipse(reverseEllipse,512-i,2,2);
+							
+						}
+						texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+						texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+						
+						break;
+						// fire colors
+					case 6:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],0,0);
+							ofEllipse(reverseEllipse,512-i,2,2);
+							ofEllipse(reverseEllipse,512+i,2,2);
+							glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+							ofEllipse(reverseEllipse,512-i,2,2);
+							ofEllipse(reverseEllipse,512+i,2,2);						
+							
+						}
+						texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
+						texScreen.draw(reverseTexture,0,ofGetWidth(), ofGetHeight());
+						
+						break;
+						// fire from middle
+					case 7:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],0,0);
+							ofEllipse(ofGetWidth()/2,512-i,2,2);
+							ofEllipse(ofGetWidth()/2,512+i,2,2);
+							glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+							ofEllipse(ofGetWidth()/2,512-i,2,2);
+							ofEllipse(ofGetWidth()/2,512+i,2,2);						
+							
+						}
+						texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+						texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
+						texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+						texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
+						break;
+						
+					case 8:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(m.getArgAsFloat( i ), 0, 0);
+							ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
+						}
+						break;				
+						// 768 HEIGHT
+					case 9:
+						for (int i=0; i<512; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor3f(spectroRed*data[i],0,0);
+							ofEllipse(ofGetWidth()/2,512-i,2,2);
+							ofLine(0, 512+i, ofGetWidth(), 512+i);					
+							glColor4f(spectroRed*data[i],spectroGreen*data[i],0,data[i]);
+							ofEllipse(ofGetWidth()/2,512-i,2,2);						
+						}
+						glColor4f(0, 0, 0, 0.1);
+						ofRect(0, 512, ofGetWidth(), ofGetHeight());
+						texScreen.loadScreenData(0,0,ofGetWidth()/2, ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+						texScreen.draw(-1,0,ofGetWidth()/2, ofGetHeight());					
+						texScreen.loadScreenData(ofGetWidth()/2, 0,ofGetWidth(), ofGetHeight());
+						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);					
+						texScreen.draw(ofGetWidth()/2 +1,0,ofGetWidth(), ofGetHeight());					
+						break;
+						
+					default:
+						cout << "default";
+				}
+				
+				printf(" %f \n", m.getArgAsFloat( 1 ));										
 			}
-			if ( m.getAddress() == "/ampChan1" )	{
-				ampChan1 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/ampChan2" )	{
-				ampChan2 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/ampChan4" )	{
-				ampChan3 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/ampChan5" )	{
-				ampChan3 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/ampChan6" )	{
-				ampChan3 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/ampChan7" )	{
-				ampChan3 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/freqChan0" )	{
-				freqChan0 = m.getArgAsFloat( 0 );
-				//printf(" %f \n", ampChan0);			
-			}
-			if ( m.getAddress() == "/freqChan1" )	{
-				freqChan1 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/freqChan2" )	{
-				freqChan2 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/freqChan3" )	{
-				freqChan3 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/freqChan4" )	{
-				freqChan0 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/freqChan5" )	{
-				freqChan1 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/freqChan6" )	{
-				freqChan2 = m.getArgAsFloat( 0 );
-			}
-			if ( m.getAddress() == "/freqChan7" )	{
-				freqChan3 = m.getArgAsFloat( 0 );
-			}							
-	}	//	Sound Interaction //sound lines characteristics (channel I)
-	}	
+		}
+
+	}	//	Sound Interaction amp, freq, loudness, onset, specCentroid, specFlatness, fftData 
+	}
 }
+	
+	
 void liveApp::draw()	{
 	if (camera)										{
 		ofPushMatrix();

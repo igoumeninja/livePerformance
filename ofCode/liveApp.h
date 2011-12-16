@@ -52,6 +52,7 @@ public:
 	float spectroRed,spectroGreen,spectroBlue,spectroAlpha;
 	float textureRed, textureGreen, textureBlue, textureAlpha, reverseEllipse, reverseTexture ;
 	float	data[1024];
+	float amp, freq, loudness, onset, specCentroid, specFlatness; 
 	
 	//========================
 	//  OBJECTS
