@@ -12,11 +12,25 @@ OF.rect(100,100,200,200)	//x,y,width,height
 
 MACHINE LISTENING
 -----------------
-a = SendAmpFreq.new; 	a.start; 	a.stop;  	a.impulseRate(24);
-b = SendOnsets.new;	b.start;	b.stop	b.threshold(1);
-c = SendSpecCentroid.new; 	c.start; 	c.stop; 	c.impulseRate(24);
+r = MakeResponders.new;		
+r.all;		
+r.removeResponders;
+
+a = SendAmpFreq.new; 	
+a.start; 	
+a.stop;  
+a.impulseRate(0.5);
+c = SendSpecCentroid.new; 	
+c.start; 	
+c.stop; 	
+c.impulseRate(0.5);
 d = SendSpecFlatness.new; 	d.start; 	d.stop; 	d.impulseRate(24);
-e = SendLoudness.new;	e.start;	e.stop	e.impulseRate(1);
+e = SendLoudness.new;	
+e.start;	
+e.stop;	
+e.impulseRate(24);
+
+b = SendOnsets.new;	b.start;	b.stop	b.threshold(1);
 
 SPECTROGRAPH
 ------------
@@ -24,9 +38,11 @@ OF.playSpectro("activate", 1);
 OF.playSpectro("mirrorMode", 9);
 s.boot;
 f = SendSpectrogramData.new; 
+x={Out.ar(0,In.ar(8)*1.9)}.play;
+x.free
 f.stopSending;
 f.connectToPoller
-x={Out.ar(0,In.ar(8)*0.9)}.play;
+
 
 cases:
 0 : White from Right
@@ -53,7 +69,7 @@ OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
 OF.interactWithSound("maxSoundElasticity",0.1);	//  RANGE: 0 -> 20
-OF.rgb("sound",255,255,55,20);				// 	OF.rgb("sound",r,g,b,a)
+OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 
 PARTICLE
 --------

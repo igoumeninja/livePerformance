@@ -17,13 +17,11 @@ SendOnsets {
 	var <synthPlay;					// the produce process
 	var <addr;				// the address (p5, of ...) for sending the data for drawing
 	var <chan = 0;		// the channel that we detect
-	var <responders;		//	responders 
 
 	*default {
 		if (default.isNil) { default = this.new };  // create default
 		^default;
 	}
-	*removeResponders { this.default.removeResponders; }
 	
 	*new { | server, addr, chan = 0|
 		^super.new.init(server, addr, chan);		
@@ -32,20 +30,8 @@ SendOnsets {
 		server = argServer ?? { Server.default };  //define server
 		addr =  argAddr ?? { NetAddr("127.0.0.1", 12345); }; //localhost, oF port
 		chan = argChan;
-		this.makeResponders;	// call makeResponders
-	}
-	makeResponders {
-		responders = [
-			this.makeOnsetResp		
-		];
-	}
-	makeOnsetResp {		
-		^OSCresponder(server.addr, '/onset',{ arg time,responder,msg;
-			OF.mlab('onset');
-		});
 	}
 	start	{ 
-		responders do: _.add;			
 		if (not(server.serverRunning)) { server.boot };
 		server.doWhenBooted {			
 			 synthListenOnsets = SynthDef(\onsetSynth, { |thres = 1|
@@ -65,9 +51,6 @@ SendOnsets {
 	}
 	threshold		{ |threshold|
 		synthListenOnsets.set(\thres, threshold);	
-	}
-	removeResponders {
-		responders do: _.remove;
 	}
 }
 

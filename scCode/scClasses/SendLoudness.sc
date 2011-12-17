@@ -15,13 +15,11 @@ SendLoudness {
 	var <synthPlay;					// the produce process
 	var <addr;				// the address (p5, of ...) for sending the data for drawing
 	var <chan = 0;		// the channel that we detect
-	var <responders;		//	responders 
 
 	*default {
 		if (default.isNil) { default = this.new };  // create default
 		^default;
 	}
-	*removeResponders { this.default.removeResponders; }
 	
 	*new { | server, addr, chan = 0|
 		^super.new.init(server, addr, chan);		
@@ -30,22 +28,9 @@ SendLoudness {
 		server = argServer ?? { Server.default };  //define server
 		addr =  argAddr ?? { NetAddr("127.0.0.1", 12345); }; //localhost, oF port
 		chan = argChan;
-		this.makeResponders;	// call makeResponders
 	}
-	makeResponders {
-		responders = [
-			this.makeLoudnessResp		
-		];
-	}
-	makeLoudnessResp {		
-		^OSCresponder(server.addr, '/tr',{ arg time,responder,msg;
-			switch(msg[2], 	
-				5, {	OF.mlab('loundess', msg[3]); }  
-			);
-		});
-	}
+
 	start	{ 
-		responders do: _.add;			
 		if (not(server.serverRunning)) { server.boot };
 		server.doWhenBooted {			
 			 synthListenLoudness = SynthDef(\loudness, { |thres = 1, impulseRate = 24|
@@ -65,10 +50,6 @@ SendLoudness {
 	}
 	impulseRate	{ |impulseRateArg|
 		synthListenLoudness.set(\impulseRate, impulseRateArg);
-	}
-	
-	removeResponders {
-		responders do: _.remove;
 	}
 }
 

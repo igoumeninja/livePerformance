@@ -15,13 +15,11 @@ SendSpecFlatness {
 	var <synthPlay;					// the produce process
 	var <addr;				// the address (p5, of ...) for sending the data for drawing
 	var <chan = 0;		// the channel that we detect
-	var <responders;		//	responders 
 
 	*default {
 		if (default.isNil) { default = this.new };  // create default
 		^default;
 	}
-	*removeResponders { this.default.removeResponders; }
 	
 	*new { | server, addr, chan = 0|
 		^super.new.init(server, addr, chan);		
@@ -30,22 +28,9 @@ SendSpecFlatness {
 		server = argServer ?? { Server.default };  //define server
 		addr =  argAddr ?? { NetAddr("127.0.0.1", 12345); }; //localhost, oF port
 		chan = argChan;
-		this.makeResponders;	// call makeResponders
 	}
-	makeResponders {
-		responders = [
-			this.makeCentroidResp		
-		];
-	}
-	makeCentroidResp {		
-		^OSCresponder(server.addr, '/tr',{ arg time,responder,msg;
-			switch(msg[2], 	
-				4, {  OF.mlab('specFlatness', msg[3])} 
-			);
-		});
-	}
+
 	start	{ 
-		responders do: _.add;			
 		if (not(server.serverRunning)) { server.boot };
 		server.doWhenBooted {			
 			 synthListenSpecFlatness = SynthDef(\specFlatness, { |thres = 1, impulseRate = 24|
@@ -67,10 +52,6 @@ SendSpecFlatness {
 	}
 	impulseRate	{ |impulseRateArg|
 		synthListenSpecFlatness.set(\impulseRate, impulseRateArg);
-	}
-	
-	removeResponders {
-		responders do: _.remove;
 	}
 }
 

@@ -939,13 +939,13 @@ void liveApp::update()	{
 			} else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );
 			} else if	(m.getArgAsString(0) == "loudness" )	{	
 				glColor3f(1,0,1);
-				ofEllipse(ofGetWidth()/2, ofMap(m.getArgAsFloat( 1 ), 0, 0.5, 512, 0),4,2);				
+				ofEllipse(ofGetWidth()/2, ofMap(m.getArgAsFloat( 1 ), 0, 30, 512, 0),14,2);				
 				printf(" %f \n", m.getArgAsFloat( 1 ));		
 			} else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		
 			} else if	(m.getArgAsString(0) == "specCentroid" ){	
 				glColor3f(1,1,1);
 				ofEllipse(ofGetWidth()/2, ofMap(m.getArgAsFloat( 1 ), 400, 6000, 512, 0),4,2);
-				printf(" %f \n", m.getArgAsFloat( 1 ));		
+				//printf(" %f \n", m.getArgAsFloat( 1 ));		
 			} else if	(m.getArgAsString(0) == "specFlatness" ){	printf(" %f \n", m.getArgAsFloat( 1 ));						
 			} else if	(m.getArgAsString(0) == "fftData" )		{
 				switch ( mirrorMode )

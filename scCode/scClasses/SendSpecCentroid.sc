@@ -23,7 +23,6 @@ SendSpecCentroid {
 		if (default.isNil) { default = this.new };  // create default
 		^default;
 	}
-	*removeResponders { this.default.removeResponders; }
 	
 	*new { | server, addr, chan = 0|
 		^super.new.init(server, addr, chan);		
@@ -32,22 +31,9 @@ SendSpecCentroid {
 		server = argServer ?? { Server.default };  //define server
 		addr =  argAddr ?? { NetAddr("127.0.0.1", 12345); }; //localhost, oF port
 		chan = argChan;
-		this.makeResponders;	// call makeResponders
 	}
-	makeResponders {
-		responders = [
-			this.makeCentroidResp		
-		];
-	}
-	makeCentroidResp {		
-		^OSCresponder(server.addr, '/tr',{ arg time,responder,msg;
-			switch(msg[2], 	
-				3, { OF.mlab('specCentroid', msg[3])}  
-			);
-		});
-	}
+
 	start	{ 
-		responders do: _.add;			
 		if (not(server.serverRunning)) { server.boot };
 		server.doWhenBooted {			
 			 synthListenCentroid = SynthDef(\onsetSynth, { |thres = 1, impulseRate = 24|
@@ -67,10 +53,6 @@ SendSpecCentroid {
 	}
 	impulseRate	{ |impulseRateArg|
 		synthListenCentroid.set(\impulseRate, impulseRateArg);
-	}
-	
-	removeResponders {
-		responders do: _.remove;
 	}
 }
 
