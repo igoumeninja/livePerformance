@@ -2,6 +2,7 @@
 Edit the class from master IZ
 
 Aris Bezas 111216 Igoumeninja
+
 s.boot;
 f = SendSpectrogramData.new;
 f.stopSending;
@@ -9,7 +10,7 @@ f.connectToPoller
 x={Out.ar(0,In.ar(8)*0.1)}.play;
 x.free;
 
-
+Server
 */
 
 
@@ -36,9 +37,7 @@ SendSpectrogramData : AbstractServerResource {
 		colorSize = aColorSize;
 		colorScaleExponent = aColorScaleExponent;
 		intensity = aIntensity;
-		this.makeColors;
-		ofAddress = NetAddr("127.0.0.1", 12345);
-		//ofAddress = NetAddr("127.0.0.1", 57120);		
+		this.makeColors;	
 		this.connectToPoller;	// do this last: be ready to send
 	}
 
@@ -58,11 +57,9 @@ SendSpectrogramData : AbstractServerResource {
 			colors.clipAt((val * colorSize).round);
 		};
 		OF.mlab('fftData', *pixelArray);
-		//ofAddress.sendMsg('fftpixels', *pixelArray);
 	}	
 
 	stopSending	{
-		"stop WRE".postln;
 		pollFFT.remove;	
 	}
 
