@@ -5,7 +5,6 @@
  Aris Bezas 
  Igoumeninja 28-10-2011
  
- ofAppGlutWindow
 */
  
 #include "liveApp.h"
@@ -686,26 +685,30 @@ void liveApp::update()	{
 				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
 			}		
 		}
-	}	//	Mouse Interaction		
+	}	//  Mouse Interaction		
 	if	(viewSoundChanels)							{			
-		if ( m.getAddress() == "mlab" )	{
-			if			( m.getArgAsString(0) == "amp" )		{	ampChan0 = m.getArgAsFloat( 1 );		
-			} else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );
-			} else if	(m.getArgAsString(0) == "loudness" )	{	
+		if ( m.getAddress() == "mlab" )	{					// Machine Listening
+			if		(m.getArgAsString(0) == "amp" )			{	ampChan0 = m.getArgAsFloat( 1 );		} 
+			else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );} 
+			else if	(m.getArgAsString(0) == "loudness" )	{	
 				loudness = m.getArgAsFloat( 1 );
 				glColor4f(1,1,1,1);
 				//ofEllipse(ofGetWidth()/2, ofMap(loudness, 0, 30, 512, 0),4,2);	
 
 				//printf(" %f \n", m.getArgAsFloat( 1 ));		
-			} else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		
-			} else if	(m.getArgAsString(0) == "specCentroid" ){	
+			
+			} 
+			else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		} 
+			else if	(m.getArgAsString(0) == "specCentroid" ){	
 				specCentroid = m.getArgAsFloat( 1 );
 				glColor3f(1,1,1);
-				ofEllipse(ofGetWidth()/2, ofMap(specCentroid, 400, 6000, 512, 0),4,2);
+				ofEllipse(ofGetWidth()/2, ofMap(specCentroid, 400, 6000, 512, 0),2,2);
 				//printf(" %f \n", m.getArgAsFloat( 1 ));		
-			} else if	(m.getArgAsString(0) == "specFlatness" ){	
+			} 
+			else if	(m.getArgAsString(0) == "specFlatness" ){	
 				printf(" %f \n", m.getArgAsFloat( 1 ));						
-			} else if	(m.getArgAsString(0) == "fftData" )		{
+			} 
+			else if	(m.getArgAsString(0) == "fftData" )		{
 				switch ( mirrorMode )
 				{
 					case 0:
@@ -876,12 +879,15 @@ void liveApp::update()	{
 						cout << "default";
 				}
 			}
+			else if	(m.getArgAsString(0) == "fftColor" )	{
+				spectroRed = m.getArgAsInt32(1);
+				spectroGreen = m.getArgAsInt32(2);
+				spectroBlue = m.getArgAsInt32(3);
+			}
 		}
-
 	}	//	Sound Interaction amp, freq, loudness, onset, specCentroid, specFlatness, fftData 
 	}
 }
-	
 	
 void liveApp::draw()	{
 	if (camera)										{
@@ -1432,4 +1438,3 @@ void liveApp::mouseReleased	(int x, int y, int button)	{
 void liveApp::resized(int w, int h)	{
 
 }
-
