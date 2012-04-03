@@ -1,4 +1,10 @@
-*High, but under control.*
+
+* Installation notes
+- Use allAddons example
+- include ofxVectorMath addon
+* Performances
+
+** *High, but under control.*
 Performers:
 *Jérôme Bertholon - Omer Chatziserif - Damian Marhulets - Aris Bezas*
 

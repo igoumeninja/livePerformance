@@ -6,7 +6,6 @@
 #include "ofMain.h"
 #include "ofxVectorMath.h"
 #include "ofxOsc.h"
-#include "ofxThread.h"
 #include "ParticleSystem.h"
 
 #include <vector>
@@ -59,7 +58,6 @@ public:
 	//  OBJECTS
 	ofxVec2f				p;
 	ofxOscSender			osc_sender;
-	ofxThread				thread;
 	ParticleSystem			particleSystem;
 	ofSketch				sketch[MAX_SKETCHES];
 	
