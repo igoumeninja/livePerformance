@@ -105,7 +105,7 @@ OF.particle("pusher","remove", 1)
 OF.particle("pusher","remove", 2)
 
 OF.particle("forceRadius", 300);				//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
+OF.particle("particleNeighborhood", 45);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
