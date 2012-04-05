@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+lang="en" xml:lang="en">
+<head>
+<title>*High, but under control.*</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2011-11-14 21:51:27 EET"/>
+<meta name="author" content="Aris Bezas"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+<div id="content">
+
+<h1 class="title"><b>High, but under control.</b></h1>
+
+<p>Jerome - Omer - Damian - Aris
+</p>
+<p>
+Commit history:
+<a href="https://github.com/igoumeninja/hbuc/commits/lyon">https://github.com/igoumeninja/hbuc/commits/lyon</a>
+</p>
+<p>
+Source Code:
+<a href="https://github.com/igoumeninja/hbuc/tree/lyon">https://github.com/igoumeninja/hbuc/tree/lyon</a>
+</p>
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 log </a>
+<ul>
+<li><a href="#sec-1_1">1.1  Add second group of photos </a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 TODO stuff </a>
+<ul>
+<li><a href="#sec-2_1">2.1 &lt;Error&gt;: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning </a></li>
+<li><a href="#sec-2_2">2.2 Typography CPU at SuperCollider increase deagerus </a></li>
+<li><a href="#sec-2_3">2.3 Add fftTrigger to iPad </a></li>
+<li><a href="#sec-2_4">2.4 mathematical poetics </a>
+<ul>
+<li><a href="#sec-2_4_1">2.4.1 Infinity Plus </a></li>
+<li><a href="#sec-2_4_2">2.4.2 life-death </a></li>
+</ul>
+</li>
+<li><a href="#sec-2_5">2.5 Video effect (saturation, contrast &hellip;) </a></li>
+<li><a href="#sec-2_6">2.6 Create interfaces </a></li>
+<li><a href="#sec-2_7">2.7 Create Masks link </a></li>
+<li><a href="#sec-2_8">2.8 Develop typography. </a>
+<ul>
+<li><a href="#sec-2_8_1">2.8.1 write at the noise background. Need more detail. </a></li>
+</ul>
+</li>
+<li><a href="#sec-2_9">2.9 spiral </a></li>
+<li><a href="#sec-2_10">2.10 Brush Effect </a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 DONE stuff </a>
+<ul>
+<li><a href="#sec-3_1">3.1 Load and UnLoad video (data) with Pointers </a></li>
+<li><a href="#sec-3_2">3.2 texture effect </a></li>
+<li><a href="#sec-3_3">3.3 Fix repulsion responder </a></li>
+<li><a href="#sec-3_4">3.4 Fix feedback OSC responders at oF </a></li>
+<li><a href="#sec-3_5">3.5 Fix flickering problem. </a></li>
+<li><a href="#sec-3_6">3.6 try ofxFenster. </a></li>
+<li><a href="#sec-3_7">3.7 kill all Processes with SC (create responder) </a></li>
+<li><a href="#sec-3_8">3.8 Random image gollage </a></li>
+<li><a href="#sec-3_9">3.9 Trigger photos with FFT </a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> log </h2>
+<div class="outline-text-2" id="text-1">
+
+
+</div>
+
+<div id="outline-container-1_1" class="outline-3">
+<h3 id="sec-1_1"><span class="section-number-3">1.1</span> <span class="timestamp-wrapper"> <span class="timestamp">2011-11-04 Fri</span></span> Add second group of photos </h3>
+<div class="outline-text-3" id="text-1_1">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> <span class="todo TODO"> TODO</span> TODO stuff </h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2_1" class="outline-3">
+<h3 id="sec-2_1"><span class="section-number-3">2.1</span> <span class="todo TODO"> TODO</span> &lt;Error&gt;: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning </h3>
+<div class="outline-text-3" id="text-2_1">
+
+</div>
+
+</div>
+
+<div id="outline-container-2_2" class="outline-3">
+<h3 id="sec-2_2"><span class="section-number-3">2.2</span> <span class="todo TODO"> TODO</span> Typography CPU at SuperCollider increase deagerus </h3>
+<div class="outline-text-3" id="text-2_2">
+
+</div>
+
+</div>
+
+<div id="outline-container-2_3" class="outline-3">
+<h3 id="sec-2_3"><span class="section-number-3">2.3</span> <span class="todo TODO"> TODO</span> Add fftTrigger to iPad </h3>
+<div class="outline-text-3" id="text-2_3">
+
+</div>
+
+</div>
+
+<div id="outline-container-2_4" class="outline-3">
+<h3 id="sec-2_4"><span class="section-number-3">2.4</span> <span class="todo TODO"> TODO</span> mathematical poetics </h3>
+<div class="outline-text-3" id="text-2_4">
+
+
+</div>
+
+<div id="outline-container-2_4_1" class="outline-4">
+<h4 id="sec-2_4_1"><span class="section-number-4">2.4.1</span> Infinity Plus </h4>
+<div class="outline-text-4" id="text-2_4_1">
+
+<p>At my shared items
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2_4_2" class="outline-4">
+<h4 id="sec-2_4_2"><span class="section-number-4">2.4.2</span> life-death </h4>
+<div class="outline-text-4" id="text-2_4_2">
+
+
+<p>
+&int;<sub>birth</sub><sup>death</sup>{what happens*how you feel about it dt}
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-2_5" class="outline-3">
+<h3 id="sec-2_5"><span class="section-number-3">2.5</span> <span class="todo TODO"> TODO</span> Video effect (saturation, contrast &hellip;) </h3>
+<div class="outline-text-3" id="text-2_5">
+
+</div>
+
+</div>
+
+<div id="outline-container-2_6" class="outline-3">
+<h3 id="sec-2_6"><span class="section-number-3">2.6</span> <span class="todo TODO"> TODO</span> Create interfaces </h3>
+<div class="outline-text-3" id="text-2_6">
+
+</div>
+
+</div>
+
+<div id="outline-container-2_7" class="outline-3">
+<h3 id="sec-2_7"><span class="section-number-3">2.7</span> <span class="todo TODO"> TODO</span> Create Masks <a href="http://www.flickr.com/photos/24538271@N04/4187408437/">link</a> </h3>
+<div class="outline-text-3" id="text-2_7">
+
+</div>
+
+</div>
+
+<div id="outline-container-2_8" class="outline-3">
+<h3 id="sec-2_8"><span class="section-number-3">2.8</span> <span class="todo TODO"> TODO</span> Develop typography. </h3>
+<div class="outline-text-3" id="text-2_8">
+
+<p>It has to be more delicant, more beatiful, more precise.
+</p>
+</div>
+
+<div id="outline-container-2_8_1" class="outline-4">
+<h4 id="sec-2_8_1"><span class="section-number-4">2.8.1</span> <span class="done DONE"> DONE</span> write at the noise background. Need more detail. </h4>
+<div class="outline-text-4" id="text-2_8_1">
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2_9" class="outline-3">
+<h3 id="sec-2_9"><span class="section-number-3">2.9</span> <span class="todo TODO"> TODO</span> <a href="http://blog.hiremebecauseimsmart.com/post/12479694421/by-fractalartist">spiral</a> </h3>
+<div class="outline-text-3" id="text-2_9">
+
+</div>
+
+</div>
+
+<div id="outline-container-2_10" class="outline-3">
+<h3 id="sec-2_10"><span class="section-number-3">2.10</span> <span class="todo TODO"> TODO</span> Brush Effect </h3>
+<div class="outline-text-3" id="text-2_10">
+
+<p><a href="http://www.samburford.com/Painting.html">Inspiration</a>
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> <span class="done DONE"> DONE</span> DONE stuff </h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3_1" class="outline-3">
+<h3 id="sec-3_1"><span class="section-number-3">3.1</span> <span class="done DONE"> DONE</span> Load and UnLoad video (data) with Pointers </h3>
+<div class="outline-text-3" id="text-3_1">
+
+</div>
+
+</div>
+
+<div id="outline-container-3_2" class="outline-3">
+<h3 id="sec-3_2"><span class="section-number-3">3.2</span> <span class="done DONE"> DONE</span> texture effect </h3>
+<div class="outline-text-3" id="text-3_2">
+
+<p>inspiration: <a href="http://igoumeninja.tumblr.com/post/12249929468">http://igoumeninja.tumblr.com/post/12249929468</a>
+Implement also a 4 copy mirrow effect
+Texture screen capture example
+Check out texture example (noise effect is very interesting)
+</p></div>
+
+</div>
+
+<div id="outline-container-3_3" class="outline-3">
+<h3 id="sec-3_3"><span class="section-number-3">3.3</span> <span class="done DONE"> DONE</span> Fix repulsion responder </h3>
+<div class="outline-text-3" id="text-3_3">
+
+</div>
+
+</div>
+
+<div id="outline-container-3_4" class="outline-3">
+<h3 id="sec-3_4"><span class="section-number-3">3.4</span> <span class="done DONE"> DONE</span> Fix feedback OSC responders at oF </h3>
+<div class="outline-text-3" id="text-3_4">
+
+</div>
+
+</div>
+
+<div id="outline-container-3_5" class="outline-3">
+<h3 id="sec-3_5"><span class="section-number-3">3.5</span> <span class="done DONE"> DONE</span> Fix flickering problem. </h3>
+<div class="outline-text-3" id="text-3_5">
+
+</div>
+
+</div>
+
+<div id="outline-container-3_6" class="outline-3">
+<h3 id="sec-3_6"><span class="section-number-3">3.6</span> <span class="done DONE"> DONE</span> try ofxFenster. </h3>
+<div class="outline-text-3" id="text-3_6">
+
+</div>
+
+</div>
+
+<div id="outline-container-3_7" class="outline-3">
+<h3 id="sec-3_7"><span class="section-number-3">3.7</span> <span class="done DONE"> DONE</span> kill all Processes with SC (create responder) </h3>
+<div class="outline-text-3" id="text-3_7">
+
+</div>
+
+</div>
+
+<div id="outline-container-3_8" class="outline-3">
+<h3 id="sec-3_8"><span class="section-number-3">3.8</span> <span class="done DONE"> DONE</span> Random image gollage </h3>
+<div class="outline-text-3" id="text-3_8">
+
+</div>
+
+</div>
+
+<div id="outline-container-3_9" class="outline-3">
+<h3 id="sec-3_9"><span class="section-number-3">3.9</span> <span class="done DONE"> DONE</span> Trigger photos with FFT </h3>
+<div class="outline-text-3" id="text-3_9">
+
+</div>
+</div>
+</div>
+<div id="postamble">
+<p class="author"> Author: Aris Bezas
+</p>
+<p class="date"> Date: 2011-11-14 21:51:27 EET</p>
+<p class="creator">HTML generated by org-mode 7.4 in emacs 23</p>
+</div>
+</div>
+</body>
+</html>

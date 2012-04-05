@@ -1,0 +1,63 @@
+
+* Installation notes
+- Use allAddons example
+- include ofxVectorMath addon
+- My personal setup the XCode project is based at of-apps -> livePerformance
+* Performances
+
+** *High, but under control.*
+Performers:
+*Jérôme Bertholon - Omer Chatziserif - Damian Marhulets - Aris Bezas*
+
+Commit history:
+https://github.com/igoumeninja/hbuc/commits/lyon
+
+Source Code:
+https://github.com/igoumeninja/hbuc/tree/lyon
+
+* SuperCollider link at Extensions
+ln -s /Users/ari/Projects/artistic/AB_Performances/hbuc/scCode/scClasses /Users/ari/Library/Application\ Support/SuperCollider/Extensions
+
+* TODO TODO stuff
+** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
+** TODO mathematical poetics
+*** Infinity Plus
+    At my shared items
+
+*** life-death
+
+    \int_{birth}^{death}{what happens*how you feel about it dt}
+** TODO Create Masks [[http://www.flickr.com/photos/24538271@N04/4187408437/][link]]
+** TODO Develop typography. 
+   It has to be more delicant, more beatiful, more precise.
+*** DONE write at the noise background. Need more detail. 
+** TODO [[http://blog.hiremebecauseimsmart.com/post/12479694421/by-fractalartist][spiral]]
+** TODO Function Pointers
+** TODO Brush Effect
+   [[http://www.samburford.com/Painting.html][Inspiration]]
+* DONE DONE stuff
+** DONE Load and UnLoad video (data) with Pointers
+** DONE texture effect 
+   inspiration: http://igoumeninja.tumblr.com/post/12249929468
+   Implement also a 4 copy mirrow effect
+   Texture screen capture example
+   Check out texture example (noise effect is very interesting)
+** DONE Fix repulsion responder
+** DONE Fix feedback OSC responders at oF
+** DONE Fix flickering problem. 
+** DONE try ofxFenster.
+** DONE kill all Processes with SC (create responder) 
+** DONE Random image gollage
+** DONE Trigger photos with FFT 
+** DONE Add second group of photos 
+** DONE Typography CPU at SuperCollider increase deagerus
+** DONE Create interfaces
+** DONE Video effect (saturation, contrast ...)
+** DONE Add fftTrigger to iPad
+* Git notes
+** .gitignore
+.gitignore~
+README.org~
+/documentation/screenshots/
+/documentation/LYON-Concert/
+
