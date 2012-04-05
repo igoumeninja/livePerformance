@@ -9,7 +9,7 @@ Aris Bezas Igoumeninja <-> Corfu
 
 BACKGROUND
 ----------
-OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,5);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
@@ -90,21 +90,27 @@ OF.particle("add", xPos, yPos, xSpeed, ySpeed);
 OF.particle("add", 10,10, 0.5, 0.5);		
 //:Add more
 {
-	1000.do{|i|
+	2000.do{|i|
 		OF.particle("add", rrand(0,~width).asInteger,rrand(0,~height).asInteger,0.5, 0.5);		
 		i.postln;
 		0.05.wait;
 	}
 }.fork
 //:-
+OF.particle("pusher","set", 0, 200,200)
+OF.particle("pusher","set", 1, 600,200)
+OF.particle("pusher","set", 2, 800,200)
+OF.particle("pusher","remove", 0)
+OF.particle("pusher","remove", 1)
+OF.particle("pusher","remove", 2)
 
-OF.particle("forceRadius", 10);				//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 15);			//	RANGE: 1 -> 25
+OF.particle("forceRadius", 300);				//	RANGE: 0 -> 700
+OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
-OF.particle("dotColor",255,255,255,25);		//	RGBA
+OF.particle("dotColor",255,255,255,255);		//	RGBA
 OF.particle("dotColor",255,255,0);		//	RGB
 OF.particle("conColor",255,255,255,25);		//	RGBA
 OF.particle("conColor",255,0,0);				//	RGB

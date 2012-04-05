@@ -104,7 +104,7 @@ public:
 	struct structPushers {
 		bool activeP;
 		ofPoint coords;
-	} pusher1, pusher2, pushers[1024];
+	} pusher1, pusher2, pushersArray[1024];
 				
 	//================
 	//	IMAGES

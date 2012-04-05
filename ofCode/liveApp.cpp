@@ -11,11 +11,6 @@
 
 void liveApp::setup()	{
 	
-/*	{
-		pusher1.activeP = false; pusher2.activeP = true;
-		pusher1.ofPoint = ofPoint(200,200);
-		pusher2.ofPoint = ofPoint(400,200);		
-	}		//struct	*/
 	{
 
 		ofBackground(0,0,0);
@@ -133,7 +128,7 @@ void liveApp::setup()	{
 		viewRotate = 0;				
 			
 		}	// Initial Values
-/*	{
+	{/*
 		// Imagenes
 		// GROUP 1
 		string imageDir = "/Users/ari/Media/images/paintings/lyon/";
@@ -177,7 +172,7 @@ void liveApp::setup()	{
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
-	}	// data (images, fonts, video ...)  */
+	*/}	// data (images, fonts, video ...)  
  	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
 			sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));	//to 1o stoixeio einai to id 0:
@@ -507,6 +502,16 @@ void liveApp::update()	{
 			bounceYstart = m.getArgAsInt32(2); 
 			bounceXend = m.getArgAsInt32(3);
 			bounceYend = m.getArgAsInt32(4);
+		}
+		else if	(m.getArgAsString( 0 ) == "pusher")					{
+			if (m.getArgAsString(1) == "set")		{
+				pushersArray[m.getArgAsInt32(2)].activeP = true;
+				pushersArray[m.getArgAsInt32(2)].coords = ofPoint(m.getArgAsInt32(3), m.getArgAsInt32(4));				
+				
+			}
+			else if (m.getArgAsString(1) == "remove") {
+				pushersArray[m.getArgAsInt32(2)].activeP = false;
+			}
 		}			
 	}	//  particles
 	if ( m.getAddress() == "feedback" )				{
@@ -905,14 +910,14 @@ void liveApp::draw()	{
 	pushers.push_front (ofPoint(200,200,200));
 	pushers.push_front (ofPoint(200,300));
 	cout << "mylist contains:";
-//	for (list<ofPoint>::iterator it=pushers.begin(); it!=pushers.end(); ++it)
-//		cout << " " << *it << endl;
+	//	for (list<ofPoint>::iterator it=pushers.begin(); it!=pushers.end(); ++it)
+	//		cout << " " << *it << endl;
 
 	for (list<ofPoint>::iterator it=pushers.begin(); it!=pushers.end(); ++it)
 		ofEllipse(it->x,it->y,20,20);
 
-	// Struct
-	}	// New Stuff	*/
+	}	
+ */
 	if (camera)										{
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
@@ -945,7 +950,19 @@ void liveApp::draw()	{
         }
         glEnd();
 		
+		// PUSHERS
 		
+		for(int i = 0; i < 1024; i++)	{
+			if (pushersArray[i].activeP == true) {
+				particleSystem.addRepulsionForce(pushersArray[i].coords.x, pushersArray[i].coords.y, forceRadius, forceScale);
+			}
+		}
+		
+		particleSystem.update();		
+        ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
+        particleSystem.draw();
+		
+		/*
         //particleSystem.addAttractionForce(ofGetWidth() / 2, ofGetHeight() / 2, ofGetWidth(), centerAttraction);
 		if	(viewSoundChanels)	{
 			Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
@@ -964,15 +981,10 @@ void liveApp::draw()	{
         if(isMousePressed)	{
 			particleSystem.addRepulsionForce( mouseX, mouseY, forceRadius, forceScale);
 		}
-		particleSystem.update();
-
-        ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
-        particleSystem.draw();
+		 */
 		
 		
 	}	//  Particles
-	
-	
 	if (sketchPhrase)								{
 		
 		for( int i=0; i<100; i++ ) {

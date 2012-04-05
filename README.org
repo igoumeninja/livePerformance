@@ -31,11 +31,41 @@ README.org~
 * oF
 ** pushers
 *** List
+
 - [[http://forum.openframeworks.cc/index.php?topic=619.0][Lists at oF]]
 - [[http://www.cplusplus.com/reference/stl/list/][list at C++]]
 - [[http://stackoverflow.com/questions/397895/how-could-i-create-a-list-in-c][List in C]]
 - [[http://www.openframeworks.cc/documentation/types/ofPoint.html][ofPoint]]
 *** Struct
+Data structure.
+H σύνταξη έχει ως εξής:
+#+begin_example
+//header
+struct structPushers {
+  bool activeP;
+  ofPoint coords;
+} pusher1, pusher2, pushersArray[1024];
+
+//update OSC responders
+if (m.getArgAsString( 0 ) == "pusher")	{
+ if (m.getArgAsString(1) == "set")		{
+  pushersArray[m.getArgAsInt32(2)].activeP = true;
+  pushersArray[m.getArgAsInt32(2)].coords = ofPoint(m.getArgAsInt32(3),   m.getArgAsInt32(4));	
+ }
+ else if (m.getArgAsString(1) == "remove") {
+  pushersArray[m.getArgAsInt32(2)].activeP = false;
+ }
+}
+
+//draw particles
+for(int i = 0; i < 1024; i++)	{
+  if (pushersArray[i].activeP == true) {
+    particleSystem.addRepulsionForce(pushersArray[i].coords.x, pushersArray[i].coords.y, forceRadius, forceScale);
+  }
+}
+
+#+end_example
+
 - http://www.cplusplus.com/doc/tutorial/structures/
 - 
 ** forum discussions
