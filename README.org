@@ -28,6 +28,19 @@ README.org~
 /documentation/screenshots/
 /documentation/LYON-Concert/
 
+* oF
+** pushers
+*** List
+- [[http://forum.openframeworks.cc/index.php?topic=619.0][Lists at oF]]
+- [[http://www.cplusplus.com/reference/stl/list/][list at C++]]
+- [[http://stackoverflow.com/questions/397895/how-could-i-create-a-list-in-c][List in C]]
+- [[http://www.openframeworks.cc/documentation/types/ofPoint.html][ofPoint]]
+*** Struct
+- http://www.cplusplus.com/doc/tutorial/structures/
+- 
+** forum discussions
+- [[http://forum.openframeworks.cc/index.php/topic,2860.msg25710.html#msg25710][particle number]]
+- [[http://forum.openframeworks.cc/index.php/topic,7753.msg36298.html#msg36298][screen flickering]]
 * TODO TODO stuff
 ** LAST POINT 
 - Edit StartupLivePerformance.sc class

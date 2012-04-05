@@ -7,6 +7,8 @@
 #include "ofxVectorMath.h"
 #include "ofxOsc.h"
 #include "ParticleSystem.h"
+//Pushers
+#include <list>
 
 #include <vector>
 
@@ -94,6 +96,16 @@ public:
 	float centerAttraction;
 	int kParticles, forceScale, forceRadius;
 		
+	//PUSHERS
+	//LIST
+	// constructors used in the same order as described above:
+	list<ofPoint> pushers;                                // empty list of ints
+	//STRUCT
+	struct structPushers {
+		bool activeP;
+		ofPoint coords;
+	} pusher1, pusher2, pushers[1024];
+				
 	//================
 	//	IMAGES
 	ofImage			image[200];

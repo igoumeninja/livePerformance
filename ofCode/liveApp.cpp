@@ -10,6 +10,12 @@
 #include "liveApp.h"
 
 void liveApp::setup()	{
+	
+/*	{
+		pusher1.activeP = false; pusher2.activeP = true;
+		pusher1.ofPoint = ofPoint(200,200);
+		pusher2.ofPoint = ofPoint(400,200);		
+	}		//struct	*/
 	{
 
 		ofBackground(0,0,0);
@@ -127,7 +133,7 @@ void liveApp::setup()	{
 		viewRotate = 0;				
 			
 		}	// Initial Values
-	{
+/*	{
 		// Imagenes
 		// GROUP 1
 		string imageDir = "/Users/ari/Media/images/paintings/lyon/";
@@ -171,7 +177,7 @@ void liveApp::setup()	{
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
-	}	// data (images, fonts, video ...)
+	}	// data (images, fonts, video ...)  */
  	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
 			sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));	//to 1o stoixeio einai to id 0:
@@ -890,6 +896,23 @@ void liveApp::update()	{
 }
 	
 void liveApp::draw()	{
+
+/*	{
+	//  Pushers
+	
+	// List
+	
+	pushers.push_front (ofPoint(200,200,200));
+	pushers.push_front (ofPoint(200,300));
+	cout << "mylist contains:";
+//	for (list<ofPoint>::iterator it=pushers.begin(); it!=pushers.end(); ++it)
+//		cout << " " << *it << endl;
+
+	for (list<ofPoint>::iterator it=pushers.begin(); it!=pushers.end(); ++it)
+		ofEllipse(it->x,it->y,20,20);
+
+	// Struct
+	}	// New Stuff	*/
 	if (camera)										{
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
@@ -921,6 +944,8 @@ void liveApp::draw()	{
                 cur.addDampingForce();
         }
         glEnd();
+		
+		
         //particleSystem.addAttractionForce(ofGetWidth() / 2, ofGetHeight() / 2, ofGetWidth(), centerAttraction);
 		if	(viewSoundChanels)	{
 			Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
@@ -928,7 +953,7 @@ void liveApp::draw()	{
 			particleSystem.addRepulsionForce(Xfreq0, Yamp0, forceRadius, forceScale);											
 		}
         if(iPadPush)	{
-			particleSystem.addRepulsionForce( ofGetWidth() / 2, ofGetHeight() / 2, forceRadius, forceScale);
+			particleSystem.addRepulsionForce( ofGetWidth()/2, ofGetHeight()/2, forceRadius, forceScale);
 		}		
         if(pushParticles)	{
 //			for (int j=0;j < pushes)	{
@@ -943,7 +968,11 @@ void liveApp::draw()	{
 
         ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
         particleSystem.draw();
+		
+		
 	}	//  Particles
+	
+	
 	if (sketchPhrase)								{
 		
 		for( int i=0; i<100; i++ ) {
