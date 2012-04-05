@@ -91,7 +91,7 @@ OF.particle("add", 10,10, 0.5, 0.5);
 //:Add more
 {
 	1000.do{|i|
-		OF.particle("add", rrand(0,60).asInteger,rrand(0,60).asInteger,rrand(0,60).asInteger,rrand(0,60).asInteger);		
+		OF.particle("add", rrand(0,~width).asInteger,rrand(0,~height).asInteger,0.5, 0.5);		
 		i.postln;
 		0.05.wait;
 	}
@@ -99,14 +99,14 @@ OF.particle("add", 10,10, 0.5, 0.5);
 //:-
 
 OF.particle("forceRadius", 10);				//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 5);			//	RANGE: 1 -> 25
+OF.particle("particleNeighborhood", 15);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
-OF.particle("dotColor",255,255,255,225);		//	RGBA
+OF.particle("dotColor",255,255,255,25);		//	RGBA
 OF.particle("dotColor",255,255,0);		//	RGB
-OF.particle("conColor",255,255,255,225);		//	RGBA
+OF.particle("conColor",255,255,255,25);		//	RGBA
 OF.particle("conColor",255,0,0);				//	RGB
 
 OF.particle("bounce", 100, 100, 800, 1500);			
