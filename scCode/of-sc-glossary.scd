@@ -1,6 +1,10 @@
-//:Joda Performance
-	//:------------------
-//:OSC messages dictionary
+/*
+livePerformance
+OSC messages dictionary
+
+Aris Bezas Igoumeninja <-> Corfu 
+05 - 04 - 2012
+*/
 
 
 BACKGROUND

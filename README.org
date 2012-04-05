@@ -1,3 +1,5 @@
+#+title: livePerformance
+#+author: Aris Bezas
 
 * Installation notes
 - Use allAddons example
@@ -7,6 +9,8 @@
 #+begin_example
 ln -s /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses /Users/ari/Library/Application\ Support/SuperCollider/Extensions
 #+end_example
+
+- Include the code from startupLivePerformance.scd to SC startup.scd file
 * Performances
 
 ** *High, but under control.*
@@ -26,6 +30,8 @@ README.org~
 /documentation/LYON-Concert/
 
 * TODO TODO stuff
+** LAST POINT 
+- Edit StartupLivePerformance.sc class
 ** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
 ** TODO mathematical poetics
 *** Infinity Plus
