@@ -35,14 +35,15 @@ b = SendOnsets.new;	b.start;	b.stop	b.threshold(1);
 
 SPECTROGRAPH
 ------------
-OF.playSpectro("mirrorMode", 0);
-OF.mlab("fftColor", 0,0,0);
+OF.playSpectro("mirrorMode", 9);
+OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
 f = SendSpectrogramData.new; 
 SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).send(s);
+s.mute;
 i = Synth(\input).play
-i.set(\level, 15);
+i.set(\level, 2);
 i.free
-s.mute
+
 s.volume_(25)
 x={Out.ar(0,In.ar(8)*1.9)}.play;
 x.free
@@ -50,7 +51,7 @@ f.stopSending;
 f.connectToPoller
 
 
-cases:
+Mirror Effect Modes:
 0 : White from Right
 1 : White from Right - Mirror
 3 : White from Center - two directions - Mirror
@@ -58,17 +59,17 @@ cases:
 5 : Fire Colors from Right
 6 : Fire Colors Mirrow from Right
 7 : Fire Colors Mirrow from Middle
-8 : Alva Noto Insiration
+9 : Alva Noto Insiration
 
 
 SKETCH
 ------
-OF.interactWithSketch("activate", 1);
+OF.interactWithSketch("activate", 0);
 OF.interactWithSketch("padSketchXY", 200,200);
 OF.interactWithSketch("mouseLines",0);
 OF.rgb("sketch",255,255,255,20);
 
-OF.interactWithSound("activate",1); 			//	0:DEACTIVATE, 1: ACTIVATE
+OF.interactWithSound("activate",0); 			//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 7);		//	RANGE: 1 -> 999
 OF.interactWithSound("glBeginType",0);			//	0:POINTS, Ê Ê 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
@@ -80,18 +81,28 @@ OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 PARTICLE
 --------
 OF.rgb("background",0,0,0,10);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
 OF.particle("add", 10,10, 0.5, 0.5);		
-OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
+//:Add more
+{
+	1000.do{|i|
+		OF.particle("add", rrand(0,60).asInteger,rrand(0,60).asInteger,rrand(0,60).asInteger,rrand(0,60).asInteger);		
+		i.postln;
+		0.05.wait;
+	}
+}.fork
+//:-
+
+OF.particle("forceRadius", 10);				//	RANGE: 0 -> 700
+OF.particle("particleNeighborhood", 5);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor",255,255,255,225);		//	RGBA
 OF.particle("dotColor",255,255,0);		//	RGB
-OF.particle("conColor",255,0,255,225);		//	RGBA
+OF.particle("conColor",255,255,255,225);		//	RGBA
 OF.particle("conColor",255,0,0);				//	RGB
 
 OF.particle("bounce", 100, 100, 800, 1500);			
@@ -120,15 +131,6 @@ OF.effect("mirror", 0);
 OF.effect("mirror", "case", 1); 
 OF.effect("tree");
 
-WFAE
-----
-OF.rgb("background",0,0,0,10);					//   OF.rgb("background",R,G,B,A);
-OF.particle("activate", 1);						//	0:DEACTIVATE, 1: ACTIVATE
-OF.particle("forceRadius", 100);					//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
-OF.rgb("particleConnectionsColor",255,255,255,255);	//	RGBA
-OF.rgb("particlesColor",255,255,255,255);			//	RGBA
-
 CUTMOTION
 ---------
 OF.img(imageID, xPos, yPos, width, height);
@@ -149,6 +151,7 @@ OF.img(image
 		0.05.wait;
 	}
 }.fork
+//:-
 
 VIDEO
 -----

@@ -3,6 +3,10 @@
 - Use allAddons example
 - include ofxVectorMath addon
 - My personal setup the XCode project is based at of-apps -> livePerformance
+- Create a link to SuperCollider/Extension through Terminal
+#+begin_example
+ln -s /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses /Users/ari/Library/Application\ Support/SuperCollider/Extensions
+#+end_example
 * Performances
 
 ** *High, but under control.*
@@ -14,9 +18,12 @@ https://github.com/igoumeninja/hbuc/commits/lyon
 
 Source Code:
 https://github.com/igoumeninja/hbuc/tree/lyon
-
-* SuperCollider link at Extensions
-ln -s /Users/ari/Projects/artistic/AB_Performances/hbuc/scCode/scClasses /Users/ari/Library/Application\ Support/SuperCollider/Extensions
+* Git notes
+** .gitignore
+.gitignore~
+README.org~
+/documentation/screenshots/
+/documentation/LYON-Concert/
 
 * TODO TODO stuff
 ** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
@@ -54,10 +61,4 @@ ln -s /Users/ari/Projects/artistic/AB_Performances/hbuc/scCode/scClasses /Users/
 ** DONE Create interfaces
 ** DONE Video effect (saturation, contrast ...)
 ** DONE Add fftTrigger to iPad
-* Git notes
-** .gitignore
-.gitignore~
-README.org~
-/documentation/screenshots/
-/documentation/LYON-Concert/
 
