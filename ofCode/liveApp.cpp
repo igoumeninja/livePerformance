@@ -34,7 +34,7 @@ void liveApp::setup()	{
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
-		ofSetWindowTitle("Igoumeninja Live Performance");
+		ofSetWindowTitle("Rhythmanalysis");
 		ofSetFrameRate(60); // if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps.
 		ofSetVerticalSync(false);
 		
