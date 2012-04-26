@@ -9,7 +9,7 @@ Aris Bezas Igoumeninja <-> Corfu
 
 BACKGROUND
 ----------
-OF.background(0,0,0,5);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,10);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
@@ -22,9 +22,9 @@ r.removeResponders;
 
 a = SendAmpFreq.new; 	
 a.start; 	
-OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
+OF.rgb("sound",255,255,255,0);				// 	OF.rgb("sound",r,g,b,a)
 a.stop;  
-a.impulseRate(0.5);
+a.impulseRate(24); // 24 frames/ sec
 c = SendSpecCentroid.new; 	
 c.start; 	
 c.stop; 	
@@ -35,11 +35,17 @@ e.start;
 e.stop;	
 e.impulseRate(24);
 
-b = SendOnsets.new;	b.start;	b.stop	b.threshold(1);
+ONSETS
+-------
+b = SendOnsets.new;	
+b.start;	
+b.stop;	
+b.threshold(1);
+
 
 SPECTROGRAPH
 ------------
-OF.playSpectro("mirrorMode", 9);
+OF.playSpectro("mirrorMode", 3);
 OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
 f = SendSpectrogramData.new; 
 SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).send(s);
@@ -115,10 +121,11 @@ OF.particle("dotColor",255,255,0);		//	RGB
 OF.particle("conColor",255,255,255,25);		//	RGBA
 OF.particle("conColor",255,0,0);				//	RGB
 
-OF.particle("bounce", 100, 100, 800, 1500);			
+OF.particle("bounce", 100, 100, 800, 800);			
 
 OF.particle("pushParticles", 0);					//	0:DON'T PUSH, 1: PUSH 
 OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)		
+
 
 TYPOGRAPHY
 ----------

@@ -10,23 +10,30 @@
 ln -s /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses /Users/ari/Library/Application\ Support/SuperCollider/Extensions
 #+end_example
 
+* Performing with
+
+** onset
+To control the behavior from onset you have to go to MakeResponders.sc
 * Performances
 
+** *Technoetic Telos Concert*
+   *Ioannis Zannos - Aris Bezas*
+
 ** *High, but under control.*
-Performers:
-*Jérôme Bertholon - Omer Chatziserif - Damian Marhulets - Aris Bezas*
+   Performers:
+   *Jérôme Bertholon - Omer Chatziserif - Damian Marhulets - Aris Bezas*
 
-Commit history:
-https://github.com/igoumeninja/hbuc/commits/lyon
+   Commit history:
+   https://github.com/igoumeninja/hbuc/commits/lyon
 
-Source Code:
-https://github.com/igoumeninja/hbuc/tree/lyon
+   Source Code:
+   https://github.com/igoumeninja/hbuc/tree/lyon
 * Git notes
 ** .gitignore
-.gitignore~
-README.org~
-/documentation/screenshots/
-/documentation/LYON-Concert/
+   .gitignore~
+   README.org~
+   /documentation/screenshots/
+   /documentation/LYON-Concert/
 
 * oF
 ** pushers
@@ -74,6 +81,7 @@ for(int i = 0; i < 1024; i++)	{
 * TODO TODO stuff
 ** LAST POINT 
 - Edit StartupLivePerformance.sc class
+** [[http://www.openprocessing.org/sketch/3624][Deformation]]
 ** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
 ** TODO mathematical poetics
 *** Infinity Plus
@@ -109,4 +117,5 @@ for(int i = 0; i < 1024; i++)	{
 ** DONE Create interfaces
 ** DONE Video effect (saturation, contrast ...)
 ** DONE Add fftTrigger to iPad
+
 

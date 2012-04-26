@@ -36,7 +36,7 @@ SendSpecCentroid {
 	start	{ 
 		if (not(server.serverRunning)) { server.boot };
 		server.doWhenBooted {			
-			 synthListenCentroid = SynthDef(\onsetSynth, { |thres = 1, impulseRate = 24|
+			 synthListenCentroid = SynthDef(\centroidSynth, { |thres = 1, impulseRate = 24|
 				var sig, chain, onsets, pips,buf, centroid, trig;
 				trig = Impulse.kr(impulseRate);
 				buf = Buffer.alloc(server, 512);

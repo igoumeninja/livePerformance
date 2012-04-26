@@ -51,6 +51,7 @@ MakeResponders {
 	makeOnsetResp {		
 		^OSCresponder(server.addr, '/onset',{ arg time,responder,msg;
 			OF.mlab('onset');
+			OF.writeString("bigCenter", "~sad",~width/2,~height/2,255,255,255,255); // BIG 
 		});
 	}
 	

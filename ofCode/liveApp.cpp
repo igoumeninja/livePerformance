@@ -168,11 +168,11 @@ void liveApp::setup()	{
 		rVideo = gVideo = bVideo = aVideo = 255;
 		
 		//===================================
-		
+	*/	
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);		
-	*/}	// data (images, fonts, video ...)  
+	}	// data (images, fonts, video ...)  
  	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
 			sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));	//to 1o stoixeio einai to id 0:
@@ -713,7 +713,8 @@ void liveApp::update()	{
 			else if	(m.getArgAsString(0) == "specCentroid" ){	
 				specCentroid = m.getArgAsFloat( 1 );
 				glColor3f(1,1,1);
-				ofEllipse(ofGetWidth()/2, ofMap(specCentroid, 400, 6000, 512, 0),2,2);
+				ofLine(0, ofMap(specCentroid, 400, 6000, 512, 0), ofGetWidth(), ofMap(specCentroid, 400, 6000, 512, 0));
+				//ofEllipse(ofGetWidth()/2, ofMap(specCentroid, 400, 6000, 512, 0),2,2);
 				//printf(" %f \n", m.getArgAsFloat( 1 ));		
 			} 
 			else if	(m.getArgAsString(0) == "specFlatness" ){	
