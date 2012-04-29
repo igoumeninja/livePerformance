@@ -952,6 +952,8 @@ void liveApp::draw()	{
         glEnd();
 		
 		// PUSHERS
+		pushersArray[10].coords.x = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());;
+		pushersArray[10].coords.y = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());;
 		
 		for(int i = 0; i < 1024; i++)	{
 			if (pushersArray[i].activeP == true) {
@@ -982,6 +984,7 @@ void liveApp::draw()	{
         if(isMousePressed)	{
 			particleSystem.addRepulsionForce( mouseX, mouseY, forceRadius, forceScale);
 		}
+		 
 		 */
 		
 		

@@ -9,7 +9,7 @@ Aris Bezas Igoumeninja <-> Corfu
 
 BACKGROUND
 ----------
-OF.background(0,0,0,10);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
@@ -22,7 +22,7 @@ r.removeResponders;
 
 a = SendAmpFreq.new; 	
 a.start; 	
-OF.rgb("sound",255,255,255,0);				// 	OF.rgb("sound",r,g,b,a)
+OF.rgb("sound",255,255,255,25);				// 	OF.rgb("sound",r,g,b,a)
 a.stop;  
 a.impulseRate(24); // 24 frames/ sec
 c = SendSpecCentroid.new; 	
@@ -45,9 +45,9 @@ b.threshold(1);
 
 SPECTROGRAPH
 ------------
-OF.playSpectro("mirrorMode", 3);
+OF.playSpectro("mirrorMode", 4);
 OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
-f = SendSpectrogramData.new; 
+~mySendSpectrogramData = SendSpectrogramData.new; 
 SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).send(s);
 s.mute;
 i = Synth(\input).play
@@ -57,8 +57,8 @@ i.free
 s.volume_(25)
 x={Out.ar(0,In.ar(8)*1.9)}.play;
 x.free
-f.stopSending;
-f.connectToPoller
+~mySendSpectrogramData.stopSending;
+~mySendSpectrogramData .connectToPoller
 
 
 Mirror Effect Modes:
@@ -90,7 +90,7 @@ OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 
 PARTICLE
 --------
-OF.rgb("background",0,0,0,10);				//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);
 OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
 OF.particle("add", 10,10, 0.5, 0.5);		
@@ -106,6 +106,7 @@ OF.particle("add", 10,10, 0.5, 0.5);
 OF.particle("pusher","set", 0, 200,200)
 OF.particle("pusher","set", 1, 600,200)
 OF.particle("pusher","set", 2, 800,200)
+OF.particle("pusher","set", 10, 800,200) // ACTIVATE SEND AMP FREQ PUSHER
 OF.particle("pusher","remove", 0)
 OF.particle("pusher","remove", 1)
 OF.particle("pusher","remove", 2)
@@ -116,7 +117,7 @@ OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
-OF.particle("dotColor",255,255,255,255);		//	RGBA
+OF.particle("dotColor",255,255,255,25);		//	RGBA
 OF.particle("dotColor",255,255,0);		//	RGB
 OF.particle("conColor",255,255,255,25);		//	RGBA
 OF.particle("conColor",255,0,0);				//	RGB
@@ -134,13 +135,13 @@ OF.writeString("bigCenter", "~sadfh",~width/2,~height/2,255,255,255,255); // BIG
 
 FEEDBACK
 --------
-OF.feedback("activate", 0);
+OF.feedback("activate", 1);
 OF.feedback("speedXY", 0.5,0);
 
 EFFECTS
 =======
-OF.effect("destruct","activate",1)
-OF.effect("destruct","case",1)	// 2: the best 0,1,2,3
+OF.effect("destruct","activate",0)
+OF.effect("destruct","case",2)	// 2: the best 0,1,2,3
 OF.effect("destruct","phrase1")	// 2: the best 0,1,2,3
 
 OF.effect("noiseEffect", 0); 	// with z0re is clearing the background

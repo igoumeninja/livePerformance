@@ -15,7 +15,6 @@ StartupLivePerformance {
 		}
 	}
 
-
 	*startupLivePerformance {
 
 	~width = 1280;
@@ -44,9 +43,9 @@ StartupLivePerformance {
 
 	
 		"".postln;	
-		"################################".postln;
-		"#######START THE LIVE!!!########".postln;
-		"################################".postln;	
+		"##################################".postln;
+		"######## START THE LIVE!!!########".postln;
+		"##################################".postln;	
 		"".postln;		
 	}
 		

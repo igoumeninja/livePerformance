@@ -38,7 +38,7 @@ SendSpectrogramData : AbstractServerResource {
 		colorScaleExponent = aColorScaleExponent;
 		intensity = aIntensity;
 		this.makeColors;	
-		this.connectToPoller;	// do this last: be ready to send
+		//this.connectToPoller;	// do this last: be ready to send
 	}
 
 	makeColors {

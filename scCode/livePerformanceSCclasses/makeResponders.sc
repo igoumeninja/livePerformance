@@ -50,8 +50,15 @@ MakeResponders {
 	
 	makeOnsetResp {		
 		^OSCresponder(server.addr, '/onset',{ arg time,responder,msg;
-			OF.mlab('onset');
-			OF.writeString("bigCenter", "~sad",~width/2,~height/2,255,255,255,255); // BIG 
+//			OF.mlab('onset');
+//			OF.writeString("bigCenter", "~sad",~width/2,~height/2,255,255,255,255); // BIG 
+			{
+				1.do{|i|
+					OF.particle("forceRadius", 300);	
+					0.05.wait;
+					OF.particle("forceRadius", 10);	
+				}
+			}.fork;
 		});
 	}
 	
