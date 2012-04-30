@@ -24,7 +24,12 @@ PadResponders {
 		~mySendAmpFreq = SendAmpFreq.new; 
 		~mySendOnsets = SendOnsets.new;
 
+		~rebootServerResp.remove;
+		~rebootServerResp = OSCresponderNode(~ofNetwork, '/rebootServer', { |t,r,msg|
+			Server.default.reboot;
+		}).add;
 		
+
 		~thisProcessStopResp.remove;
 		~thisProcessStopResp = OSCresponderNode(~ofNetwork, '/thisProcessStop', { |t,r,msg|
 			thisProcess.stop;
@@ -327,31 +332,25 @@ PadResponders {
 	
 	*iPadRespondersSpectro	{
 		
-		/*
-		~activateSpectroTask = Task({
-			OF.playSpectro("mirrorMode", 4);
-			0.01.wait;
-			OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
-			0.01.wait;
-			~mySendSpectrogramData = SendSpectrogramData.new; 
-			0.01.wait;
-			SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).add(Server.default);
-			0.01.wait;
-			Server.default.mute;
-			0.01.wait;
-			~mySynthSpectro = Synth(\input).play;
-		});
-		
-		~activateSpectroTask.play;
-		*/
 		~activateSpectroResp.remove;
 		~activateSpectroResp = OSCresponderNode(~ofNetwork, '/activateSpectro', { |t,r,msg| 
 			if( msg[1] == 1,{
+				~mySendSpectrogramData.stopSending;
+				~mySendSpectrogramDataSynth.free;
+				~mySendSpectrogramDataSynth = Synth(\input).play;
+				~mySendSpectrogramDataSynth.set(\level, 2);
 				~mySendSpectrogramData.connectToPoller;
 			},{
 				~mySendSpectrogramData.stopSending;
+				~mySendSpectrogramDataSynth.free;
 			});
 		}).add;
+		
+		~soundInLevelSpec = ControlSpec(0, 4, \lin);
+		~soundInLevelResp.remove;
+		~soundInLevelResp = OSCresponderNode(~ofNetwork, '/soundInLevel', { | time, resp, msg|
+			~mySendSpectrogramDataSynth.set(\level, ~soundInLevelSpec.map(msg[1]));
+		}).add; 
 		
 		~spectroMirrorMode0.remove;
 		~spectroMirrorMode0 = OSCresponderNode(~ofNetwork, '/spectroMirrorMode0', { |t,r,msg|
