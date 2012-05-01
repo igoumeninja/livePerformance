@@ -25,7 +25,6 @@ void liveApp::setup()	{
 			this->windowHeight = ofGetScreenHeight();  
 		} 
 		
-		//ofSetCircleResolution(200);
 		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGB);// GL_RGBA); 
 		ofSetBackgroundAuto(false);
 		ofEnableSmoothing();
@@ -275,7 +274,7 @@ void liveApp::update()	{
 		} else if (m.getArgAsString(0) == "mirrorMode") {
 			mirrorMode = m.getArgAsInt32(1);
 		}
-	}
+	}	//  spectro
 	if ( m.getAddress() == "rotate" )				{
 		ofBeginShape();		
 		ofRotateX(m.getArgAsInt32(0));
