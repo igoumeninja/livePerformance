@@ -4,6 +4,26 @@ This class is used iPad responders
 
 Aris Bezas Astakos -> Sami 120429
 
+## SOME EXTRA PHRASES ##
+{
+OF.background(0,0,0,40);
+inf.do({|i|
+	OF.writeString("bigCenter", "Technoetic Telos".at(i%16).asString,~width/2 - 200,~height/2,255,255,255,255);				
+	~delayTechnoetic.wait;	
+		
+});
+}.fork
+
+~delayTechnoetic = 0.08;
+{
+inf.do({|i|
+	OF.writeString("bigCenter", "~`!@#$%^&*()_+}{][|".at(rrand(0,10).asInteger).asString,~width/2 - 200,~height/2,255,255,255,255);				
+		0.08.wait;	
+});
+}.fork
+
+
+
 */
 
 PadResponders {
@@ -346,7 +366,7 @@ PadResponders {
 			});
 		}).add;
 		
-		~soundInLevelSpec = ControlSpec(0, 4, \lin);
+		~soundInLevelSpec = ControlSpec(0, 10, \lin);
 		~soundInLevelResp.remove;
 		~soundInLevelResp = OSCresponderNode(~ofNetwork, '/soundInLevel', { | time, resp, msg|
 			~mySendSpectrogramDataSynth.set(\level, ~soundInLevelSpec.map(msg[1]));
@@ -424,6 +444,25 @@ PadResponders {
 	}
 	
 	*iPadRespondersEffects	{
+		
+		//Typography Effect
+		
+		~typoEffectTask = Task({
+			inf.do({|i|
+				OF.writeString("bigCenter", "~`!@#$%^&*()_+}{][|".at(rrand(0,10).asInteger).asString,~width/2 - 100,~height/2,255,255,255,255);				
+					0.04.wait;	
+			});
+		});
+		
+		~typoEffectResp.remove;
+		~typoEffectResp = OSCresponderNode(~ofNetwork, '/typoEffect', { |t,r,msg| 
+			if( msg[1] == 1,{
+				~typoEffect.play;
+			},{
+				~typoEffect.stop;
+			});
+		}).add;
+
 		~noiseEffectResp.remove;
 		~noiseEffectResp = OSCresponderNode(~ofNetwork, '/noiseEffect', { |t,r,msg| 
 			OF.effect("noiseEffect", msg[1]);
