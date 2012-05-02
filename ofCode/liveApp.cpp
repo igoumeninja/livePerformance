@@ -711,8 +711,8 @@ void liveApp::update()	{
 			else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		} 
 			else if	(m.getArgAsString(0) == "specCentroid" ){	
 				specCentroid = m.getArgAsFloat( 1 );
-				glColor3f(1,1,1);
-				ofLine(0, ofMap(specCentroid, 400, 6000, 512, 0), ofGetWidth(), ofMap(specCentroid, 400, 6000, 512, 0));
+				glColor4f(1,1,1,0.2);
+				ofLine(ofGetWidth() - 10, ofMap(specCentroid, 400, 6000, 512, 0), ofGetWidth(), ofMap(specCentroid, 400, 6000, 512, 0));
 				//ofEllipse(ofGetWidth()/2, ofMap(specCentroid, 400, 6000, 512, 0),2,2);
 				//printf(" %f \n", m.getArgAsFloat( 1 ));		
 			} 
@@ -727,8 +727,6 @@ void liveApp::update()	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
 							ofEllipse(reverseEllipse,512-i,2,2);
-							//glColor3f(0,0,0);
-							//ofEllipse(reverseEllipse,512+i,2,2);				
 						}
 						texScreen.loadScreenData(0,0,ofGetWidth(), ofGetHeight());
 						ofSetColor(textureRed,textureGreen,textureBlue,textureAlpha);
@@ -776,7 +774,6 @@ void liveApp::update()	{
 						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],spectroGreen*data[i],spectroBlue*data[i]);
-							
 							ofEllipse(ofGetWidth()/4,256-i/2,2,2);
 							ofEllipse(ofGetWidth()/4,256+i/2,2,2);						
 							

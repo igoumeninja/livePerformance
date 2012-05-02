@@ -11,10 +11,10 @@ d.stop
 SendSpecFlatness {
 	classvar default;
 	var <server;					// the scserver that runs the listening process
-	var <synthListenSpecFlatness;			// the listening Onsets process
-	var <synthPlay;					// the produce process
-	var <addr;				// the address (p5, of ...) for sending the data for drawing
-	var <chan = 0;		// the channel that we detect
+	var <synthListenSpecFlatness;	// the listening Onsets process
+	var <synthPlay;				// the produce process
+	var <addr;					// the address (p5, of ...) for sending the data for drawing
+	var <chan = 0;				// the channel that we detect
 
 	*default {
 		if (default.isNil) { default = this.new };  // create default
@@ -24,6 +24,7 @@ SendSpecFlatness {
 	*new { | server, addr, chan = 0|
 		^super.new.init(server, addr, chan);		
 	}	
+
 	init { | argServer, argAddr, argChan = 0|
 		server = argServer ?? { Server.default };  //define server
 		addr =  argAddr ?? { NetAddr("127.0.0.1", 12345); }; //localhost, oF port
@@ -45,11 +46,12 @@ SendSpecFlatness {
 				SendTrig.kr(trig, 4, flatdbsquish); 
 			}).play(server);
 		};		
-			
 	}
+
 	stop	{
 		synthListenSpecFlatness.free;	
 	}
+
 	impulseRate	{ |impulseRateArg|
 		synthListenSpecFlatness.set(\impulseRate, impulseRateArg);
 	}

@@ -18,7 +18,7 @@ MACHINE LISTENING
 -----------------
 r = MakeResponders.new;		
 r.all;		
-r.removeResponders;
+r.removeResponders;		
 
 a = SendAmpFreq.new; 	
 a.start; 	

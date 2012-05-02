@@ -40,9 +40,9 @@ StartupLivePerformance {
 		}).play;
 		
 		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/of-sc-glossary.scd".unixCmd;
-		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/StartupLivePerformance.sc".unixCmd;
+		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/StartUp/StartupLivePerformance.sc".unixCmd;
 		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/".unixCmd;
-		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/iPadResponders.sc".unixCmd;
+		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/Controller/iPadResponders.sc".unixCmd;
 	
 		"".postln;	
 		"##################################".postln;

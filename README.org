@@ -99,6 +99,7 @@ for(int i = 0; i < 1024; i++)	{
 ** TODO Brush Effect
    [[http://www.samburford.com/Painting.html][Inspiration]]
 * DONE DONE stuff
+** Create SC_Client.sc Class OF like class for SC client
 ** DONE Load and UnLoad video (data) with Pointers
 ** DONE texture effect 
    inspiration: http://igoumeninja.tumblr.com/post/12249929468
