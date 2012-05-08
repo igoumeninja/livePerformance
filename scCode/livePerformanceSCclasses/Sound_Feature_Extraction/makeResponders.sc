@@ -40,7 +40,8 @@ MakeResponders {
 		^OSCresponder(server.addr, '/tr',{ arg time,responder,msg;
 			switch(msg[2], 	
 				1, { 
-					OF.mlab('amp', msg[3]);
+					OF.sketch3d('zCoordSketch3d', rrand(0,200));
+					OF.mlab('amp', msg[3]);					
 					SC_Client.mlab('amp', msg[3]);
 					}, 
 				2, { 

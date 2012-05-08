@@ -1,6 +1,7 @@
 /* 
 Aris Bezas Mon, 12 12 2012, 20:36
 A class based on SendAmpFreq for machine listening.
+MakeResponders
 
 a = SendAmpFreq.new
 a.start

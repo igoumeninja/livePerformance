@@ -106,6 +106,49 @@ void ofSketch::drawSound(float xL, float yL, float zL, int redL, int greenL, int
 	}
 	glEnd();	
 }
+void ofSketch::sketch3d(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, int sketch3dLineType) {
+	ofFill();
+	ofSetColor(redL, greenL, blueL, alphaL);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_LINE_SMOOTH);   
+	if	(sketch3dLineType)	{
+		glBegin(GL_LINE_LOOP); //GL_LINE_LOOP,GL_POINTS, GL_LINE_STRIP  ( http://pyopengl.sourceforge.net/documentation/manual/glBegin.3G.xml )
+	}	else	{
+		glBegin(GL_POINTS); //GL_LINE_LOOP
+	}
+	//printf(" %i \n", slines);			
+	
+	for (int i=0; i<stoixeia; i++){
+		if (i==0){
+			deltaX[i] = (xL - xi[i]);
+			deltaY[i] = (yL - yi[i]);
+			deltaZ[i] = (zL - zi[i]);			
+		}
+		else {
+			deltaX[i] = (xi[i-1]-xi[i]);
+			deltaY[i] = (yi[i-1]-yi[i]);
+			deltaZ[i] = (zi[i-1]-zi[i]);			
+		}		
+		deltaX[i] *= elastikotita[i];    // create elastikotita effect
+		deltaY[i] *= elastikotita[i];
+		deltaZ[i] *= elastikotita[i];		
+		epitaxinsiX[i] += deltaX[i];
+		epitaxinsiY[i] += deltaY[i];
+		epitaxinsiZ[i] += deltaZ[i];		
+		xi[i] += epitaxinsiX[i];// move it
+		yi[i] += epitaxinsiY[i];
+		zi[i] += epitaxinsiZ[i];		
+		my3d.x = xi[i];
+		my3d.y = yi[i];
+		my3d.z = zi[i];
+		glVertex3f(my3d.x, my3d.y, my3d.z);	
+		epitaxinsiX[i] *= aposbesi[i];    // slow down elastikotita
+		epitaxinsiY[i] *= aposbesi[i];
+		epitaxinsiZ[i] *= aposbesi[i];		
+	}
+	glEnd();	
+}  
 void ofSketch::update(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL) {
 	ofFill();
 	ofSetColor(redL, greenL, blueL, alphaL);

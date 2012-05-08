@@ -22,8 +22,6 @@ inf.do({|i|
 });
 }.fork
 
-
-
 */
 
 PadResponders {
@@ -36,6 +34,7 @@ PadResponders {
 			this.iPadRespondersSpectro;
 			this.iPadRespondersEffects;
 			~ofNetwork = NetAddr("127.0.0.1", 12345);
+			~scNetwork = NetAddr("127.0.0.1", 57120);
 		}
 	}
 	*iPadRespondersGlobal {

@@ -26,11 +26,11 @@ void liveApp::setup()	{
 		} 
 		
 		texScreen.allocate(ofGetWidth(), ofGetHeight(),GL_RGB);// GL_RGBA); 
-		ofSetBackgroundAuto(false);
+		ofSetBackgroundAuto(setBackgroundAutoBool);
 		ofEnableSmoothing();
 		ofEnableAlphaBlending(); 
 		//glutSetCursor(GLUT_CURSOR_CYCLE);  // change cursor icon (http://pyopengl.sourceforge.net/documentation/manual/glutSetCursor.3GLUT.html)
-		cout << "recieving OSC at port: 12345 " << PORTlisten << "\n";
+		cout << "recieving OSC at port: " << PORTlisten << "\n";
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
@@ -93,12 +93,16 @@ void liveApp::setup()	{
 		angleOffsetB = (50*3.14)/180;  // Convert 50 degrees to radians
 		
 		//background
-		aBack = 0;
+		aBack = 10;
 		view_fillBackground = 1;
 		
 		//sound
-		viewSoundChanels = 1;
-		
+		viewSoundChanels = 0;
+		viewSound = 1;
+
+		//sketch3d
+		viewSketch3d = 1;
+
 		drawWithMouse = 0;
 		numMouseSketches = 99;
 		minMouseElasticity = 0.0;
@@ -111,14 +115,26 @@ void liveApp::setup()	{
 		maxSoundElasticity = 0.99;
 		minSoundDamping = 0.0;
 		maxSoundDamping = 0.99;
+
+		numSketch3dSketches = 99;
+		minSketch3dElasticity = 0.0;
+		maxSketch3dElasticity = 0.99;
+		minSketch3dDamping = 0.0;
+		maxSketch3dDamping = 0.99;
 		
 		mouseLines = 1;
 		soundLines = 0;
+		sketch3dLineType = 0;		
 		
 		ampInLow =0.0;
 		ampInHigh = 0.15;
 		freqInLow = 20;
 		freqInHigh = 4000;
+
+		ampInLowSketch3d =0.0;
+		ampInHighSketch3d = 0.15;
+		freqInLowSketch3d = 20;
+		freqInHighSketch3d = 4000;
 		
 		feedbackView = 0;
 		feedbackSpeedX = 0;
@@ -176,6 +192,7 @@ void liveApp::setup()	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
 			sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));	//to 1o stoixeio einai to id 0:
 			sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping));	//id:1 => mouse init(int sketchID, float elast, float aposv)
+			sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));	//id:1 => mouse init(int sketchID, float elast, float aposv)			
 		}
 		
 		sketchPhrase = false;
@@ -523,6 +540,10 @@ void liveApp::update()	{
 		}
 	}	//	feedback		
 	if ( m.getAddress() == "background" )			{
+		if ( m.getArgAsString(0) == "setBackgroundAutoBool" )			{
+			setBackgroundAutoBool = m.getArgAsInt32(1);	
+			ofSetBackgroundAuto(setBackgroundAutoBool);
+		}
 		switch (m.getNumArgs())	{
 			case 1:
 				aBack = m.getArgAsInt32( 0 );
@@ -627,36 +648,74 @@ void liveApp::update()	{
 		
 		else if ( m.getArgAsString( 0 ) == "sound")	{ rSound = m.getArgAsInt32( 1 );	gSound = m.getArgAsInt32( 2 );	bSound = m.getArgAsInt32( 3 );	aSound = m.getArgAsInt32( 4 );	}
 
-	}	//	rgb directamente		
+	}	//	rgb directamente	
+	if ( m.getAddress() == "sketch3d" )				{
+		if ( m.getArgAsString(0) == "activate" )	{
+			if (m.getArgAsInt32(1) == 1)	viewSketch3d = true;	
+			else if (m.getArgAsInt32(1) == 0)	viewSketch3d = false;	
+		}
+		else if ( m.getArgAsString(0) == "glBeginType" )	sketch3dLineType = m.getArgAsInt32(1);
+		else if ( m.getArgAsString(0) == "numSketch3dSketches" )	numSketch3dSketches = m.getArgAsInt32(1);				
+		else if ( m.getArgAsString(0) == "minSketch3dElasticity" )	{
+			minSketch3dElasticity = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "maxSketch3dElasticity" )	{
+			maxSketch3dElasticity = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "minSketch3dDamping" )	{
+			minSketch3dDamping = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "maxSketch3dDamping" )	{
+			maxSketch3dDamping = m.getArgAsFloat( 1 );
+			for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+				sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));
+			}
+		}				
+		else if ( m.getArgAsString(0) == "maxAmpInSketch3d" )	ampInHighSketch3d =  m.getArgAsFloat(1);	
+		else if ( m.getArgAsString(0) == "maxFreqInSketch3d" )	freqInHighSketch3d =  m.getArgAsFloat(1);	
+		else if ( m.getArgAsString(0) == "zCoordSketch3d" )	zCoordSketch3d =  m.getArgAsFloat(1);					
+		else if ( m.getArgAsString(0) == "rotXratio" )	rotXratio =  m.getArgAsFloat(1);					
+		else if ( m.getArgAsString(0) == "rotYratio" )	rotYratio =  m.getArgAsFloat(1);					
+		else if ( m.getArgAsString(0) == "rotZratio" )	rotZratio =  m.getArgAsFloat(1);					
+	}	//	skethc3d		
 	if ( m.getAddress() == "interactWithSound" )	{
 		if ( m.getArgAsString(0) == "activate" )	{
 			if (m.getArgAsInt32(1) == 1)	viewSoundChanels = true;	
 			else if (m.getArgAsInt32(1) == 0)	viewSoundChanels = false;	
-		}
+		}		
 		else if ( m.getArgAsString(0) == "deactivate" )	viewSoundChanels = false;					
 		else if ( m.getArgAsString(0) == "glBeginType" )	soundLines = m.getArgAsInt32(1);
 		else if ( m.getArgAsString(0) == "numSoundSketches" )	numSoundSketches = m.getArgAsInt32(1);				
 		else if ( m.getArgAsString(0) == "minSoundElasticity" )	{
 			minSoundElasticity = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+			for( int i=500; i<500+numSoundSketches; i++ ) {
 				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
 			}
 		}				
 		else if ( m.getArgAsString(0) == "maxSoundElasticity" )	{
 			maxSoundElasticity = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+			for( int i=500; i<500+numSoundSketches; i++ ) {
 				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
 			}
 		}				
 		else if ( m.getArgAsString(0) == "minSoundDamping" )	{
 			minSoundDamping = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+			for( int i=500; i<500+numSoundSketches; i++ ) {
 				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
 			}
 		}				
 		else if ( m.getArgAsString(0) == "maxSoundDamping" )	{
 			maxSoundDamping = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000+numSoundSketches; i++ ) {
+			for( int i=500; i<500+numSoundSketches; i++ ) {
 				sketch[i].init(0, ofRandom(minSoundElasticity, maxSoundElasticity), ofRandom(minSoundDamping, maxSoundDamping));
 			}
 		}				
@@ -673,30 +732,30 @@ void liveApp::update()	{
 		else if ( m.getArgAsString(0) == "numMouseSketches" )	numMouseSketches = m.getArgAsFloat(1);			
 		else if ( m.getArgAsString(0) == "minMouseElasticity" )	{
 			minMouseElasticity = m.getArgAsFloat( 1 );			
-			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+			for( int i=0; i<0 + numMouseSketches; i++ ) {
 				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
 			}		
 		}		
 		else if ( m.getArgAsString(0) == "maxMouseElasticity" )	{
 			maxMouseElasticity = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+			for( int i=0; i<0 + numMouseSketches; i++ ) {
 				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
 			}		
 		}		
 		else if ( m.getArgAsString(0) == "minMouseDamping" )	{
 			minMouseDamping = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+			for( int i=0; i<0 + numMouseSketches; i++ ) {
 				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
 			}		
 		}		
 		else if ( m.getArgAsString(0) == "maxMouseDamping" )	{
 			maxMouseDamping = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000 + numMouseSketches; i++ ) {
+			for( int i=0; i<0 + numMouseSketches; i++ ) {
 				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
 			}		
 		}
 	}	//  Mouse Interaction		
-	if	(viewSoundChanels)							{			
+	if	(viewSound)							{			
 		if ( m.getAddress() == "mlab" )	{					// Machine Listening
 			if		(m.getArgAsString(0) == "amp" )			{	ampChan0 = m.getArgAsFloat( 1 );		} 
 			else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );} 
@@ -898,23 +957,6 @@ void liveApp::update()	{
 }
 	
 void liveApp::draw()	{
-
-/*	{`
-	//  Pushers
-	
-	// List
-	
-	pushers.push_front (ofPoint(200,200,200));
-	pushers.push_front (ofPoint(200,300));
-	cout << "mylist contains:";
-	//	for (list<ofPoint>::iterator it=pushers.begin(); it!=pushers.end(); ++it)
-	//		cout << " " << *it << endl;
-
-	for (list<ofPoint>::iterator it=pushers.begin(); it!=pushers.end(); ++it)
-		ofEllipse(it->x,it->y,20,20);
-
-	}	
- */
 	if (camera)										{
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
@@ -985,6 +1027,23 @@ void liveApp::draw()	{
 		
 		
 	}	//  Particles
+	if (viewSketch3d)								{
+		ofPushMatrix();
+		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
+		ofRotateX(rotXratio*ofGetFrameNum());
+		ofRotateY(rotYratio*ofGetFrameNum());
+		ofRotateZ(rotZratio*ofGetFrameNum());	
+		Yamp0 = ofMap(ampChan0, ampInLowSketch3d, ampInHighSketch3d, 0, ofGetHeight());
+		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
+		for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+			sketch[i].sketch3d(Xfreq0, Yamp0, zCoordSketch3d, rSound, gSound, bSound, aSound, sketch3dLineType);	
+		}
+		ofRotateZ(-rotZratio*ofGetFrameNum());
+		ofRotateY(-rotYratio*ofGetFrameNum());
+		ofRotateX(-rotXratio*ofGetFrameNum());		
+		ofTranslate(-ofGetWidth() / 2, -ofGetHeight() / 2, 0);		
+		ofPopMatrix();
+	}  	//  viewSketch3d
 	if (sketchPhrase)								{
 		
 		for( int i=0; i<100; i++ ) {
@@ -1005,9 +1064,10 @@ void liveApp::draw()	{
 	if (viewSoundChanels)							{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
-		for( int i=1000; i<1000+numSoundSketches; i++ ) {
+		for( int i=500; i<500+numSoundSketches; i++ ) {
 			sketch[i].drawSound(Xfreq0, Yamp0, 0, rSound, gSound, bSound, aSound, soundLines);	
 		}
+		
 	}  	//  viewSoundChanels 
 	if (soundEffectNoto)							{
 		Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());

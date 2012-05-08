@@ -34,7 +34,7 @@ StartupLivePerformance {
 				OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
 				~mySendSpectrogramData = SendSpectrogramData.new; 
 				SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).send(Server.default);
-				Server.default.mute;
+				//Server.default.mute;
 				
 			};
 		}).play;

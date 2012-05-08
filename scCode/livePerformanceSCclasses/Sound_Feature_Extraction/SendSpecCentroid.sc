@@ -10,14 +10,15 @@ c.impulseRate(1)
 c.stop;
 */
 
+
 SendSpecCentroid {
 	classvar default;
-	var <server;					// the scserver that runs the listening process
-	var <synthListenCentroid;			// the listening Onsets process
-	var <synthPlay;					// the produce process
-	var <addr;				// the address (p5, of ...) for sending the data for drawing
-	var <chan = 0;		// the channel that we detect
-	var <responders;		//	responders 
+	var <server;				//	the scserver that runs the listening process
+	var <synthListenCentroid;	//	the listening Onsets process
+	var <synthPlay;			//	the produce process
+	var <addr;				//	the address (p5, of ...) for sending the data for drawing
+	var <chan = 0;			//	the channel that we detect
+	var <responders;			//	responders 
 
 	*default {
 		if (default.isNil) { default = this.new };  // create default

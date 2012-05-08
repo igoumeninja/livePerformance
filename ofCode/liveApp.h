@@ -16,7 +16,7 @@
 #include "ofSketch.h"
 #include "ofSuperformula.h"
 
-#define MAX_SKETCHES		2048
+#define MAX_SKETCHES		4096  // 0~500 mouse, 500~100 sound2d, 1000~1500 sound3d
 #define MAX_CIRCLES			1024
 #define MAX_MATRIX			64
 #define PORTlisten			12345
@@ -41,6 +41,10 @@ public:
 	void	seed1(float dotSize, float angle, float x, float y);
 	void	seed2(float dotSize, float angle, float x, float y);	
 	
+	//-========================
+	//	GENERAL
+	
+	bool setBackgroundAutoBool;
 	//========================
 	//	VIDEO
 	int		playVideo, rVideo, gVideo, bVideo, aVideo;
@@ -49,6 +53,7 @@ public:
 	
 	//========================
 	//	SOUND
+	bool viewSound;
 	int playSpectro,mirrorMode, count;
 	float spectroRed,spectroGreen,spectroBlue,spectroAlpha;
 	float textureRed, textureGreen, textureBlue, textureAlpha, reverseEllipse, reverseTexture ;
@@ -112,7 +117,16 @@ public:
 		
 	//================
 	//	SKETCH
+	
+	//sketch3d
+	bool viewSketch3d;
+	int	numSketch3dSketches, sketch3dLineType;
+	float minSketch3dElasticity, maxSketch3dElasticity, minSketch3dDamping, maxSketch3dDamping, ampInLowSketch3d, ampInHighSketch3d, freqInLowSketch3d, freqInHighSketch3d; 
+	float zCoordSketch3d;
+	float rotYratio, rotXratio, rotZratio;
+	//OTHER
 	bool	viewSketchAutomato;
+	
 	float	numMouseSketches, numSoundSketches, mouseLines, soundLines, viewSoundChanels;
 	float	minSoundElasticity, maxSoundElasticity, minSoundDamping, maxSoundDamping;
 	float	minMouseElasticity, maxMouseElasticity, minMouseDamping, maxMouseDamping;

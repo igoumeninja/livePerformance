@@ -4,15 +4,19 @@ OSC messages dictionary
 
 Aris Bezas Igoumeninja <-> Corfu 
 05 - 04 - 2012
+
+MakeResponders
 */
 
 
 BACKGROUND
 ----------
-OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,25);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
+
+OF.background(setBackgroundAutoBool, 0);
 
 MACHINE LISTENING
 -----------------
@@ -22,6 +26,7 @@ r.removeResponders;
 
 a = SendAmpFreq.new; 	
 a.start; 	
+OF.interactWithSound("activate", 0)
 OF.rgb("sound",255,255,255,25);				// 	OF.rgb("sound",r,g,b,a)
 a.stop;  
 a.impulseRate(24); // 24 frames/ sec
@@ -74,20 +79,27 @@ Mirror Effect Modes:
 
 SKETCH
 ------
+-mouse
 OF.interactWithSketch("activate", 0);
 OF.interactWithSketch("padSketchXY", 200,200);
 OF.interactWithSketch("mouseLines",0);
 OF.rgb("sketch",255,255,255,20);
-
-OF.interactWithSound("activate",0); 			//	0:DEACTIVATE, 1: ACTIVATE
-OF.interactWithSound("numSoundSketches", 7);		//	RANGE: 1 -> 999
-OF.interactWithSound("glBeginType",0);			//	0:POINTS, Ê Ê 1: LINES
+-sound2d
+OF.interactWithSound("activate",1); 			//	0:DEACTIVATE, 1: ACTIVATE
+OF.interactWithSound("numSoundSketches", 500);		//	RANGE: 1 -> 999
+OF.interactWithSound("glBeginType",1);			//	0:POINTS, Ê Ê 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
 OF.interactWithSound("maxSoundElasticity",0.1);	//  RANGE: 0 -> 20
 OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
-
+-sound3d
+OF.sketch3d("glBeginType",0);
+OF.sketch3d("activate", 1);
+OF.sketch3d("numSketch3dSketches",500);
+OF.sketch3d("rotYratio",0.2);
+OF.sketch3d("rotZratio",0.2);
+OF.sketch3d("maxSketch3dElasticity",0.5);
 PARTICLE
 --------
 OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);

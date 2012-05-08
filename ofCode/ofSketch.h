@@ -25,12 +25,15 @@ public:
 	
 	float			xi[stoixeia];
 	float			yi[stoixeia];
+	float			zi[stoixeia];	
 	float			epitaxinsiX[stoixeia];
 	float			epitaxinsiY[stoixeia];
+	float			epitaxinsiZ[stoixeia];	
 	float			elastikotita[stoixeia];
 	float			aposbesi[stoixeia];
 	float			deltaX[stoixeia];
 	float			deltaY[stoixeia];
+	float			deltaZ[stoixeia];	
 
 	float			xiMouse[stoixeiaMouse];
 	float			yiMouse[stoixeiaMouse];
@@ -54,6 +57,7 @@ public:
 
     void			init(int sketchID, float elast, float aposv);
 	void			drawMouse(int xL, int yL, int zL, int redL, int greenL, int blueL, int alphaL, float lines);
+	void			sketch3d(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, int lines);  
 	void			drawSound(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL, float slines);	
     void			update(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL);
 	void			updateClassic(float xL, float yL, float zL, int redL, int greenL, int blueL, int alphaL);
