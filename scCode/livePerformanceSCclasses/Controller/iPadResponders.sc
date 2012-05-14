@@ -5,16 +5,17 @@ This class is used iPad responders
 Aris Bezas Astakos -> Sami 120429
 
 ## SOME EXTRA PHRASES ##
+//:-
 {
 OF.background(0,0,0,40);
 inf.do({|i|
 	OF.writeString("bigCenter", "Technoetic Telos".at(i%16).asString,~width/2 - 200,~height/2,255,255,255,255);				
-	~delayTechnoetic.wait;	
-		
+	~delayTechnoetic.wait;
+	~kontraBass.brt_((i%14)+2).playBuf(0.001, 0.5, 0.3,mul:~amp.next, loop:0);		
 });
 }.fork
-
-~delayTechnoetic = 0.08;
+//:-
+~delayTechnoetic = 0.05;
 {
 inf.do({|i|
 	OF.writeString("bigCenter", "~`!@#$%^&*()_+}{][|".at(rrand(0,10).asInteger).asString,~width/2 - 200,~height/2,255,255,255,255);				

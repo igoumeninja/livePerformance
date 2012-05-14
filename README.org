@@ -79,44 +79,44 @@ for(int i = 0; i < 1024; i++)	{
 - [[http://forum.openframeworks.cc/index.php/topic,2860.msg25710.html#msg25710][particle number]]
 - [[http://forum.openframeworks.cc/index.php/topic,7753.msg36298.html#msg36298][screen flickering]]
 * TODO TODO stuff
-** LAST POINT 
-- Edit StartupLivePerformance.sc class
 ** [[http://www.openprocessing.org/sketch/3624][Deformation]]
-** TODO <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
-** TODO mathematical poetics
+** <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
+** mathematical poetics
 *** Infinity Plus
     At my shared items
 
 *** life-death
 
     \int_{birth}^{death}{what happens*how you feel about it dt}
-** TODO Create Masks [[http://www.flickr.com/photos/24538271@N04/4187408437/][link]]
-** TODO Develop typography. 
+** Create Masks [[http://www.flickr.com/photos/24538271@N04/4187408437/][link]]
+** Develop typography. 
    It has to be more delicant, more beatiful, more precise.
 *** DONE write at the noise background. Need more detail. 
-** TODO [[http://blog.hiremebecauseimsmart.com/post/12479694421/by-fractalartist][spiral]]
-** TODO Function Pointers
-** TODO Brush Effect
+** [[http://blog.hiremebecauseimsmart.com/post/12479694421/by-fractalartist][spiral]]
+** Function Pointers
+** SuperFormula
+** Brush Effect
    [[http://www.samburford.com/Painting.html][Inspiration]]
 * DONE DONE stuff
 ** Create SC_Client.sc Class OF like class for SC client
-** DONE Load and UnLoad video (data) with Pointers
-** DONE texture effect 
+** Load and UnLoad video (data) with Pointers
+** texture effect 
    inspiration: http://igoumeninja.tumblr.com/post/12249929468
    Implement also a 4 copy mirrow effect
    Texture screen capture example
    Check out texture example (noise effect is very interesting)
-** DONE Fix repulsion responder
-** DONE Fix feedback OSC responders at oF
-** DONE Fix flickering problem. 
-** DONE try ofxFenster.
-** DONE kill all Processes with SC (create responder) 
-** DONE Random image gollage
-** DONE Trigger photos with FFT 
-** DONE Add second group of photos 
-** DONE Typography CPU at SuperCollider increase deagerus
-** DONE Create interfaces
-** DONE Video effect (saturation, contrast ...)
-** DONE Add fftTrigger to iPad
+** Fix repulsion responder
+** Fix feedback OSC responders at oF
+** Fix flickering problem. 
+** try ofxFenster.
+** kill all Processes with SC (create responder) 
+** Random image gollage
+** Trigger photos with FFT 
+** Add second group of photos 
+** Typography CPU at SuperCollider increase deagerus
+** Create interfaces
+** Video effect (saturation, contrast ...)
+** Add fftTrigger to iPad
+** Circular Spectrograph
 
 

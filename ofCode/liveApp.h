@@ -55,6 +55,8 @@ public:
 	//	SOUND
 	bool viewSound;
 	int playSpectro,mirrorMode, count;
+	float rotCircSpect;
+	float rotCircSpectRed, rotCircSpectGreen, rotCircSpectBlue;
 	float spectroRed,spectroGreen,spectroBlue,spectroAlpha;
 	float textureRed, textureGreen, textureBlue, textureAlpha, reverseEllipse, reverseTexture ;
 	float	data[1024];
@@ -120,7 +122,7 @@ public:
 	
 	//sketch3d
 	bool viewSketch3d;
-	int	numSketch3dSketches, sketch3dLineType;
+	int	numSketch3dSketches, sketch3dLineType, rSketch3d, gSketch3d, bSketch3d, aSketch3d;
 	float minSketch3dElasticity, maxSketch3dElasticity, minSketch3dDamping, maxSketch3dDamping, ampInLowSketch3d, ampInHighSketch3d, freqInLowSketch3d, freqInHighSketch3d; 
 	float zCoordSketch3d;
 	float rotYratio, rotXratio, rotZratio;

@@ -11,9 +11,9 @@ MakeResponders
 
 BACKGROUND
 ----------
-OF.background(0,0,0,25);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
-OF.rgb("background",0,0,0,5);	//OF.rgb("background",R,G,B,A);
+OF.rgb("background",0,0,0,255);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
 
 OF.background(setBackgroundAutoBool, 0);
@@ -21,7 +21,7 @@ OF.background(setBackgroundAutoBool, 0);
 MACHINE LISTENING
 -----------------
 r = MakeResponders.new;		
-r.all;		
+r.all;		 
 r.removeResponders;		
 
 a = SendAmpFreq.new; 	
@@ -50,20 +50,26 @@ b.threshold(1);
 
 SPECTROGRAPH
 ------------
-OF.playSpectro("mirrorMode", 4);
+OF.playSpectro("mirrorMode", 8);
+OF.playSpectro("rotCircSpect", 0.04);
 OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
-~mySendSpectrogramData = SendSpectrogramData.new; 
-SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).send(s);
 s.mute;
 i = Synth(\input).play
+~mySendSpectrogramData.connectToPoller
 i.set(\level, 2);
+
+~mySendSpectrogramData.rate(1)
 i.free
 
 s.volume_(25)
 x={Out.ar(0,In.ar(8)*1.9)}.play;
 x.free
 ~mySendSpectrogramData.stopSending;
-~mySendSpectrogramData .connectToPoller
+
+
+Already at StartUpFile
+~mySendSpectrogramData = SendSpectrogramData.new; 
+SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).send(s);
 
 
 Mirror Effect Modes:
@@ -74,6 +80,7 @@ Mirror Effect Modes:
 5 : Fire Colors from Right
 6 : Fire Colors Mirrow from Right
 7 : Fire Colors Mirrow from Middle
+8 : Circular 
 9 : Alva Noto Insiration
 
 
@@ -85,25 +92,28 @@ OF.interactWithSketch("padSketchXY", 200,200);
 OF.interactWithSketch("mouseLines",0);
 OF.rgb("sketch",255,255,255,20);
 -sound2d
-OF.interactWithSound("activate",1); 			//	0:DEACTIVATE, 1: ACTIVATE
+OF.interactWithSound("activate",0); 			//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 500);		//	RANGE: 1 -> 999
 OF.interactWithSound("glBeginType",1);			//	0:POINTS, Ê Ê 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
-OF.interactWithSound("maxSoundElasticity",0.1);	//  RANGE: 0 -> 20
+OF.interactWithSound("maxSoundElasticity",10);	//  RANGE: 0 -> 20
 OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 -sound3d
 OF.sketch3d("glBeginType",0);
-OF.sketch3d("activate", 1);
+OF.sketch3d("activate", 0);
 OF.sketch3d("numSketch3dSketches",500);
-OF.sketch3d("rotYratio",0.2);
-OF.sketch3d("rotZratio",0.2);
-OF.sketch3d("maxSketch3dElasticity",0.5);
+OF.sketch3d("rotYratio",0.3);
+OF.sketch3d("rotZratio",1);
+OF.sketch3d("maxSketch3dElasticity",0.9);
+OF.rgb("sketch3d",255,255,255,20);
+
+
 PARTICLE
 --------
 OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
 OF.particle("add", 10,10, 0.5, 0.5);		
 //:Add more
@@ -115,7 +125,7 @@ OF.particle("add", 10,10, 0.5, 0.5);
 	}
 }.fork
 //:-
-OF.particle("pusher","set", 0, 200,200)
+OF.particle("pusher","set", 0, 200,800)
 OF.particle("pusher","set", 1, 600,200)
 OF.particle("pusher","set", 2, 800,200)
 OF.particle("pusher","set", 10, 800,200) // ACTIVATE SEND AMP FREQ PUSHER
@@ -123,7 +133,7 @@ OF.particle("pusher","remove", 0)
 OF.particle("pusher","remove", 1)
 OF.particle("pusher","remove", 2)
 
-OF.particle("forceRadius", 300);				//	RANGE: 0 -> 700
+OF.particle("forceRadius", 30);				//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 45);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
@@ -219,6 +229,7 @@ OF.superformula("alpha",0)
 SOUND
 -----
 ~ataka.stop;
+~kontraBass.brt_(3).playBuf(0.001, 0.5, 0.3,mul:~amp.next, loop:0);
 ~ataka = {
 
 	inf.do {

@@ -101,7 +101,8 @@ void liveApp::setup()	{
 		viewSound = 1;
 
 		//sketch3d
-		viewSketch3d = 1;
+		viewSketch3d = 0;
+		rSketch3d = gSketch3d = bSketch3d = 255; aSketch3d = 20;
 
 		drawWithMouse = 0;
 		numMouseSketches = 99;
@@ -140,7 +141,8 @@ void liveApp::setup()	{
 		feedbackSpeedX = 0;
 		feedbackSpeedY = 0;
 		timeLine = 0;
-		viewRotate = 0;				
+		viewRotate = 0;	
+		textureRed = textureGreen = textureBlue = textureAlpha = 1;
 			
 		}	// Initial Values
 	{/*
@@ -201,11 +203,12 @@ void liveApp::setup()	{
 	{
 		playSpectro = 0;
 		rSound = gSound = bSound = 255; aSound = 25;
-		textureRed = textureGreen = textureBlue = textureAlpha = 255;
+
 		reverseEllipse = ofGetWidth();	reverseTexture = -1;
 		mirrorMode = 9;
 		spectroRed = spectroGreen = spectroBlue = 1;	
-		
+		rotCircSpectRed = rotCircSpectGreen = rotCircSpectBlue = 1;
+		rotCircSpect = 1;
 		
 		soundEffectNoto = false;
 	}	// Sound Interaction
@@ -290,6 +293,9 @@ void liveApp::update()	{
 			cout << playSpectro << endl;
 		} else if (m.getArgAsString(0) == "mirrorMode") {
 			mirrorMode = m.getArgAsInt32(1);
+		} else if (m.getArgAsString(0) == "rotCircSpect") {
+			rotCircSpect = m.getArgAsFloat(1);
+
 		}
 	}	//  spectro
 	if ( m.getAddress() == "rotate" )				{
@@ -599,13 +605,15 @@ void liveApp::update()	{
 		if ( m.getArgAsString(0) == "tree" )		{
 			glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
 			seed1(dotSize, (270*3.1415926)/180, 0, 0);
-		}	else if ( m.getArgAsString(0) == "noiseEffect" ) {
+		}	
+		else if ( m.getArgAsString(0) == "noiseEffect" ) {
 				if (m.getArgAsInt32(1) == 1) {
 					noiseEffect = true;
 				} else {
 					noiseEffect = false;
 				}
-		}	else if ( m.getArgAsString(0) == "destruct" ) {
+		}	
+		else if ( m.getArgAsString(0) == "destruct" ) {
 			if (m.getArgAsString(1)	== "activate") {
 				if (m.getArgAsInt32(2) == 1) {
 					destruct = true;
@@ -622,7 +630,8 @@ void liveApp::update()	{
 					texScreen.draw(int(ofRandom(0,1400)),int(ofRandom(0,1400)),500,500);
 				}
 			}
-		}	else if ( m.getArgAsString(0) == "mirror" ) {
+		}	
+		else if ( m.getArgAsString(0) == "mirror" ) {
 			switch (m.getNumArgs()) {
 				case 2:
 					if (m.getArgAsInt32(1) == 1) {
@@ -638,7 +647,8 @@ void liveApp::update()	{
 				default:
 					break;
 			}
-		}	else {
+		}	
+		else {
 			cout << "Write a new effect";
 		}
 
@@ -647,6 +657,8 @@ void liveApp::update()	{
 		if ( m.getArgAsString( 0 ) == "sketch")	{ rSketch = m.getArgAsInt32( 1 );	gSketch = m.getArgAsInt32( 2 );	bSketch = m.getArgAsInt32( 3 );	aSketch = m.getArgAsInt32( 4 );	}
 		
 		else if ( m.getArgAsString( 0 ) == "sound")	{ rSound = m.getArgAsInt32( 1 );	gSound = m.getArgAsInt32( 2 );	bSound = m.getArgAsInt32( 3 );	aSound = m.getArgAsInt32( 4 );	}
+		else if ( m.getArgAsString( 0 ) == "rotCircSpect")	{ rotCircSpectRed = m.getArgAsFloat( 1 );	rotCircSpectGreen = m.getArgAsFloat( 2 );	rotCircSpectBlue = m.getArgAsFloat( 3 );}		
+		else if ( m.getArgAsString( 0 ) == "sketch3d")	{ rSketch3d = m.getArgAsInt32( 1 );	gSketch3d = m.getArgAsInt32( 2 );	bSketch3d = m.getArgAsInt32( 3 );	aSketch3d = m.getArgAsInt32( 4 );	}		
 
 	}	//	rgb directamente	
 	if ( m.getAddress() == "sketch3d" )				{
@@ -755,7 +767,7 @@ void liveApp::update()	{
 			}		
 		}
 	}	//  Mouse Interaction		
-	if	(viewSound)							{			
+	if (viewSound)									{			
 		if ( m.getAddress() == "mlab" )	{					// Machine Listening
 			if		(m.getArgAsString(0) == "amp" )			{	ampChan0 = m.getArgAsFloat( 1 );		} 
 			else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );} 
@@ -779,6 +791,7 @@ void liveApp::update()	{
 				printf(" %f \n", m.getArgAsFloat( 1 ));						
 			} 
 			else if	(m.getArgAsString(0) == "fftData" )		{
+				
 				switch ( mirrorMode )
 				{
 					case 0:
@@ -911,11 +924,19 @@ void liveApp::update()	{
 						break;
 						
 					case 8:
+						ofPushMatrix();
+						ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
+						//ofRotateZ(1);
+						ofRotateZ(rotCircSpect*ofGetFrameNum());						
 						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
-							glColor3f(m.getArgAsFloat( i ), 0, 0);
-							ofLine(0, 512*m.getArgAsFloat( i ), ofGetWidth(), 512*m.getArgAsFloat( i ));
+							glColor3f(rotCircSpectRed*data[i],rotCircSpectGreen*data[i],rotCircSpectBlue*data[i]);
+							ofEllipse(0,i,2,2);
+							
 						}
+						ofTranslate(-ofGetWidth() / 2, -ofGetHeight() / 2, 0);
+						ofRotateZ(-rotCircSpect*ofGetFrameNum());
+						ofPopMatrix();
 						break;				
 						// 768 HEIGHT
 					case 9:
@@ -945,6 +966,10 @@ void liveApp::update()	{
 					default:
 						cout << "default";
 				}
+				//ofRotateX(-ofGetFrameNum());		
+				//ofTranslate(-ofGetWidth() / 2, -ofGetHeight() / 2, 0);		
+				//ofPopMatrix();
+				
 			}
 			else if	(m.getArgAsString(0) == "fftColor" )	{
 				spectroRed = m.getArgAsInt32(1);
@@ -1036,7 +1061,7 @@ void liveApp::draw()	{
 		Yamp0 = ofMap(ampChan0, ampInLowSketch3d, ampInHighSketch3d, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
 		for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
-			sketch[i].sketch3d(Xfreq0, Yamp0, zCoordSketch3d, rSound, gSound, bSound, aSound, sketch3dLineType);	
+			sketch[i].sketch3d(Xfreq0, Yamp0, zCoordSketch3d, rSketch3d, gSketch3d, bSketch3d, aSketch3d, sketch3dLineType);	
 		}
 		ofRotateZ(-rotZratio*ofGetFrameNum());
 		ofRotateY(-rotYratio*ofGetFrameNum());

@@ -722,11 +722,10 @@ Kaffer : Buffer {
 
 		Server.default.doWhenBooted({
 
-		~kontraBass = Kaffer.read(Server.default, "/Users/ari/Media/sounds/kaffers/kontraBass.aiff");
-		
-		~kaf01 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/meTsirigma.aiff");
+		~kontraBass = Kaffer.read(Server.default, "/Users/ari/Media/sounds/kaffers/kontraBass.aiff");		~kaf01 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/meTsirigma.aiff");
 		~kaf02 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/clarinet2.aiff");
 		~kaf03 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/chord01.aiff");
+		~kaf04 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/breakmetal.aiff");		
 	/*	
 		
 		~ats01 = Kaffer.read(Server.default, "sounds/_kafes/atesh/01.aif");
