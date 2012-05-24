@@ -18,6 +18,7 @@ OF {
 	}
 
 	init { | argAddr |
+		"-OF class".postln;
 		addr = argAddr ?? { this.defaultAddress };
 	}
 

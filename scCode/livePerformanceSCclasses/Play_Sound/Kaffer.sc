@@ -31,7 +31,7 @@ Kaffer : Buffer {
 	
 	*initClass {
 		StartUp add: {
-			
+			"-Kaffer Class by Omer".postln;
 			this.loadKafs;
 
 		}
@@ -725,7 +725,7 @@ Kaffer : Buffer {
 		~kontraBass = Kaffer.read(Server.default, "/Users/ari/Media/sounds/kaffers/kontraBass.aiff");		~kaf01 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/meTsirigma.aiff");
 		~kaf02 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/clarinet2.aiff");
 		~kaf03 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/chord01.aiff");
-		~kaf04 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/breakmetal.aiff");		"kaffers are loaded".postln;
+		~kaf04 = Kaffer.read(Server.default, "/Users/ari/Media/sounds/sketch/breakmetal.aiff");
 		});
 		
 	}

@@ -25,6 +25,7 @@ SendLoudness {
 		^super.new.init(server, addr, chan);		
 	}	
 	init { | argServer, argAddr, argChan = 0|
+		"-SendLoudness".postln;
 		server = argServer ?? { Server.default };  //define server
 		addr =  argAddr ?? { NetAddr("127.0.0.1", 12345); }; //localhost, oF port
 		chan = argChan;

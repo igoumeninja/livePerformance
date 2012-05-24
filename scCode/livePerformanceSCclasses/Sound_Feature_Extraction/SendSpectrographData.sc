@@ -32,6 +32,7 @@ SendSpectrogramData : AbstractServerResource {
 
 	
 	init { | server, aBinSize = 1024, aColorSize = 64, aColorScaleExponent = 0.5, aIntensity = 1 |
+		"-SendSpectrogramData".postln;
 		super.init(server);
 		binSize = aBinSize;
 		colorSize = aColorSize;

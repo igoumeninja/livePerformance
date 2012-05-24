@@ -26,6 +26,7 @@ SendSpecFlatness {
 	}	
 
 	init { | argServer, argAddr, argChan = 0|
+		"-SendSpecFlatness".postln;
 		server = argServer ?? { Server.default };  //define server
 		addr =  argAddr ?? { NetAddr("127.0.0.1", 12345); }; //localhost, oF port
 		chan = argChan;

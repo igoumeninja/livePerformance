@@ -93,7 +93,7 @@ void liveApp::setup()	{
 		angleOffsetB = (50*3.14)/180;  // Convert 50 degrees to radians
 		
 		//background
-		aBack = 10;
+		aBack = 0;
 		view_fillBackground = 1;
 		
 		//sound
@@ -205,10 +205,10 @@ void liveApp::setup()	{
 		rSound = gSound = bSound = 255; aSound = 25;
 
 		reverseEllipse = ofGetWidth();	reverseTexture = -1;
-		mirrorMode = 9;
+		mirrorMode = 10;
 		spectroRed = spectroGreen = spectroBlue = 1;	
 		rotCircSpectRed = rotCircSpectGreen = rotCircSpectBlue = 1;
-		rotCircSpect = 1;
+		rotCircSpect = 0.12;
 		
 		soundEffectNoto = false;
 	}	// Sound Interaction
@@ -1046,7 +1046,25 @@ void liveApp::update()	{
 						ofLine(ofGetWidth()/2 - 1, ofMap(ploudness, 0, 30, 512, 0), ofGetWidth()/2, ofMap(loudness, 0, 30, 512, 0));
 						ploudness = loudness;
 						break;
+					case 10:
 						
+						
+						ofPushMatrix();
+						ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
+						//ofRotateZ(1);
+						ofRotateZ(rotCircSpect*ofGetFrameNum());						
+						for (int i=1; i<513; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							glColor4f(data[i],0,0,data[i]);
+							ofEllipse(0,i,2,2);
+							glColor4f(data[i],data[i],0,data[i]);
+							ofEllipse(0,i,2,2);							
+						}
+						ofTranslate(-ofGetWidth() / 2, -ofGetHeight() / 2, 0);
+						ofRotateZ(-rotCircSpect*ofGetFrameNum());
+						ofPopMatrix();
+						break;
+
 					default:
 						cout << "default";
 				}

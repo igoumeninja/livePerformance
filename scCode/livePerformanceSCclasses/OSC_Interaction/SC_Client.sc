@@ -18,6 +18,7 @@ SC_Client {
 	}
 
 	init { | argAddr |
+		"-SC_Client".postln;
 		addr = argAddr ?? { this.defaultAddress };
 	}
 

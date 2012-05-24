@@ -22,34 +22,21 @@ OF.background(setBackgroundAutoBool, 0);
 
 MACHINE LISTENING
 -----------------
-r = MakeResponders.new;		
-r.all;		 
-r.removeResponders;		
+~mlabResponders.removeResponders;		
 
-a = SendAmpFreq.new; 	
-a.start;
-a.stop;
- 	
-OF.interactWithSound("activate", 1)
+AMP - FREQ
+----------
+~mySendAmpFreq.start;
+OF.interactWithSound("activate",1);
 OF.rgb("sound",255,255,255,25);				// 	OF.rgb("sound",r,g,b,a)
-a.stop;  
-a.impulseRate(24); // 24 frames/ sec
-c = SendSpecCentroid.new; 	
-c.start; 	
-c.stop; 	
-c.impulseRate(0.5);
-d = SendSpecFlatness.new; 	d.start; 	d.stop; 	d.impulseRate(24);
-e = SendLoudness.new;	
-e.start;	
-e.stop;	
-e.impulseRate(24);
+~mySendAmpFreq.impulseRate(24); // 24 frames/ sec
+~mySendAmpFreq.stop;
 
 ONSETS
 -------
-b = SendOnsets.new;	
-b.start;	
-b.stop;	
-b.threshold(1);  // beetwen [0,1]
+~mySendOnsets.start;	
+~mySendOnsets.stop;	
+~mySendOnsets.threshold(1);  // beetwen [0,1]
 ~boolSketchColor = 0;
 ~onsetSketchColorResp.remove;
 ~onsetSketchColorResp = OSCresponderNode(nil, 'onset', { |t,r,msg|
@@ -59,28 +46,20 @@ b.threshold(1);  // beetwen [0,1]
 
 SPECTROGRAPH
 ------------
-OF.playSpectro("mirrorMode", 9);
-OF.background(0,0,0,0);
-OF.playSpectro("rotCircSpect", 0.02);
-OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
-s.mute;
-i = Synth(\input).play
-~mySendSpectrogramData.connectToPoller
-i.set(\level, 2);
-
-~mySendSpectrogramData.rate(1)
-i.free
-
-s.volume_(25)
-x={Out.ar(0,In.ar(8)*1.9)}.play;
-x.free
+~mySendSpectrogramData.connectToPoller;
 ~mySendSpectrogramData.stopSending;
 
+OF.playSpectro("mirrorMode", 10);
 
-Already at StartUpFile
-~mySendSpectrogramData = SendSpectrogramData.new; 
-SynthDef(\input, { | level = 1| Out.ar(0,In.ar(8)*level)}).send(s);
+OF.playSpectro("rotCircSpect", 0.12);
 
+OF.background(0,0,0,0);
+
+OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
+
+~inputSpectroSynth.set(\level, 2);
+
+~mySendSpectrogramData.rate(1)
 
 Mirror Effect Modes:
 0 : White from Right
@@ -92,6 +71,19 @@ Mirror Effect Modes:
 7 : Fire Colors Mirrow from Middle
 8 : Circular 
 9 : Alva Noto Insiration
+10: Circular sunset
+
+ 	
+c = SendSpecCentroid.new; 	
+c.start; 	
+c.stop; 	
+c.impulseRate(0.5);
+d = SendSpecFlatness.new; 	d.start; 	d.stop; 	d.impulseRate(24);
+e = SendLoudness.new;	
+e.start;	
+e.stop;	
+e.impulseRate(24);
+
 
 
 SKETCH
@@ -123,7 +115,7 @@ OF.rgb("sketch3d",255,255,255,20);
 PARTICLE
 --------
 OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
 OF.particle("add", 10,10, 0.5, 0.5);		
 //:Add more
@@ -175,12 +167,12 @@ OF.feedback("speedXY", 0,0.5);
 EFFECTS
 =======
 OF.effect("destruct","activate",0)
-OF.effect("destruct","case",2)	// 2: the best 0,1,2,3
+OF.effect("destruct","case",0)	// 2: the best 0,1,2,3
 OF.effect("destruct","phrase1")	// 2: the best 0,1,2,3
 
 OF.effect("noiseEffect", 0); 	// with z0re is clearing the background
-OF.effect("mirror", 0); 	
-OF.effect("mirror", "case", 1); 
+OF.effect("mirror", 1); 	
+OF.effect("mirror", "case", 4); 
 OF.effect("tree");
 
 CUTMOTION
