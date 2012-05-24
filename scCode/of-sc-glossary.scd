@@ -12,9 +12,11 @@ MakeResponders
 BACKGROUND
 ----------
 OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
+OF.background(255,255,255,10);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,255);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
+OF.rect(100,100,200,200,255,255,255,255);	//x,y,width,height
 
 OF.background(setBackgroundAutoBool, 0);
 
@@ -25,8 +27,10 @@ r.all;
 r.removeResponders;		
 
 a = SendAmpFreq.new; 	
-a.start; 	
-OF.interactWithSound("activate", 0)
+a.start;
+a.stop;
+ 	
+OF.interactWithSound("activate", 1)
 OF.rgb("sound",255,255,255,25);				// 	OF.rgb("sound",r,g,b,a)
 a.stop;  
 a.impulseRate(24); // 24 frames/ sec
@@ -45,13 +49,19 @@ ONSETS
 b = SendOnsets.new;	
 b.start;	
 b.stop;	
-b.threshold(1);
+b.threshold(1);  // beetwen [0,1]
+~boolSketchColor = 0;
+~onsetSketchColorResp.remove;
+~onsetSketchColorResp = OSCresponderNode(nil, 'onset', { |t,r,msg|
+	OF.rect(0,0,~width,~height,255,255,255,255);
+}).add;
 
 
 SPECTROGRAPH
 ------------
-OF.playSpectro("mirrorMode", 8);
-OF.playSpectro("rotCircSpect", 0.04);
+OF.playSpectro("mirrorMode", 9);
+OF.background(0,0,0,0);
+OF.playSpectro("rotCircSpect", 0.02);
 OF.mlab("fftColor", 1,1,1); // the range of the color is 0 < fftColor < 1
 s.mute;
 i = Synth(\input).play
@@ -87,22 +97,22 @@ Mirror Effect Modes:
 SKETCH
 ------
 -mouse
-OF.interactWithSketch("activate", 0);
+OF.interactWithSketch("activate", 1);
 OF.interactWithSketch("padSketchXY", 200,200);
-OF.interactWithSketch("mouseLines",0);
+OF.interactWithSketch("mouseLines",1);
 OF.rgb("sketch",255,255,255,20);
 -sound2d
-OF.interactWithSound("activate",0); 			//	0:DEACTIVATE, 1: ACTIVATE
+OF.interactWithSound("activate",1); 				//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 500);		//	RANGE: 1 -> 999
 OF.interactWithSound("glBeginType",1);			//	0:POINTS, Ê Ê 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
-OF.interactWithSound("maxSoundElasticity",10);	//  RANGE: 0 -> 20
+OF.interactWithSound("maxSoundElasticity",0.1);	//  RANGE: 0 -> 20
 OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 -sound3d
 OF.sketch3d("glBeginType",0);
-OF.sketch3d("activate", 0);
+OF.sketch3d("activate", 1);
 OF.sketch3d("numSketch3dSketches",500);
 OF.sketch3d("rotYratio",0.3);
 OF.sketch3d("rotZratio",1);
@@ -125,40 +135,42 @@ OF.particle("add", 10,10, 0.5, 0.5);
 	}
 }.fork
 //:-
+OF.particle("pusher","set", 10, 800,200) // ACTIVATE SEND AMP FREQ PUSHER
 OF.particle("pusher","set", 0, 200,800)
 OF.particle("pusher","set", 1, 600,200)
 OF.particle("pusher","set", 2, 800,200)
-OF.particle("pusher","set", 10, 800,200) // ACTIVATE SEND AMP FREQ PUSHER
 OF.particle("pusher","remove", 0)
-OF.particle("pusher","remove", 1)
+OF.particle("pusher","remove", 10)
 OF.particle("pusher","remove", 2)
 
-OF.particle("forceRadius", 30);				//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 45);			//	RANGE: 1 -> 25
+OF.particle("forceRadius", 300);				//	RANGE: 0 -> 700
+OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
-OF.particle("dotColor",255,255,255,25);		//	RGBA
+OF.particle("dotColor",255,255,255,255);		//	RGBA
 OF.particle("dotColor",255,255,0);		//	RGB
 OF.particle("conColor",255,255,255,25);		//	RGBA
 OF.particle("conColor",255,0,0);				//	RGB
 
-OF.particle("bounce", 100, 100, 800, 800);			
+OF.particle("bounce", 0, 0, ~width, ~height);			
 
 OF.particle("pushParticles", 0);					//	0:DON'T PUSH, 1: PUSH 
 OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)		
+MouseX
 
 
 TYPOGRAPHY
 ----------
 OF.writeString("string",500,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);Ê
 OF.writeString("bigCenter", "~sadfh",~width/2,~height/2,255,255,255,255); // BIG 
+OF.writeString("bigCenter", "hi",~width/2,~height/2,255,255,255,255); // BIG 
 
 FEEDBACK
 --------
-OF.feedback("activate", 1);
-OF.feedback("speedXY", 0.5,0);
+OF.feedback("activate", 0);
+OF.feedback("speedXY", 0,0.5);
 
 EFFECTS
 =======
@@ -228,6 +240,7 @@ OF.superformula("alpha",0)
 
 SOUND
 -----
+Kaffer
 ~ataka.stop;
 ~kontraBass.brt_(3).playBuf(0.001, 0.5, 0.3,mul:~amp.next, loop:0);
 ~ataka = {
@@ -241,4 +254,15 @@ SOUND
 	}
 }.fork;
 
-
+PATTERNS
+--------
+Posc - Psend - Preceive - Pfuncn
+//:-
+OF.background(255,255,255,10);
+~dur = Pseq([0.73, 0.4, 1, 0.2], inf).asStream;		
+~atakaVisual = {
+	inf.do {|i|
+		OF.rect(i%4*300, 100, 200, 200);
+		OF.writeString("ok",i%4*300, 100, 255,255,255,255); // BIG 		~dur.next.wait;
+	}
+}.fork;

@@ -79,6 +79,7 @@ for(int i = 0; i < 1024; i++)	{
 - [[http://forum.openframeworks.cc/index.php/topic,2860.msg25710.html#msg25710][particle number]]
 - [[http://forum.openframeworks.cc/index.php/topic,7753.msg36298.html#msg36298][screen flickering]]
 * TODO TODO stuff
+** Add zoom in zoom out at the spectrograph
 ** [[http://www.openprocessing.org/sketch/3624][Deformation]]
 ** <Error>: kCGErrorIllegalArgument: CGSOrderWindowList at the beginning
 ** mathematical poetics

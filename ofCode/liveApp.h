@@ -163,6 +163,14 @@ public:
 	bool destruct;
 	int destructCase;
 	
+	//=================
+	//	MESHING
+	ofCamera cam; // add mouse controls for camera movement
+	float extrusionAmount;
+	ofVboMesh mainMesh;
+	ofVideoGrabber vidGrabber;
+	
+	
 	
 	
 private:
