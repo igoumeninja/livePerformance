@@ -1253,6 +1253,15 @@ void liveApp::draw()	{
 					
 				} 				
 				break;
+			case 4:		// rotate feedback
+					texScreen.loadScreenData(w/4, h/4,	3*w/4, 3*h/4);
+					glPushMatrix();
+					ofSetHexColor(0xffffff);
+					glRotatef(5, 0, 5, 0);
+					//texScreen.draw(0,0,ofGetWidth(), ofGetHeight());
+					glPopMatrix();
+									
+				break;
 				
 			default:
 				break;
@@ -1510,6 +1519,53 @@ void liveApp::draw()	{
 				
 				glPushMatrix();
 				ofSetHexColor(0xffffff);
+				glTranslatef(w,h,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				break;
+			case 5:
+				texMirrow.loadScreenData(w/4, h/4,	w/2, h/2);
+				
+				glPushMatrix();
+				glColor4f(1, 1, 1, 0.001);
+				glTranslatef(w/2,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				glColor4f(1, 1, 1, 0.001);
+				glTranslatef(0,h/2,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				glPushMatrix();
+				glColor4f(1, 1, 1, 0.001);
+				glTranslatef(w/2,h/2,0);
+				glRotatef(180, 0,0,1.0f);
+				texMirrow.draw(0,0,w/4,h/4);
+				glPopMatrix();
+				
+				texMirrow.loadScreenData(w/4, h/4,	w/2, h/2);
+				
+				glPushMatrix();
+				glColor4f(1, 1, 1, 0.001);
+				glTranslatef(w,0,0);
+				glRotatef(180, 0, 1.0f, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				glColor4f(1, 1, 1, 0.001);
+				glTranslatef(0,h,0);
+				glRotatef(180, 1.0f, 0, 0);
+				texMirrow.draw(0,0,w/2,h/2);
+				glPopMatrix();
+				
+				glPushMatrix();
+				glColor4f(1, 1, 1, 0.001);
 				glTranslatef(w,h,0);
 				glRotatef(180, 0,0,1.0f);
 				texMirrow.draw(0,0,w/2,h/2);

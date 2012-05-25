@@ -35,10 +35,10 @@ SendOnsets {
 	start	{ 
 		if (not(server.serverRunning)) { server.boot };
 		server.doWhenBooted {			
-			 synthListenOnsets = SynthDef(\onsetSynth, { |thres = 1|
+			 synthListenOnsets = SynthDef(\onsetSynth, { |thres = 1, chan = 8|
 				var sig, chain, onsets, pips,buf;
 				buf = Buffer.alloc(server, 512);
-				sig = In.ar(8);
+				sig = In.ar(chan);
 				chain = FFT(buf, sig);
 				thres.postln;
 				onsets = Onsets.kr(chain, thres, \rcomplex);

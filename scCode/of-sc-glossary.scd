@@ -43,6 +43,11 @@ ONSETS
 	OF.rect(0,0,~width,~height,255,255,255,255);
 }).add;
 
+~onsetSketchColorResp = OSCresponderNode(nil, 'onset', { |t,r,msg|
+	{}.fork
+	OF.rect(0,0,~width,~height,255,255,255,255);
+}).add;
+
 
 SPECTROGRAPH
 ------------
@@ -73,6 +78,8 @@ Mirror Effect Modes:
 9 : Alva Noto Insiration
 10: Circular sunset
 
+OTHER MACHINE LISTENING
+-----------------------
  	
 c = SendSpecCentroid.new; 	
 c.start; 	
@@ -103,8 +110,8 @@ OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
 OF.interactWithSound("maxSoundElasticity",0.1);	//  RANGE: 0 -> 20
 OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 -sound3d
-OF.sketch3d("glBeginType",0);
 OF.sketch3d("activate", 1);
+OF.sketch3d("glBeginType",0);
 OF.sketch3d("numSketch3dSketches",500);
 OF.sketch3d("rotYratio",0.3);
 OF.sketch3d("rotZratio",1);
@@ -166,13 +173,16 @@ OF.feedback("speedXY", 0,0.5);
 
 EFFECTS
 =======
-OF.effect("destruct","activate",0)
-OF.effect("destruct","case",0)	// 2: the best 0,1,2,3
+OF.effect("destruct","activate",1)
+OF.effect("destruct","case",3)	// 2: the best 0,1,2,3
 OF.effect("destruct","phrase1")	// 2: the best 0,1,2,3
 
+DESTRUCT CASES
+--------------
+0: 
 OF.effect("noiseEffect", 0); 	// with z0re is clearing the background
 OF.effect("mirror", 1); 	
-OF.effect("mirror", "case", 4); 
+OF.effect("mirror", "case", 5); 
 OF.effect("tree");
 
 CUTMOTION

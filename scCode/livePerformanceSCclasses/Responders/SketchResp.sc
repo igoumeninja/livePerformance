@@ -13,7 +13,7 @@ SketchResponders {
 	*iPadRespondersSketch {
 
 		~setupSoundResp.remove;
-		~setupSoundResp = OSCresponderNode(~ofNetwork, '/setupSound', { |t,r,msg| 
+		~setupSoundResp = OSCresponderNode(nil, '/setupSound', { |t,r,msg| 
 			if( msg[1] == 1,{
 				"_________Start SendAmpFreq__________".postln;
 				~mySendAmpFreq.start; 	
@@ -22,61 +22,69 @@ SketchResponders {
 				~mySendAmpFreq.stop; 	
 			});
 		}).add;
+
+		~viewSoundResp.remove;
+		~vewSoundResp = OSCresponderNode(nil, '/viewSound', { |t,r,msg| 
+			if( msg[1] == 1,{
+				OF.interactWithSound("activate",1); 				},{
+				OF.interactWithSound("activate",0); 
+			});
+		}).add;
 		
 		~glBeginTypeResp.remove;
-		~glBeginTypeResp = OSCresponderNode(~ofNetwork, '/glBeginType', { | time, resp, msg| 
+		~glBeginTypeResp = OSCresponderNode(nil, '/glBeginType', { | time, resp, msg| 
 			OF.interactWithSound("glBeginType", msg[1].asInteger);
 		} ).add; 
 		
 		~numSoundSketchesSpec = ControlSpec(1, 500, \lin);
 		~numSoundSketchesResp.remove;
-		~numSoundSketchesResp = OSCresponderNode(~ofNetwork, '/numSoundSketches', { | time, resp, msg| 
+		~numSoundSketchesResp = OSCresponderNode(nil, '/numSoundSketches', { | time, resp, msg| 
 			OF.interactWithSound("numSoundSketches", ~numSoundSketchesSpec.map(msg[1]).asInteger);
 		} ).add; 
 		
 		~maxFreqInSpec = ControlSpec(20, 3000, \lin);
 		~maxFreqInResp.remove;
-		~maxFreqInResp = OSCresponderNode(~ofNetwork, '/maxFreqIn', { | time, resp, msg| 
+		~maxFreqInResp = OSCresponderNode(nil, '/maxFreqIn', { | time, resp, msg| 
 			OF.interactWithSound("maxFreqIn", ~maxFreqInSpec.map(msg[1]));
 		} ).add; 
 		
 		~maxAmpInSpec = ControlSpec(0.001, 1, \lin);
 		~maxAmpInResp.remove;
-		~maxAmpInResp = OSCresponderNode(~ofNetwork, '/maxAmpIn', { | time, resp, msg| 
+		~maxAmpInResp = OSCresponderNode(nil, '/maxAmpIn', { | time, resp, msg| 
 			OF.interactWithSound("maxAmpIn", ~maxAmpInSpec.map(msg[1]));
 		}).add; 
 		
 		~elasticitySpec = ControlSpec(0.001, 2, \lin);
 		~elasticityResp.remove;
-		~elasticityResp = OSCresponderNode(~ofNetwork, '/elasticity', { | time, resp, msg| 
+		~elasticityResp = OSCresponderNode(nil, '/elasticity', { | time, resp, msg| 
 			OF.interactWithSound("maxSoundElasticity", ~elasticitySpec.map(msg[1]));
 		} ).add; 
 
 		~aSoundSpec = ControlSpec(0, 255, \lin);
 		~aSoundResp.remove;
-		~aSoundResp = OSCresponderNode(~ofNetwork, '/aSound', { | time, resp, msg| 
+		~aSoundResp = OSCresponderNode(nil, '/aSound', { | time, resp, msg| 
 			OF.rgb("sound",255,255,255,~aSoundSpec.map(msg[1]).asInteger);
 		} ).add; 	
 		
 		~padSketchResp.remove;
-		~padSketchResp = OSCresponderNode(~ofNetwork, '/padSketch', { |t,r,msg| 
+		~padSketchResp = OSCresponderNode(nil, '/padSketch', { |t,r,msg| 
 			OF.interactWithSketch("activate", msg[1].asInteger);
 		}).add;
 
 		~xPadSpec = ControlSpec(0, ~width, \lin);
 		~yPadSpec = ControlSpec(~height, 0, \lin);
 		~padSketchXYResp.remove;
-		~padSketchXYResp = OSCresponderNode(~ofNetwork, '/padSketchXY', { | time, resp, msg| OF.interactWithSketch("padSketchXY", ~xPadSpec.map(msg[2]).asInteger, ~yPadSpec.map(msg[1]).asInteger);
+		~padSketchXYResp = OSCresponderNode(nil, '/padSketchXY', { | time, resp, msg| OF.interactWithSketch("padSketchXY", ~xPadSpec.map(msg[2]).asInteger, ~yPadSpec.map(msg[1]).asInteger);
 		}).add; 
 
 		~aPadSpec = ControlSpec(0, 255, \lin);
 		~aPadResp.remove;
-		~aPadResp = OSCresponderNode(~ofNetwork, '/aPad', { | time, resp, msg| 
+		~aPadResp = OSCresponderNode(nil, '/aPad', { | time, resp, msg| 
 			OF.rgb("sketch",255,255,255,~aPadSpec.map(msg[1]).asInteger);
 		} ).add; 
 		
 		~padSketchTypeResp.remove;
-		~padSketchTypeResp = OSCresponderNode(~ofNetwork, '/padSketchType', { | time, resp, msg| 
+		~padSketchTypeResp = OSCresponderNode(nil, '/padSketchType', { | time, resp, msg| 
 			OF.interactWithSketch("mouseLines",msg[1].asInteger);
 		} ).add; 
 
@@ -93,7 +101,7 @@ SketchResponders {
 		});
 		
 		~btw1Resp.remove;
-		~btw1Resp = OSCresponderNode(~ofNetwork, '/btw1', { |t,r,msg| 
+		~btw1Resp = OSCresponderNode(nil, '/btw1', { |t,r,msg| 
 			if( msg[1] == 1,{
 				OF.background(0, 0, 0, 0);
 				OF.interactWithSound("numSoundSketches", 800);
@@ -119,7 +127,7 @@ SketchResponders {
 		});
 		
 		~btw2Resp.remove;
-		~btw2Resp = OSCresponderNode(~ofNetwork, '/btw2', { |t,r,msg| 
+		~btw2Resp = OSCresponderNode(nil, '/btw2', { |t,r,msg| 
 			if( msg[1] == 1,{
 				OF.background(0, 0, 0, 0);
 				OF.rgb("a8",0);
@@ -150,7 +158,7 @@ SketchResponders {
 		});
 		
 		~btw3Resp.remove;
-		~btw3Resp = OSCresponderNode(~ofNetwork, '/btw3', { |t,r,msg| 
+		~btw3Resp = OSCresponderNode(nil, '/btw3', { |t,r,msg| 
 			if( msg[1] == 1,{
 				~btw3.play;
 			},{
@@ -166,7 +174,7 @@ SketchResponders {
 		});
 		
 		~elastTaskResp.remove;
-		~elastTaskResp = OSCresponderNode(~ofNetwork, '/elastTask', { |t,r,msg| 
+		~elastTaskResp = OSCresponderNode(nil, '/elastTask', { |t,r,msg| 
 			if( msg[1] == 1,{
 				~elastTask.play;
 			},{
@@ -175,7 +183,7 @@ SketchResponders {
 		}).add;
 		
 		~blackWhiteSoundResp.remove;
-		~blackWhiteSoundResp = OSCresponderNode(~ofNetwork, '/blackWhiteSound', { |t,r,msg| 
+		~blackWhiteSoundResp = OSCresponderNode(nil, '/blackWhiteSound', { |t,r,msg| 
 			if( msg[1] == 1,{
 				OF.rgb("sound",255,255,255,120);
 			},{

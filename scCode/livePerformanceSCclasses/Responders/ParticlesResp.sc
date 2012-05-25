@@ -8,7 +8,7 @@ ParticlesResponders {
 	}
 	*particlesSoundResponders	{	
 		~pushOnsetResp.remove;
-		~pushOnsetResp = OSCresponderNode(~ofNetwork, '/pushParticlesOnset', { | time, resp, msg| 
+		~pushOnsetResp = OSCresponderNode(nil, '/pushParticlesOnset', { | time, resp, msg| 
 			if( msg[1] == 1,{
 				OF.particle("pusher","set", 10, 800,200);
 				~onsetPushParticlesResp = OSCresponderNode(nil, 'onset', { |t,r,msg|
@@ -33,36 +33,36 @@ ParticlesResponders {
 		OF.particle("conColor",255,255,255,25);	// RGBA
 		
 		~activateParticlesResp.remove;
-		~activateParticlesResp = OSCresponderNode(~ofNetwork, '/activateParticles', { |t,r,msg| 
+		~activateParticlesResp = OSCresponderNode(nil, '/activateParticles', { |t,r,msg| 
 			OF.particle("activate", msg[1].round);
 		}).add;
 		
 		~forceRadiusSpec = ControlSpec(0, 500, \lin);
 		~forceRadiusResp.remove;
-		~forceRadiusResp = OSCresponderNode(~ofNetwork, '/forceRadius', { | time, resp, msg|
+		~forceRadiusResp = OSCresponderNode(nil, '/forceRadius', { | time, resp, msg|
 			OF.particle("forceRadius", ~forceRadiusSpec.map(msg[1]).asInteger);
 		}).add; 
 		
 		~particleNeighborhoodSpec = ControlSpec(0, 30, \lin);
 		~particleNeighborhoodResp.remove;
-		~particleNeighborhoodResp = OSCresponderNode(~ofNetwork, '/particleNeighborhood', { | time, resp, msg|
+		~particleNeighborhoodResp = OSCresponderNode(nil, '/particleNeighborhood', { | time, resp, msg|
 			OF.particle("particleNeighborhood", ~particleNeighborhoodSpec.map(msg[1]).asInteger);
 		}).add; 
 		
 		~particleConnectionsAlphaSpec = ControlSpec(0, 25, \lin);
 		~particleConnectionsAlphaResp.remove;
-		~particleConnectionsAlphaResp = OSCresponderNode(~ofNetwork, '/particleConnectionsAlpha', { | time, resp, msg|
+		~particleConnectionsAlphaResp = OSCresponderNode(nil, '/particleConnectionsAlpha', { | time, resp, msg|
 			OF.particle("conColor", ~particleConnectionsAlphaSpec.map(msg[1]).asInteger);
 		}).add; 
 		
 		~particlesAlphaSpec = ControlSpec(0, 255, \lin);
 		~particlesAlphaResp.remove;
-		~particlesAlphaResp = OSCresponderNode(~ofNetwork, '/particlesAlpha', { | time, resp, msg|
+		~particlesAlphaResp = OSCresponderNode(nil, '/particlesAlpha', { | time, resp, msg|
 			OF.particle("dotColor", ~particlesAlphaSpec.map(msg[1]).asInteger);
 		}).add; 
 		
 		~particlesRedConResp.remove;
-		~particlesRedConResp = OSCresponderNode(~ofNetwork, '/redCon', { | time, resp, msg|
+		~particlesRedConResp = OSCresponderNode(nil, '/redCon', { | time, resp, msg|
 			if( msg[1] == 1,{
 				OF.particle("conColor", 255,0,0);
 			},{
@@ -71,7 +71,7 @@ ParticlesResponders {
 		}).add; 
 		
 		~particlesYellowDotResp.remove;
-		~particlesYellowDotResp = OSCresponderNode(~ofNetwork, '/yellowDot', { | time, resp, msg|
+		~particlesYellowDotResp = OSCresponderNode(nil, '/yellowDot', { | time, resp, msg|
 			if( msg[1] == 1,{
 				OF.particle("dotColor", 255,255,0);
 			},{
@@ -80,7 +80,7 @@ ParticlesResponders {
 		}).add; 
 		
 		~addParticlesResp.remove;
-		~addParticlesResp = OSCresponderNode(~ofNetwork, '/addParticles', { |t,r,msg| 
+		~addParticlesResp = OSCresponderNode(nil, '/addParticles', { |t,r,msg| 
 			{
 				500.do{
 					OF.particle("add", (~width/2).asInteger, (~height/2).asInteger, 0.1, 10.1);
@@ -90,7 +90,7 @@ ParticlesResponders {
 		}).add;
 		
 		~iPadPushResp.remove;
-		~iPadPushResp = OSCresponderNode(~ofNetwork, '/iPadPush', { |t,r,msg| 
+		~iPadPushResp = OSCresponderNode(nil, '/iPadPush', { |t,r,msg| 
 			if( msg[1] == 1,{
 				OF.particle("pusher","set", 10, 200,200);
 			},{
@@ -99,7 +99,7 @@ ParticlesResponders {
 		}).add;
 		
 		~iPadPushXYResp.remove;
-		~iPadPushXYResp = OSCresponderNode(~ofNetwork, '/iPadPushXY', { |t,r,msg| 
+		~iPadPushXYResp = OSCresponderNode(nil, '/iPadPushXY', { |t,r,msg| 
 			if( msg[1] == 1,{
 				OF.particle("pusher","set", 100, 200,200);
 			},{
@@ -110,12 +110,12 @@ ParticlesResponders {
 		
 		~xPushPadSpec = ControlSpec(0, ~width, \lin);
 		~yPushPadSpec = ControlSpec(~height, 0, \lin);
-		OSCresponderNode(~ofNetwork, '/pushXY', { | time, resp, msg| 
+		OSCresponderNode(nil, '/pushXY', { | time, resp, msg| 
 			OF.particle("pusher","set", 100, ~xPushPadSpec.map(msg[2]).asInteger, ~yPushPadSpec.map(msg[1]).asInteger);
 		} ).add; 
 		
 		~pushParticlesOnSetResp.remove;
-		~pushParticlesOnSetResp = OSCresponderNode(~ofNetwork, '/pushParticlesOnSet', { |t,r,msg| 
+		~pushParticlesOnSetResp = OSCresponderNode(nil, '/pushParticlesOnSet', { |t,r,msg| 
 			if( msg[1] == 1,{
 				~mySendOnsets.start;
 			},{
