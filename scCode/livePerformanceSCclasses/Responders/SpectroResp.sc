@@ -19,7 +19,7 @@ SpectroResponders {
 		~soundInLevelSpec = ControlSpec(0, 10, \lin);
 		~soundInLevelResp.remove;
 		~soundInLevelResp = OSCresponderNode(nil, '/soundInLevel', { | time, resp, msg|
-			~mySendSpectrogramDataSynth.set(\level, ~soundInLevelSpec.map(msg[1]));
+			~inputSpectroSynth.set(\level, ~soundInLevelSpec.map(msg[1]));
 		}).add; 
 		
 		~spectroMirrorMode0.remove;

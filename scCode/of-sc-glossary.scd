@@ -112,7 +112,7 @@ OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 -sound3d
 OF.sketch3d("activate", 1);
 OF.sketch3d("glBeginType",0);
-OF.sketch3d("numSketch3dSketches",500);
+OF.sketch3d("numSketch3d",50);
 OF.sketch3d("rotYratio",0.3);
 OF.sketch3d("rotZratio",1);
 OF.sketch3d("maxSketch3dElasticity",0.9);

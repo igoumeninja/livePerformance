@@ -117,13 +117,13 @@ void liveApp::setup()	{
 		minSoundDamping = 0.0;
 		maxSoundDamping = 0.99;
 
-		numSketch3dSketches = 99;
+		numSketch3d = 99;
 		minSketch3dElasticity = 0.0;
 		maxSketch3dElasticity = 0.99;
 		minSketch3dDamping = 0.0;
 		maxSketch3dDamping = 0.99;
 		
-		mouseLines = 1;
+		mouseLines = 0;
 		soundLines = 0;
 		sketch3dLineType = 0;		
 		
@@ -751,7 +751,7 @@ void liveApp::update()	{
 			else if (m.getArgAsInt32(1) == 0)	viewSketch3d = false;	
 		}
 		else if ( m.getArgAsString(0) == "glBeginType" )	sketch3dLineType = m.getArgAsInt32(1);
-		else if ( m.getArgAsString(0) == "numSketch3dSketches" )	numSketch3dSketches = m.getArgAsInt32(1);				
+		else if ( m.getArgAsString(0) == "numSketch3d" )	numSketch3d = m.getArgAsInt32(1);				
 		else if ( m.getArgAsString(0) == "minSketch3dElasticity" )	{
 			minSketch3dElasticity = m.getArgAsFloat( 1 );
 			for( int i=1000; i<1000+numSoundSketches; i++ ) {
@@ -760,19 +760,19 @@ void liveApp::update()	{
 		}				
 		else if ( m.getArgAsString(0) == "maxSketch3dElasticity" )	{
 			maxSketch3dElasticity = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+			for( int i=1000; i<1000+numSketch3d; i++ ) {
 				sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));
 			}
 		}				
 		else if ( m.getArgAsString(0) == "minSketch3dDamping" )	{
 			minSketch3dDamping = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+			for( int i=1000; i<1000+numSketch3d; i++ ) {
 				sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));
 			}
 		}				
 		else if ( m.getArgAsString(0) == "maxSketch3dDamping" )	{
 			maxSketch3dDamping = m.getArgAsFloat( 1 );
-			for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+			for( int i=1000; i<1000+numSketch3d; i++ ) {
 				sketch[i].init(0, ofRandom(minSketch3dElasticity, maxSketch3dElasticity), ofRandom(minSketch3dDamping, maxSketch3dDamping));
 			}
 		}				
@@ -1163,7 +1163,7 @@ void liveApp::draw()	{
 		ofRotateZ(rotZratio*ofGetFrameNum());	
 		Yamp0 = ofMap(ampChan0, ampInLowSketch3d, ampInHighSketch3d, 0, ofGetHeight());
 		Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
-		for( int i=1000; i<1000+numSketch3dSketches; i++ ) {
+		for( int i=1000; i<1000+numSketch3d; i++ ) {
 			sketch[i].sketch3d(Xfreq0, Yamp0, zCoordSketch3d, rSketch3d, gSketch3d, bSketch3d, aSketch3d, sketch3dLineType);	
 		}
 		ofRotateZ(-rotZratio*ofGetFrameNum());

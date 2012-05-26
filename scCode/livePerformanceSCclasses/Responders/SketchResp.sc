@@ -3,14 +3,54 @@ SketchResponders {
 	*initClass {
 		StartUp add: {			
 			"-SketchResponders".postln;
-			~width = 1280;
-			~height = 1024;
-			this.iPadRespondersSketch;
-			this.iPadRespondersSketchTasks;
+			this.sketch3dResponders;				
+			this.sketchResponders;
+			this.sketchTasksResponders;
 		}
 	}
-	
-	*iPadRespondersSketch {
+
+	*sketch3dResponders {	
+		~activatesketch3dResp.remove;
+		~activatesketch3dResp = OSCresponderNode(nil, '/activatesketch3d', { |t,r,msg| 
+			if( msg[1] == 1,{
+				OF.sketch3d("activate", 1);
+			},{
+				OF.sketch3d("activate", 0);
+			});
+		}).add;
+		~glTypeSketch3dResp.remove;
+		~glTypeSketch3dResp = OSCresponderNode(nil, '/glTypeSketch3d', { |t,r,msg| 
+			if( msg[1] == 1,{
+				OF.sketch3d("glBeginType",1);					},{
+				OF.sketch3d("glBeginType",0);
+			});
+		}).add;
+		~numSketch3dSpec = ControlSpec(1, 500, \lin);
+		~numSketch3dResp.remove;
+		~numSketch3Resp = OSCresponderNode(nil, '/numSketch3d', { | time, resp, msg| 
+			OF.sketch3d("numSketch3d", ~numSketch3dSpec.map(msg[1]).asInteger);
+		} ).add; 
+		
+		~elasticitySketch3dSpec = ControlSpec(0.001, 2, \lin);
+		~elasticitySketch3dResp.remove;
+		~elasticitySketch3dResp = OSCresponderNode(nil, '/elasticitySketch3d', { | time, resp, msg| 
+			OF.sketch3d("maxSketch3dElasticity", ~elasticitySketch3dSpec.map(msg[1]));
+		} ).add; 
+
+		~rotYratioSketch3dSpec = ControlSpec(0.001, 2, \lin);
+		~rotYratioSketch3dResp.remove;
+		~rotYratioSketch3dResp = OSCresponderNode(nil, '/rotYratioSketch3d', { | time, resp, msg| 
+			OF.sketch3d("rotYratio", ~rotYratioSketch3dSpec.map(msg[1]));
+		} ).add; 
+
+		~rotXratioSketch3dSpec = ControlSpec(0.001, 2, \lin);
+		~rotXratioSketch3dResp.remove;
+		~rotXratioSketch3dResp = OSCresponderNode(nil, '/rotXratioSketch3d', { | time, resp, msg| 
+			OF.sketch3d("rotXratio", ~rotXratioSketch3dSpec.map(msg[1]));
+		} ).add; 
+		
+	}
+	*sketchResponders {
 
 		~setupSoundResp.remove;
 		~setupSoundResp = OSCresponderNode(nil, '/setupSound', { |t,r,msg| 
@@ -89,7 +129,7 @@ SketchResponders {
 		} ).add; 
 
 	}
-	*iPadRespondersSketchTasks	{
+	*sketchTasksResponders	{
 		
 		~btw1 = Task({
 			inf.do({
