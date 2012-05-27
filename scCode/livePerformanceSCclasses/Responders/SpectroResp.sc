@@ -16,10 +16,16 @@ SpectroResponders {
 			});
 		}).add;
 		
-		~soundInLevelSpec = ControlSpec(0, 10, \lin);
+		~soundInLevelSpec = ControlSpec(0, 1, \lin);
 		~soundInLevelResp.remove;
 		~soundInLevelResp = OSCresponderNode(nil, '/soundInLevel', { | time, resp, msg|
 			~inputSpectroSynth.set(\level, ~soundInLevelSpec.map(msg[1]));
+		}).add; 
+
+		~rotSpectroSpec = ControlSpec(0, 0.48, \lin);
+		~rotSpectroResp.remove;
+		~rotResp = OSCresponderNode(nil, '/rotSpectro', { | time, resp, msg|
+			OF.playSpectro("rotCircSpect", ~rotSpectroSpec.map(msg[1]));
 		}).add; 
 		
 		~spectroMirrorMode0.remove;

@@ -34,7 +34,7 @@ void liveApp::setup()	{
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
-		ofSetWindowTitle("Rhythmanalysis");
+		ofSetWindowTitle("AVARTS Festival May 2012");
 		ofSetFrameRate(60); // if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps.
 		ofSetVerticalSync(false);
 		
@@ -1116,11 +1116,11 @@ void liveApp::draw()	{
                 cur.addDampingForce();
         }
         glEnd();
-		
+		/*
 		// PUSHERS
 		pushersArray[10].coords.x = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());;
 		pushersArray[10].coords.y = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());;
-		
+		*/
 		for(int i = 0; i < 1024; i++)	{
 			if (pushersArray[i].activeP == true) {
 				particleSystem.addRepulsionForce(pushersArray[i].coords.x, pushersArray[i].coords.y, forceRadius, forceScale);

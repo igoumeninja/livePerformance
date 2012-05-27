@@ -11,8 +11,8 @@ MakeResponders
 
 BACKGROUND
 ----------
-OF.background(0,0,0,0);		//OF.rgb("background",R,G,B,A);
-OF.background(255,255,255,10);
+OF.background(0,0,0,10);		//OF.rgb("background",R,G,B,A);
+OF.background(255,255,255,0);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,255);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
@@ -36,7 +36,7 @@ ONSETS
 -------
 ~mySendOnsets.start;	
 ~mySendOnsets.stop;	
-~mySendOnsets.threshold(1);  // beetwen [0,1]
+~mySendOnsets.threshold(1.5);  // beetwen [0,1]
 ~boolSketchColor = 0;
 ~onsetSketchColorResp.remove;
 ~onsetSketchColorResp = OSCresponderNode(nil, 'onset', { |t,r,msg|
@@ -156,8 +156,42 @@ OF.particle("conColor",255,0,0);				//	RGB
 OF.particle("bounce", 0, 0, ~width, ~height);			
 
 OF.particle("pushParticles", 0);					//	0:DON'T PUSH, 1: PUSH 
-OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)		
-MouseX
+OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
+
+//:-
+40.do{|i|
+OF.particle("pusher","set", i, i*200,~height/2);
+}
+
+//:-
+(10..20).do{|i|
+	i.postln;
+OF.particle("pusher","set", i, i*200,0);
+}
+
+//:-
+
+(-1..1000).do{|i|
+		i.postln;
+OF.particle("pusher","remove", i);
+}
+//:-
+~mySendOnsets.start;	
+~mySendOnsets.threshold(2);  // beetwen [0,1]
+//:-
+~onsetPushParticlesResp.remove;		
+~onsetPushParticlesResp = OSCresponderNode(nil, 'onset', { |t,r,msg|
+	{
+		2.do	{
+			OF.particle("forceRadius", 200);
+			0.1.wait;
+			OF.particle("forceRadius", 10);
+			1.wait
+		}
+	}.fork;
+}).add;
+
+//:-
 
 
 TYPOGRAPHY
@@ -268,3 +302,15 @@ OF.background(255,255,255,10);
 		OF.writeString("ok",i%4*300, 100, 255,255,255,255); // BIG 		~dur.next.wait;
 	}
 }.fork;
+
+~pushOnsetResp.remove;
+~pushOnsetResp = OSCresponderNode(nil, '/pushParticlesOnset', { | time, resp, msg| 
+	if( msg[1] == 1,{
+		OF.particle("pusher","set", 10, 800,200);
+	},{
+		~onsetPushParticlesResp.remove;
+	});
+	
+	OF.background(~alphaBackgroundSpec.map(msg[1]).asInteger);
+} ).add; 		
+
