@@ -34,7 +34,7 @@ void liveApp::setup()	{
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
-		ofSetWindowTitle("AVARTS Festival May 2012");
+		ofSetWindowTitle("Extending Seminar - 2012");
 		ofSetFrameRate(60); // if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps.
 		ofSetVerticalSync(false);
 		
@@ -145,8 +145,9 @@ void liveApp::setup()	{
 		textureRed = textureGreen = textureBlue = textureAlpha = 1;
 			
 		}	// Initial Values
-	{/*
+	{
 		// Imagenes
+		//image[0].loadImage("/Volumes/TERRA_DATA/pictures/fou/120601_Katerina_Thea_Leukada/IMG_7795.JPG");
 		// GROUP 1
 		string imageDir = "/Users/ari/Media/images/paintings/lyon/";
 		
@@ -162,7 +163,7 @@ void liveApp::setup()	{
 			image[i].loadImage(imageDir);
 			imageDir = "/Users/ari/Media/images/paintings/lyon/";
 		}
-
+		/*
 		// GROUP 2
 		imageDir = "/Users/ari/Media/images/maps/google/grenoble/";
 		
@@ -186,6 +187,7 @@ void liveApp::setup()	{
 		
 		//===================================
 	*/	
+
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);	
@@ -1127,6 +1129,7 @@ void liveApp::draw()	{
 			}
 		}
 		
+		particleSystem.addRepulsionForce(ofGetMouseX(), ofGetMouseY(), forceRadius, forceScale);
 		particleSystem.update();		
         ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
         particleSystem.draw();
@@ -1182,7 +1185,7 @@ void liveApp::draw()	{
 	if (drawWithMouse)								{
 		//cout << padY;
 		for( int i=0; i<numMouseSketches; i++ ) {
-			sketch[i].drawMouse(padX, padY, 0, rSketch, gSketch, bSketch, aSketch/3, mouseLines);	
+			sketch[i].drawMouse(ofGetMouseX(), ofGetMouseY(), 0, rSketch, gSketch, bSketch, aSketch/3, mouseLines);	
 			
 		}
 		//		for( int i=2000; i<2000 + numMouseSketches; i++ ) {

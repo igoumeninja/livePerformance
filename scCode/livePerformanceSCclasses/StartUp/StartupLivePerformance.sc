@@ -2,7 +2,7 @@
 This class is used as a startup file
 
 Aris Bezas Igoumeninja -> Corfu 120405
-
+~delay = 1;
 */
 
 StartupLivePerformance {
@@ -10,13 +10,12 @@ StartupLivePerformance {
 	*initClass {
 		StartUp add: {
 			"-StartupLivePerformance".postln;
-			
 			this.startupLivePerformance;
-
 		}
 	}
 
 	*startupLivePerformance {
+		//Error.debug = true;
 		~ofNetwork = NetAddr("127.0.0.1", 12345);
 		~scNetwork = NetAddr("127.0.0.1", 57120);
 
@@ -24,7 +23,7 @@ StartupLivePerformance {
 		~height = 1024;
 		
 		~delayTechnoetic = 0.8;
-	
+		
 		// Take a string from file
 		~myString = File.use("/Users/ari/Projects/artistic/AB_Performances/livePerformance/data/text/text", "r", { |f|f.readAllString});
 	

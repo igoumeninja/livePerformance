@@ -12,7 +12,7 @@ MakeResponders
 BACKGROUND
 ----------
 OF.background(0,0,0,10);		//OF.rgb("background",R,G,B,A);
-OF.background(255,255,255,0);
+OF.background(255,255,255,10);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,255);	//OF.rgb("background",R,G,B,A);
 OF.rect(100,100,200,200)	//x,y,width,height
@@ -27,7 +27,7 @@ MACHINE LISTENING
 AMP - FREQ
 ----------
 ~mySendAmpFreq.start;
-OF.interactWithSound("activate",1);
+OF.interactWithSound("activate",0);
 OF.rgb("sound",255,255,255,25);				// 	OF.rgb("sound",r,g,b,a)
 ~mySendAmpFreq.impulseRate(24); // 24 frames/ sec
 ~mySendAmpFreq.stop;
@@ -54,7 +54,25 @@ SPECTROGRAPH
 ~mySendSpectrogramData.connectToPoller;
 ~mySendSpectrogramData.stopSending;
 
-OF.playSpectro("mirrorMode", 10);
+DEMO
+----
+//:Curves
+{
+{SinOsc.ar(2000*SinOsc.kr(XLine.kr(0.001,0.5,20, doneAction:2)), mul:0.5)}.play;
+1.wait;
+{SinOsc.ar(4000*SinOsc.kr(XLine.kr(0.001,0.5,20, doneAction:2)), mul:0.5)}.play;
+1.wait;
+{SinOsc.ar(8000*SinOsc.kr(XLine.kr(0.001,0.5,20, doneAction:2)), mul:0.5)}.play;
+10.wait;
+{SinOsc.ar(8000*SinOsc.kr(XLine.kr(0.5,0.001,20, doneAction:2)), mul:0.5)}.play;
+1.wait;
+{SinOsc.ar(4000*SinOsc.kr(XLine.kr(0.5,0.001,20, doneAction:2)), mul:0.5)}.play;
+1.wait;
+{SinOsc.ar(2000*SinOsc.kr(XLine.kr(0.5,0.001,20, doneAction:2)), mul:0.5)}.play;
+}.fork
+//:-
+
+OF.playSpectro("mirrorMode", 3);
 
 OF.playSpectro("rotCircSpect", 0.12);
 
@@ -96,7 +114,7 @@ e.impulseRate(24);
 SKETCH
 ------
 -mouse
-OF.interactWithSketch("activate", 1);
+OF.interactWithSketch("activate", 0);
 OF.interactWithSketch("padSketchXY", 200,200);
 OF.interactWithSketch("mouseLines",1);
 OF.rgb("sketch",255,255,255,20);
@@ -122,7 +140,7 @@ OF.rgb("sketch3d",255,255,255,20);
 PARTICLE
 --------
 OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
 OF.particle("add", 10,10, 0.5, 0.5);		
 //:Add more
@@ -142,7 +160,7 @@ OF.particle("pusher","remove", 0)
 OF.particle("pusher","remove", 10)
 OF.particle("pusher","remove", 2)
 
-OF.particle("forceRadius", 300);				//	RANGE: 0 -> 700
+OF.particle("forceRadius", 30);				//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
@@ -234,11 +252,25 @@ OF.img(image
 //:
 {
 	inf.do{|i|
-		OF.img(rrand(0,60).asInteger,0, 0, 400, 400, 400, 200, 0, 0, 0, i);
+		OF.img(rrand(0,60).asInteger,0, 0, ~width, ~height);
 		i.postln;
-		0.05.wait;
+		0.02.wait;
 	}
 }.fork
+//:
+~delay = 0.05;
+{
+	inf.do{|i|
+		OF.img(i%60,0, 0, 1936/2,1288/2);
+		~kontraBass.brt_(rrand(1,3).asInteger).playBuf(0.001, 0.5, 0.3, loop:0);
+		//i.postln;
+		~delay.wait;
+	}
+}.fork
+//OF.img(0, 0, 0,100,100);
+//:-
+
+
 //:-
 
 VIDEO
