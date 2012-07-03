@@ -25,7 +25,7 @@ StartupLivePerformance {
 		~delayTechnoetic = 0.8;
 		
 		// Take a string from file
-		~myString = File.use("/Users/ari/Projects/artistic/AB_Performances/livePerformance/data/text/text", "r", { |f|f.readAllString});
+//		~myString = File.use("/Users/ari/Projects/artistic/AB_Performances/livePerformance/data/text/text", "r", { |f|f.readAllString});
 	
 		// Sound Interaction
 		Task({
@@ -45,10 +45,10 @@ StartupLivePerformance {
 			};
 		}).play;
 		
-		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/of-sc-glossary.scd".unixCmd;
-		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/StartUp/StartupLivePerformance.sc".unixCmd;
-		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/".unixCmd;
-		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/Controller/iPadResponders.sc".unixCmd;
+//		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/of-sc-glossary.scd".unixCmd;
+//		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/StartUp/StartupLivePerformance.sc".unixCmd;
+//		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/".unixCmd;
+//		"open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/Controller/iPadResponders.sc".unixCmd;
 	
 		"".postln;	
 		"##################################".postln;

@@ -27,7 +27,7 @@ MACHINE LISTENING
 AMP - FREQ
 ----------
 ~mySendAmpFreq.start;
-OF.interactWithSound("activate",0);
+OF.interactWithSound("activate",1);
 OF.rgb("sound",255,255,255,25);				// 	OF.rgb("sound",r,g,b,a)
 ~mySendAmpFreq.impulseRate(24); // 24 frames/ sec
 ~mySendAmpFreq.stop;
@@ -61,7 +61,7 @@ DEMO
 {SinOsc.ar(2000*SinOsc.kr(XLine.kr(0.001,0.5,20, doneAction:2)), mul:0.5)}.play;
 1.wait;
 {SinOsc.ar(4000*SinOsc.kr(XLine.kr(0.001,0.5,20, doneAction:2)), mul:0.5)}.play;
-1.wait;
+b1.wait;
 {SinOsc.ar(8000*SinOsc.kr(XLine.kr(0.001,0.5,20, doneAction:2)), mul:0.5)}.play;
 10.wait;
 {SinOsc.ar(8000*SinOsc.kr(XLine.kr(0.5,0.001,20, doneAction:2)), mul:0.5)}.play;
@@ -114,7 +114,7 @@ e.impulseRate(24);
 SKETCH
 ------
 -mouse
-OF.interactWithSketch("activate", 0);
+OF.interactWithSketch("activate", 1);
 OF.interactWithSketch("padSketchXY", 200,200);
 OF.interactWithSketch("mouseLines",1);
 OF.rgb("sketch",255,255,255,20);
@@ -140,12 +140,12 @@ OF.rgb("sketch3d",255,255,255,20);
 PARTICLE
 --------
 OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);		
 OF.particle("add", 10,10, 0.5, 0.5);		
 //:Add more
 {
-	2000.do{|i|
+	20000.do{|i|
 		OF.particle("add", rrand(0,~width).asInteger,rrand(0,~height).asInteger,0.5, 0.5);		
 		i.postln;
 		0.05.wait;
@@ -153,15 +153,16 @@ OF.particle("add", 10,10, 0.5, 0.5);
 }.fork
 //:-
 OF.particle("pusher","set", 10, 800,200) // ACTIVATE SEND AMP FREQ PUSHER
-OF.particle("pusher","set", 0, 200,800)
+OF.particle("pusher","set", 0, 600,200)
 OF.particle("pusher","set", 1, 600,200)
 OF.particle("pusher","set", 2, 800,200)
 OF.particle("pusher","remove", 0)
+OF.particle("pusher","remove", 1)
 OF.particle("pusher","remove", 10)
 OF.particle("pusher","remove", 2)
 
-OF.particle("forceRadius", 30);				//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
+OF.particle("forceRadius", 100);				//	RANGE: 0 -> 700
+OF.particle("particleNeighborhood", 15);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
@@ -178,7 +179,7 @@ OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 //:-
 40.do{|i|
-OF.particle("pusher","set", i, i*200,~height/2);
+OF.particle("pusher","set", i, i*20,~height/2);
 }
 
 //:-
@@ -189,7 +190,7 @@ OF.particle("pusher","set", i, i*200,0);
 
 //:-
 
-(-1..1000).do{|i|
+(0..1023).do{|i|
 		i.postln;
 OF.particle("pusher","remove", i);
 }
@@ -220,12 +221,12 @@ OF.writeString("bigCenter", "hi",~width/2,~height/2,255,255,255,255); // BIG
 
 FEEDBACK
 --------
-OF.feedback("activate", 0);
+OF.feedback("activate", 1);
 OF.feedback("speedXY", 0,0.5);
 
 EFFECTS
 =======
-OF.effect("destruct","activate",1)
+OF.effect("destruct","activate",0)
 OF.effect("destruct","case",3)	// 2: the best 0,1,2,3
 OF.effect("destruct","phrase1")	// 2: the best 0,1,2,3
 
