@@ -39,8 +39,8 @@ StartupLivePerformance {
 				~mySendAmpFreq = SendAmpFreq.new; 
 				~mySendOnsets = SendOnsets.new;
 				0.04.wait;
-				Server.default.mute;
-				~inputSpectroSynth = Synth(\input).play(Server.default);
+				//Server.default.mute;
+				//~inputSpectroSynth = Synth(\input).play(Server.default);
 				
 			};
 		}).play;

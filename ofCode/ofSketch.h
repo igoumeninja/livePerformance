@@ -4,7 +4,7 @@
  *
  *  Created by fou fou on 12/23/09.
  *  Copyright 2009 Aris Bezas. All rights reserved.
- *
+ *ofSphere
  */
 
 #pragma once
