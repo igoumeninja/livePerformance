@@ -13,8 +13,8 @@ x.free;
 Server
 */
 
-
-SendSpectrogramData : AbstractServerResource {
+SendSpectrogramData {
+//SendSpectrogramData  {
 
 	// fft data and display customization: 
 	var <binSize = 1024, <colorSize = 64, <colorScaleExponent = 0.5, <intensity = 1;
@@ -47,7 +47,7 @@ SendSpectrogramData : AbstractServerResource {
 	}
 
 	connectToPoller {
-		pollFFT = PollFFT(this.key.last, server);
+		pollFFT = PollFFT(this.key.last, Server.default);
 		pollFFT addDependant: this; //What is this?
 	}
 

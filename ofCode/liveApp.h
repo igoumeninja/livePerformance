@@ -1,10 +1,10 @@
 #ifndef _LIVE_APP
 #define _LIVE_APP
-#define OF_ADDON_USING_OFXVECTORMATH
+//#define OF_ADDON_USING_OFXVECTORMATH
 
 // addons
 #include "ofMain.h"
-#include "ofxVectorMath.h"
+//#include "ofxVectorMath.h"
 #include "ofxOsc.h"
 #include "ParticleSystem.h"
 //Pushers
@@ -62,6 +62,22 @@ public:
 	float	data[1024];
 	float amp, freq, loudness, onset, specCentroid, specFlatness; 
 	float pamp, pfreq, ploudness, ponset, pspecCentroid, pspecFlatness; 	
+	
+	//	3D-OBJECT-SPECTROGRAM
+	
+	bool spectro3dObject;
+	ofVec3f initialPos;//[122880]; ///512*24*10]
+	float thita, zita;
+	vector<ofFloatColor> colors;
+	vector<ofVec3f> points;
+	vector<ofVec3f> speeds;
+	vector<ofVec3f> accelerations;
+	vector<ofVec3f> initialPoints;
+	
+	ofVbo vbo;	
+	
+	
+	ofEasyCam cam;	
 	
 	//========================
 	//  OBJECTS
@@ -165,7 +181,6 @@ public:
 	
 	//=================
 	//	MESHING
-	ofCamera cam; // add mouse controls for camera movement
 	float extrusionAmount;
 	ofVboMesh mainMesh;
 	ofVideoGrabber vidGrabber;

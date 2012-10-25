@@ -41,6 +41,11 @@ void liveApp::setup()	{
 		
 	}	// Setup
 	{
+		cam.setDistance(1000);
+		cam.setFarClip(10000);
+		//center = ofVec3f(0,0,0);		
+	}	// Camera
+	{
 	memAlloc = true;
 	float cellX = 0, cellY = 0;
 	for (int i = 0; i < MAX_MATRIX; i++)	{
@@ -207,12 +212,17 @@ void liveApp::setup()	{
 		rSound = gSound = bSound = 255; aSound = 25;
 
 		reverseEllipse = ofGetWidth();	reverseTexture = -1;
-		mirrorMode = 10;
+		mirrorMode = 100;
 		spectroRed = spectroGreen = spectroBlue = 1;	
 		rotCircSpectRed = rotCircSpectGreen = rotCircSpectBlue = 1;
 		rotCircSpect = 0.12;
 		
 		soundEffectNoto = false;
+		{
+			spectro3dObject = true;
+		}	//	3D-OBJECT-SPECTROGRAM
+		
+		
 	}	// Sound Interaction
 	{
         // this number describes how many bins are used
@@ -856,30 +866,30 @@ void liveApp::update()	{
 	if (viewSound)									{			
 		if ( m.getAddress() == "mlab" )	{					// Machine Listening
 			if		(m.getArgAsString(0) == "amp" )			{	ampChan0 = m.getArgAsFloat( 1 );		} 
-			else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );} 
-			else if	(m.getArgAsString(0) == "loudness" )	{	
-				loudness = m.getArgAsFloat( 1 );
-				glColor4f(1,1,1,1);
-				//ofEllipse(ofGetWidth()/2, ofMap(loudness, 0, 30, 512, 0),4,2);	
-
-				//printf(" %f \n", m.getArgAsFloat( 1 ));		
-			
-			} 
-			else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		} 
-			else if	(m.getArgAsString(0) == "specCentroid" ){	
-				specCentroid = m.getArgAsFloat( 1 );
-				glColor4f(1,1,1,0.2);
-				ofLine(ofGetWidth() - 10, ofMap(specCentroid, 400, 6000, 512, 0), ofGetWidth(), ofMap(specCentroid, 400, 6000, 512, 0));
-				//ofEllipse(ofGetWidth()/2, ofMap(specCentroid, 400, 6000, 512, 0),2,2);
-				//printf(" %f \n", m.getArgAsFloat( 1 ));		
-			} 
-			else if	(m.getArgAsString(0) == "specFlatness" ){	
-				printf(" %f \n", m.getArgAsFloat( 1 ));						
-			} 
 			else if	(m.getArgAsString(0) == "fftData" )		{
 				
 				switch ( mirrorMode )
 				{
+						
+					case 100:
+						
+						for (int i=1; i<513; i++)	{
+							data[i] = m.getArgAsFloat( i );
+							initialPos.x = 500*data[i]*sin(thita);
+							initialPos.y = 500*data[i]*cos(thita);					
+							initialPos.z = zita;
+							thita = thita + 0.07;
+							zita = zita + 1/512.0;
+							points.push_back(initialPos);
+							//speeds.push_back(ofVec3f(ofRandomf()*2,ofRandomf()*2,ofRandomf()*2));
+							colors.push_back(ofFloatColor(0.5,0.5,0.5));
+							//accelerations.push_back(ofVec3f(0,0,0));
+							initialPoints.push_back(initialPos);
+							
+							
+						}
+						break;
+						
 					case 0:
 						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
@@ -1026,8 +1036,8 @@ void liveApp::update()	{
 						break;				
 						// 768 HEIGHT
 					case 9:
-
-
+						
+						
 						for (int i=1; i<513; i++)	{
 							data[i] = m.getArgAsFloat( i );
 							glColor3f(spectroRed*data[i],0,0);
@@ -1065,8 +1075,7 @@ void liveApp::update()	{
 						ofTranslate(-ofGetWidth() / 2, -ofGetHeight() / 2, 0);
 						ofRotateZ(-rotCircSpect*ofGetFrameNum());
 						ofPopMatrix();
-						break;
-
+						break;						
 					default:
 						cout << "default";
 				}
@@ -1075,6 +1084,27 @@ void liveApp::update()	{
 				//ofPopMatrix();
 				
 			}
+			else if	(m.getArgAsString(0) == "freq" )		{	freqChan0 = m.getArgAsFloat( 1 );} 
+			else if	(m.getArgAsString(0) == "loudness" )	{	
+				loudness = m.getArgAsFloat( 1 );
+				glColor4f(1,1,1,1);
+				//ofEllipse(ofGetWidth()/2, ofMap(loudness, 0, 30, 512, 0),4,2);	
+
+				//printf(" %f \n", m.getArgAsFloat( 1 ));		
+			
+			} 
+			else if	(m.getArgAsString(0) == "onset" )		{	printf(" onset !!! \n");		} 
+			else if	(m.getArgAsString(0) == "specCentroid" ){	
+				specCentroid = m.getArgAsFloat( 1 );
+				glColor4f(1,1,1,0.2);
+				ofLine(ofGetWidth() - 10, ofMap(specCentroid, 400, 6000, 512, 0), ofGetWidth(), ofMap(specCentroid, 400, 6000, 512, 0));
+				//ofEllipse(ofGetWidth()/2, ofMap(specCentroid, 400, 6000, 512, 0),2,2);
+				//printf(" %f \n", m.getArgAsFloat( 1 ));		
+			} 
+			else if	(m.getArgAsString(0) == "specFlatness" ){	
+				printf(" %f \n", m.getArgAsFloat( 1 ));						
+			} 
+
 			else if	(m.getArgAsString(0) == "fftColor" )	{
 				spectroRed = m.getArgAsInt32(1);
 				spectroGreen = m.getArgAsInt32(2);
@@ -1578,7 +1608,16 @@ void liveApp::draw()	{
 			default:
 				break;
 		}
-	}	//	Mirrow Effect			
+	}	//	Mirrow Effect
+	if (spectro3dObject)								{
+		cam.begin();
+		vbo.setColorData(&colors[0],colors.size(),GL_DYNAMIC_DRAW);
+		vbo.setVertexData(&points[0], points.size(), GL_DYNAMIC_DRAW);
+		vbo.draw(GL_POINTS, 0, (int)points.size());			
+		cam.end();		
+	}	//	3D-OBJECT-SPECTROGRAM
+
+	
 	
 	/*	{
 		//we have to disable depth testing to draw the video frame
@@ -1656,7 +1695,14 @@ void liveApp::seed2(float dotSize, float angle, float x, float y)	{
   }
 }
 void liveApp::keyPressed  (int key)	{
-	if ( key == 'm')	ofHideCursor();
+	if ( key == 'q')	{
+		for (int i=0; i < initialPoints.size(); i++) {
+			//initialPoints.erase(i);
+			
+			
+		}	
+	}
+	if ( key == 'm')	ofHideCursor(); 
 	if ( key == 'M')	ofShowCursor();
 	if ( key == 'g')	{
 		for (int t = 0; t < 1; t++)	{
@@ -1719,7 +1765,6 @@ void liveApp::keyPressed  (int key)	{
 	if(key == 'w' or key == 'W'){
 		ofBackground(255,255,255);
 	}	
-	
 	if(key == 't' or key == 'T'){
 		//ofBackground(0,0,0);
         glTranslatef(ofGetWidth()/2,ofGetHeight(),0);	
