@@ -34,7 +34,7 @@ void liveApp::setup()	{
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
-		ofSetWindowTitle("Extending Seminar - 2012");
+		ofSetWindowTitle("Atmos Perf - 15 / 10 / 2012");
 		ofSetFrameRate(60); // if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps.
 		ofSetVerticalSync(false);
 		
@@ -154,6 +154,7 @@ void liveApp::setup()	{
 		// Imagenes
 		//image[0].loadImage("/Volumes/TERRA_DATA/pictures/fou/120601_Katerina_Thea_Leukada/IMG_7795.JPG");
 		// GROUP 1
+		/*
 		string imageDir = "/Users/ari/Media/images/paintings/lyon/";
 		
 		for (int i = 0; i < 61; i++)	{
@@ -168,6 +169,8 @@ void liveApp::setup()	{
 			image[i].loadImage(imageDir);
 			imageDir = "/Users/ari/Media/images/paintings/lyon/";
 		}
+		 
+		*/
 		/*
 		// GROUP 2
 		imageDir = "/Users/ari/Media/images/maps/google/grenoble/";
@@ -1609,13 +1612,13 @@ void liveApp::draw()	{
 				break;
 		}
 	}	//	Mirrow Effect
-	if (spectro3dObject)								{
+	/*	if (spectro3dObject)								{
 		cam.begin();
 		vbo.setColorData(&colors[0],colors.size(),GL_DYNAMIC_DRAW);
 		vbo.setVertexData(&points[0], points.size(), GL_DYNAMIC_DRAW);
 		vbo.draw(GL_POINTS, 0, (int)points.size());			
 		cam.end();		
-	}	//	3D-OBJECT-SPECTROGRAM
+	}	//	3D-OBJECT-SPECTROGRAM	*/
 
 	
 	

@@ -1,17 +1,63 @@
 /*
-livePerformance
-OSC messages dictionary
-
-Aris Bezas Igoumeninja <-> Corfu
-05 - 04 - 2012
-
-MakeResponders
+Atmos Perf at http://tossgallery.blogspot.gr/
+Aris Bezas 121028
 */
+OF.background(0,0,0,50);
+OF.background(0,0,0,0);
+OF.background(0,0,0);
+FEEDBACK
+--------
+OF.feedback("activate", 0);
+OF.feedback("speedXY", 0,-1.5);
 
+ONSET INTERACTION
+-----------------
+~mySendOnsets.start;
+~mySendOnsets.stop;
+~mySendOnsets.threshold(0.5);
+
+//Full screen rect
+(
+OF.background(0,0,0,0);
+~onsetRespRect.remove;
+~onsetRespRect = OSCresponderNode(nil, 'onset', { |t,r,msg|
+	OF.rect(0,0,~width,~height,255,255,255,255);
+}).add;
+)
+rrand(2,4).postln
+
+//horizontal screen rect
+(
+OF.background(0,0,0,22);
+~onsetRespRectHor.remove;
+~onsetRespRectHor = OSCresponderNode(nil, 'onset', { |t,r,msg, random|
+	40.do({	random = rrand(0,1000);OF.rect(0,random,~width,1,255,255,255,255);});
+}).add;
+)
+
+TYPOGRAPHY
+----------
+(
+~typoNormal = Task({
+	var xPos, yPos = 20, count = 0;
+	11500.do	{|i|
+		xPos = 8*count;
+		OF.writeString(~myString.at(i).asString,xPos,yPos,255,255,255,225);
+		0.01.wait;
+		if (xPos > ~width, {xPos = 0; count = 0; yPos = yPos +15} );
+		count = count + 1;
+	}
+});
+~typoNormal.play;
+)
+
+
+
+// ++++ OSC messages dictionary  ++++
 
 BACKGROUND
 ----------
-OF.background(0,0,0,10);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,50);		//OF.rgb("background",R,G,B,A);
 OF.background(255,255,255,10);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
 OF.rgb("background",0,0,0,255);	//OF.rgb("background",R,G,B,A);
@@ -72,7 +118,7 @@ DEMO
 }.fork
 //:-
 
-OF.playSpectro("mirrorMode", 3);
+OF.playSpectro("mirrorMode", 5);
 
 OF.playSpectro("rotCircSpect", 0.12);
 
@@ -121,7 +167,7 @@ OF.rgb("sketch",255,255,255,20);
 -sound2d
 OF.interactWithSound("activate",1); 				//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 500);		//	RANGE: 1 -> 999
-OF.interactWithSound("glBeginType",1);			//	0:POINTS, � � 1: LINES
+OF.interactWithSound("glBeginType",1);			    //	0:POINTS, � � 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
@@ -140,10 +186,11 @@ OF.rgb("sketch3d",255,255,255,20);
 PARTICLE
 --------
 OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);
 OF.particle("add", 10,10, 0.5, 0.5);
 //:Add more
+(
 {
 	2000.do{|i|
 		OF.particle("add", rrand(0,~width).asInteger,rrand(0,~height).asInteger,0.5, 0.5);
@@ -151,6 +198,7 @@ OF.particle("add", 10,10, 0.5, 0.5);
 		0.05.wait;
 	}
 }.fork
+)
 //:-
 OF.particle("pusher","set", 10, 800,200) // ACTIVATE SEND AMP FREQ PUSHER
 OF.particle("pusher","set", 0, 200,800)
@@ -160,7 +208,7 @@ OF.particle("pusher","remove", 0)
 OF.particle("pusher","remove", 10)
 OF.particle("pusher","remove", 2)
 
-OF.particle("forceRadius", 30);				//	RANGE: 0 -> 700
+OF.particle("forceRadius", 300);				//	RANGE: 0 -> 700
 OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
@@ -173,7 +221,7 @@ OF.particle("conColor",255,0,0);				//	RGB
 
 OF.particle("bounce", 0, 0, ~width, ~height);
 
-OF.particle("pushParticles", 0);					//	0:DON'T PUSH, 1: PUSH
+OF.particle("pushParticles", 1);					//	0:DON'T PUSH, 1: PUSH
 OF.particle("push", 100,400);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 //:-
@@ -214,19 +262,19 @@ OF.particle("pusher","remove", i);
 
 TYPOGRAPHY
 ----------
-OF.writeString("string",500,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);�
+OF.writeString("string",900,800,255,255,255,255);	//	("takis", X, Y, R, G, B, A);�
 OF.writeString("bigCenter", "~sadfh",~width/2,~height/2,255,255,255,255); // BIG
 OF.writeString("bigCenter", "hi",~width/2,~height/2,255,255,255,255); // BIG
 
 FEEDBACK
 --------
-OF.feedback("activate", 0);
+OF.feedback("activate", 1);
 OF.feedback("speedXY", 0,0.5);
 
 EFFECTS
 =======
-OF.effect("destruct","activate",1)
-OF.effect("destruct","case",3)	// 2: the best 0,1,2,3
+OF.effect("destruct","activate",0)
+OF.effect("destruct","case",2)	// 2: the best 0,1,2,3
 OF.effect("destruct","phrase1")	// 2: the best 0,1,2,3
 
 DESTRUCT CASES
