@@ -114,14 +114,15 @@ e.impulseRate(24);
 SKETCH
 ------
 -mouse
-OF.interactWithSketch("activate", 0);
+OF.interactWithSketch("activate", 1);
 OF.interactWithSketch("padSketchXY", 200,200);
 OF.interactWithSketch("mouseLines",1);
 OF.rgb("sketch",255,255,255,20);
+OF.rgb("sketch",0,0,0,10);
 -sound2d
 OF.interactWithSound("activate",1); 				//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 500);		//	RANGE: 1 -> 999
-OF.interactWithSound("glBeginType",1);			//	0:POINTS, � � 1: LINES
+OF.interactWithSound("glBeginType",1);			//	0:POINTS, 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
@@ -214,7 +215,7 @@ OF.particle("pusher","remove", i);
 
 TYPOGRAPHY
 ----------
-OF.writeString("string",500,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);�
+OF.writeString("string",500,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);
 OF.writeString("bigCenter", "~sadfh",~width/2,~height/2,255,255,255,255); // BIG
 OF.writeString("bigCenter", "hi",~width/2,~height/2,255,255,255,255); // BIG
 

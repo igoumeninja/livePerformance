@@ -1,6 +1,8 @@
 /*
  
- Preapering AudioVisual Performance at Lyon-Grenoble
+ Preapering AudioVisual Performance at 
+	- Toss Gallery
+	- Lyon-Grenoble
  
  Aris Bezas 
  Igoumeninja 28-10-2011
@@ -34,7 +36,7 @@ void liveApp::setup()	{
 		receiver.setup( PORTlisten );
 		current_msg_string = 0;
 				
-		ofSetWindowTitle("Atmos Perf - 15 / 10 / 2012");
+		ofSetWindowTitle("n-o-t-i-a-l-b 15 / 12 / 2012");
 		ofSetFrameRate(60); // if vertical sync is off, we can go a bit fast... this caps the framerate at 60fps.
 		ofSetVerticalSync(false);
 		
@@ -1619,8 +1621,6 @@ void liveApp::draw()	{
 		vbo.draw(GL_POINTS, 0, (int)points.size());			
 		cam.end();		
 	}	//	3D-OBJECT-SPECTROGRAM	*/
-
-	
 	
 	/*	{
 		//we have to disable depth testing to draw the video frame

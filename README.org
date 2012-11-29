@@ -15,7 +15,8 @@ ln -s /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePe
 ** onset
 To control the behavior from onset you have to go to MakeResponders.sc
 * Performances
-
+** *Atmos Performance at Toss Gallery*
+*Vaggelis Tsatsis, Alexandros Aggelakis, Aris Bezas*
 ** *Technoetic Telos Concert*
    *Ioannis Zannos - Aris Bezas*
 

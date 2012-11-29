@@ -5,29 +5,29 @@
 // Stagones by Batuhan
 SynthDef( "stagones",
 			{ | freq = 40, tempo = 1.5, out = 0, pan =0, amp
-				=1, 
+				=1,
 			mulDelay = 2, roundStart = 2e-3, roundEnd = 4e-3|
 	 			var source;
 				source = AllpassC.ar( SinOsc.ar(freq).tanh,  //AllpassC.ar(in, ...)
 							0.4, // maxdelaytime,
-							TExpRand.ar(2e-4, 0.4, 
+							TExpRand.ar(2e-4, 0.4,
 								Impulse.ar(tempo)).round([roundStart, roundEnd]), //delaytime,
 							mulDelay,
 							0.1); // mul,
 				Out.ar( out, Pan2.ar(source, pan, amp));
-				
+
 }).send(s);
-	
+
 // foubuf v.002
 SynthDef(\foubuf_002, {| out = 0, bufnum = 0, rate = 1, trigger = 1, loop = 1, pan = 0, level = 1, freqShift = 0 |
 	Out.ar(out,
 		Pan2.ar(
 			FreqShift.ar(
-				PlayBuf.ar(1, 
-						bufnum, 
-						rate, 
-						trigger, 
-						0, 
+				PlayBuf.ar(1,
+						bufnum,
+						rate,
+						trigger,
+						0,
 						loop
 				),
 				freqShift),
@@ -38,22 +38,22 @@ SynthDef(\foubuf_002, {| out = 0, bufnum = 0, rate = 1, trigger = 1, loop = 1, p
 
 // Crotale
 SynthDef("PMCrotale", {
-	arg midi = 60, tone = 3, art = 1, amp = 0.8, pan = 0; 
+	arg midi = 60, tone = 3, art = 1, amp = 0.8, pan = 0;
 	var env, out, mod, freq;
 
 	freq = midi.midicps;
 	env = Env.perc(0, art);
 	mod = 5 + (1/IRand(2, 6));
 
-	out = PMOsc.ar(freq, mod*freq, 
-		pmindex: EnvGen.kr(env, timeScale: art, levelScale: tone), 
+	out = PMOsc.ar(freq, mod*freq,
+		pmindex: EnvGen.kr(env, timeScale: art, levelScale: tone),
 		mul: EnvGen.kr(env, timeScale: art, levelScale: 0.3));
 
 	out = Pan2.ar(out, pan);
 
-	out = out * EnvGen.kr(env, timeScale: 1.3*art, 
-		levelScale: Rand(0.1, 0.5), doneAction:2);  
-	
+	out = out * EnvGen.kr(env, timeScale: 1.3*art,
+		levelScale: Rand(0.1, 0.5), doneAction:2);
+
 	Out.ar(0, out); //Out.ar(bus, out);
 }).send(s);
 
@@ -69,14 +69,17 @@ SynthDef('padovani', {	|sawFreq = 1, trigDur = 0.05, trigFreq = 10, roomSize = 2
 			y/sizeGrain,	//duration-the size of the grain
 			z,			//input to granulate
 			p*z			//pan
-			-1			//buf num 
+			-1			//buf num
 		);
 	singal = GVerb.ar(in, roomSize )/signalOutput;
 	Out.ar(0, Pan2.ar(singal, pan, level));
 }).send(s);
-  
+
 //:Play the Synths
-x = Synth(\stagones).play;
+x = Synth(\stagones)
+x.set(\tempo, 0.14)
+x.set(\mulDelay, 4)
+x.set(\amp, 1)
 y = Synth(\foubuf_002).play;
 z = Synth(\padovani).play;
 
@@ -87,7 +90,7 @@ z = Synth(\padovani).play;
 x = Synth(\stagones).play;
 //:Control Batuhan
 ~tempoButSpec = ControlSpec(0.001, 10, \lin);
-OSCresponderNode(n, '\tempo', { |t,r,msg| 
+OSCresponderNode(n, '\tempo', { |t,r,msg|
 	x.set(\tempo, ~tempoButSpec.map(msg[1])*0.1);
 	~tempoButSpec.map(msg[1]).postln;
 }).add;
