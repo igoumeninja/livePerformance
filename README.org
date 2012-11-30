@@ -2,20 +2,20 @@
 #+author: Aris Bezas
 
 * Installation notes
-- Use allAddons example
-- include ofxVectorMath addon
-- My personal setup the XCode project is based at of-apps -> livePerformance
-- Create a link to SuperCollider/Extension through Terminal
-#+begin_example
-ln -s /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses /Users/ari/Library/Application\ Support/SuperCollider/Extensions
-#+end_example
+- of_v0073_osx_release
+- XCode Version 4.5.1 (4G1004)
+- Add https://github.com/openframeworks/ofxVectorMath to addons
+
+
+
 
 * Performing with
 
 ** onset
 To control the behavior from onset you have to go to MakeResponders.sc
 * Performances
-** *Atmos Performance at Toss Gallery*
+** Notialb
+
 *Vaggelis Tsatsis, Alexandros Aggelakis, Aris Bezas*
 ** *Technoetic Telos Concert*
    *Ioannis Zannos - Aris Bezas*
