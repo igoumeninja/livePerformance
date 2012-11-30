@@ -2,9 +2,18 @@
 #+author: Aris Bezas
 
 * Installation notes
-- of_v0073_osx_release
-- XCode Version 4.5.1 (4G1004)
-- Add https://github.com/openframeworks/ofxVectorMath to addons
+1. of_v0073_osx_release
+2. XCode Version 4.5.1 (4G1004)
+3. Add https://github.com/openframeworks/ofxVectorMath to addons
+4. Fix bug from [[http://forum.openframeworks.cc/index.php/topic,7753.msg36287.html#msg36287][mypost at forum]]
+
+if flickering is a problem, there is a change you can make deep inside OF:
+
+1 open ofAppGlutWindow.cpp
+2 search replace GLUT_DOUBLE with GLUT_SINGLE
+3 search replace glutSwapBuffers with glFlush
+
+this will help with ofSetBackgroundAuto(false), but it will make ofSetBackgroundAuto(true) look bad.
 
 
 
