@@ -106,7 +106,7 @@ public:
 	
 	//================
 	//	TYPOGRAPHY
-	ofTrueTypeFont myFont11, myFont350;
+	ofTrueTypeFont myFont11, myFont100, myFont350;
 		
 	//================	
 	//	PARTICLES

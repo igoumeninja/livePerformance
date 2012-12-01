@@ -200,7 +200,8 @@ void liveApp::setup()	{
 
 		// Fonts
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
-		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 350, true, true, true);	
+        myFont100.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 100, true, true, true);
+		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 250, true, true, true);
 	}	// data (images, fonts, video ...)  
  	{
 		for (int i = 0; i < MAX_SKETCHES; i++){
@@ -691,7 +692,18 @@ void liveApp::update()	{
 			myFont350.drawString(m.getArgAsString( 1 ), 0, 0);		
 			ofPopMatrix();
 			
-		} else	{
+		} else if (m.getArgAsString(0) == "110"){
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+			ofFill();
+			ofSetColor(m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ),m.getArgAsInt32( 7 ));
+			ofPushMatrix();
+			ofTranslate(m.getArgAsInt32( 2 ), m.getArgAsInt32(3), 0);
+			myFont100.drawString(m.getArgAsString( 1 ), 0, 0);
+			ofPopMatrix();
+            
+        }
+        
+        else	{
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
 			ofFill();
 			ofSetColor(m.getArgAsInt32( 3 ),m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ));
