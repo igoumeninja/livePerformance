@@ -22,7 +22,7 @@ this will help with ofSetBackgroundAuto(false), but it will make ofSetBackground
 * Performing with
 
 ** onset
-To control the behavior from onset you have to go to MakeResponders.sc
+   To control the behavior from onset you have to go to MakeResponders.sc
 * Performances
 ** Notialb
 
