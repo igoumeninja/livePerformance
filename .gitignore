@@ -2,3 +2,5 @@
 /documentation/screenshots/
 /documentation/LYON-Concert/
 
+*.wav
+*.mp3
