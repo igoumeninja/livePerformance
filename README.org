@@ -2,12 +2,11 @@
 #+author: Aris Bezas
 
 * Installation notes
-1. Mac OSX 10.8.2
-2. of_v0073_osx_release
-3. XCode Version 4.5.1 (4G1004)
-4. Add https://github.com/openframeworks/ofxVectorMath to addons
-5. Fix bug from [[http://forum.openframeworks.cc/index.php/topic,7753.msg36287.html#msg36287][mypost at forum]]
-
+** 1. Mac OSX 10.8.2
+** 2. of_v0073_osx_release 
+** 3. XCode Version 4.5.1 (4G1004)
+** 4. Add https://github.com/openframeworks/ofxVectorMath to addons
+** 5. Fix bug from [[http://forum.openframeworks.cc/index.php/topic,7753.msg36287.html#msg36287][mypost at forum]]
 if flickering is a problem, there is a change you can make deep inside OF:
 
 1 open ofAppGlutWindow.cpp
@@ -16,21 +15,18 @@ if flickering is a problem, there is a change you can make deep inside OF:
 
 this will help with ofSetBackgroundAuto(false), but it will make ofSetBackgroundAuto(true) look bad.
 
+** 6. SuperCollider 3.6
 
 
-
-* Performing with
-
-** onset
-   To control the behavior from onset you have to go to MakeResponders.sc
 * Performances
 ** Notialb
 
 *Vaggelis Tsatsis, Alexandros Aggelakis, Aris Bezas*
-** *Technoetic Telos Concert*
+
+** Technoetic Telos Concert
    *Ioannis Zannos - Aris Bezas*
 
-** *High, but under control.*
+** High, but under control.
    Performers:
    *Jérôme Bertholon - Omer Chatziserif - Damian Marhulets - Aris Bezas*
 

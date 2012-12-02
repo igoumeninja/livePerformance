@@ -23,8 +23,8 @@ OF.background(setBackgroundAutoBool, 0);
 
 FEEDBACK
 --------
-OF.feedback("activate", 0);
-OF.feedback("speedXY", 0,0.5);
+OF.feedback("activate", 1);
+OF.feedback("speedXY", 0,1.5);
 
 EFFECTS
 =======

@@ -1,8 +1,7 @@
 /*
 This class is used as a startup file
 
-Aris Bezas Igoumeninja -> Corfu 120405
-~delay = 1;
+Aris Bezas Igoumeninja 121201
 */
 
 StartupLivePerformance {
@@ -15,17 +14,22 @@ StartupLivePerformance {
 	}
 
 	*startupLivePerformance {
-		//Error.debug = true;
 		~ofNetwork = NetAddr("127.0.0.1", 12345);
 		~scNetwork = NetAddr("127.0.0.1", 57120);
+		NotesData.load;
 
 		~width = 1280;
 		~height = 1024;
+		~screen1 = 0;
+		~screen2 = ~width/3;
+		~screen3 = (~width*2)/3;
+		~screenWidth = ~width/3;
 
 		~delayTechnoetic = 0.8;
 
 		// Take a string from file
-		~myString = File.use("/Users/ari/Projects/artistic/AB_Performances/livePerformance/data/text/text", "r", { |f|f.readAllString});
+		~myString = File.use(
+			"/Users/ari/Projects/artistic/AB_Performances/livePerformance/data/text/text", "r", { |f|f.readAllString});
 
 		// Sound Interaction
 		Task({
@@ -45,16 +49,7 @@ StartupLivePerformance {
 			};
 		}).play;
 
-		// "open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/of-sc-glossary.scd".unixCmd;
-		// "open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/StartUp/StartupLivePerformance.sc".unixCmd;
-		// "open /Users/ari/Projects/artistic/AB_Performances/livePerformance/".unixCmd;
-		// "open /Users/ari/Projects/artistic/AB_Performances/livePerformance/scCode/livePerformanceSCclasses/Controller/iPadResponders.sc".unixCmd;
-
-		"".postln;
-		"##################################".postln;
-		"######## START THE LIVE!!!########".postln;
-		"##################################".postln;
-		"".postln;
+		"\nNotialb LiveAudiovisualTecho is ready to go\n".postln;
 	}
 
 }

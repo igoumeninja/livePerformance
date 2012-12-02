@@ -9,6 +9,8 @@ Dests { classvar <>mineAddr, <>pappousAddr, <>axilleasAddr;
 			pappousAddr = NetAddr("169.254.47.198", 57120);
 			axilleasAddr = NetAddr("169.254.45.129", 57120);
 						//mitsosAddr = NetAddr("10.1.60.1", 57121);
+		
+		
 		}
 	
 	}
@@ -33,8 +35,8 @@ SendTags {
 	loop { 
 
 		tagPat = PatternProxy(Pseq([nil], inf));
-		steppattern = PatternProxy(Pseq([nil], inf));//def 0.2
-		~tagSync = PatternProxy(Pseq([nil], inf));//def 0.2
+		steppattern = PatternProxy(Pseq([nil], inf));//def 0.2 --nil
+		~tagSync = PatternProxy(Pseq([nil], inf));//def 0.2 --nil
 		tagg = tagPat.asStream;
 		stp = steppattern.asStream;
 		//stp2 = ~tagSync.asStream;
