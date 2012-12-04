@@ -77,6 +77,9 @@ void liveApp::setup()	{
 	}
 	}	// memAlloc
 	{
+        //create epilyptic effe
+        cleanBW = false;
+        
 		//video
 		videoX=videoY=0;
 		
@@ -155,6 +158,8 @@ void liveApp::setup()	{
 	{
 		// Imagenes
 		//image[0].loadImage("/Volumes/TERRA_DATA/pictures/fou/120601_Katerina_Thea_Leukada/IMG_7795.JPG");
+        image[0].loadImage("/Users/ari/Projects/artistic/AB_Performances/livePerformance/data/images/black.png");
+        image[1].loadImage("/Users/ari/Projects/artistic/AB_Performances/livePerformance/data/images/white.png");
 		// GROUP 1
 		/*
 		string imageDir = "/Users/ari/Media/images/paintings/lyon/";
@@ -1134,6 +1139,11 @@ void liveApp::update()	{
 	
 void liveApp::draw()	{
 	
+	if (cleanBW)										{
+        //ofSetBackgroundAuto(TRUE);
+        image[ofGetFrameNum()%2].draw(0,0);
+        cout << ofGetFrameNum()%2 << endl;
+    }
 	if (camera)										{
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
@@ -1180,32 +1190,10 @@ void liveApp::draw()	{
 		particleSystem.update();		
         ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
         particleSystem.draw();
-		
-		/*
-        //particleSystem.addAttractionForce(ofGetWidth() / 2, ofGetHeight() / 2, ofGetWidth(), centerAttraction);
-		if	(viewSoundChanels)	{
-			Yamp0 = ofMap(ampChan0, ampInLow, ampInHigh, 0, ofGetHeight());
-			Xfreq0 = ofMap(freqChan0, freqInLow, freqInHigh, 0, ofGetWidth());
-			particleSystem.addRepulsionForce(Xfreq0, Yamp0, forceRadius, forceScale);											
-		}
-        if(iPadPush)	{
-			particleSystem.addRepulsionForce( ofGetWidth()/2, ofGetHeight()/2, forceRadius, forceScale);
-		}		
-        if(pushParticles)	{
-//			for (int j=0;j < pushes)	{
-//				particleSystem.addRepulsionForce(pushX[i], pushY[i], forceRadius, forceScale);
-//			}
-			particleSystem.addRepulsionForce(pushX, pushY, forceRadius, forceScale);
-		}		
-        if(isMousePressed)	{
-			particleSystem.addRepulsionForce( mouseX, mouseY, forceRadius, forceScale);
-		}
-		 
-		 */
-		
-		
+
 	}	//  Particles
-	if (viewSketch3d)								{
+	
+    if (viewSketch3d)								{
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
 		ofRotateX(rotXratio*ofGetFrameNum());

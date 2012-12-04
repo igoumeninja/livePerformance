@@ -88,6 +88,7 @@ public:
 	
 	//==================
 	//	EFFECTS
+    bool            cleanBW;
 	ofTexture		texScreen2, pixelTexture;
 	float 			feedbackSpeedX,	feedbackSpeedY;
 	int				feedbackView, timeLine, viewRotate, view_fillBackground, mirrorEffectCase;	
