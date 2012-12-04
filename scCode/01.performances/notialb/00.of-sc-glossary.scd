@@ -135,10 +135,11 @@ SKETCH
 ------
 -mouse
 OF.interactWithSketch("activate", 1);
-OF.interactWithSketch("padSketchXY", 200,200);
+OF.interactWithSketch("padSketchXY", 2200,200);
 OF.interactWithSketch("mouseLines",1);
+OF.interactWithSketch("maxSoundElasticity",0.1)
 OF.rgb("sketch",255,255,255,20);
-OF.rgb("sketch",0,0,0,10);
+OF.rgb("sketch",0,0,0,250);
 -sound2d
 OF.interactWithSound("activate",1); 				//	0:DEACTIVATE, 1: ACTIVATE
 OF.interactWithSound("numSoundSketches", 500);		//	RANGE: 1 -> 999
@@ -146,14 +147,14 @@ OF.interactWithSound("glBeginType",1);			//	0:POINTS, 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
-OF.interactWithSound("maxSoundElasticity",0.1);	//  RANGE: 0 -> 20
+OF.interactWithSound("maxSoundElasticity",1.1);	//  RANGE: 0 -> 20
 OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
 -sound3d
 OF.sketch3d("activate", 1);
 OF.sketch3d("glBeginType",0);
-OF.sketch3d("numSketch3d",50);
+OF.sketch3d("numSketch3d",500);
 OF.sketch3d("rotYratio",0.3);
-OF.sketch3d("rotZratio",1);
+OF.sketch3d("rotZratio",0.1);
 OF.sketch3d("maxSketch3dElasticity",0.9);
 OF.rgb("sketch3d",255,255,255,20);
 
@@ -182,7 +183,7 @@ OF.particle("pusher","remove", 10)
 OF.particle("pusher","remove", 2)
 
 OF.particle("forceRadius", 30);				//	RANGE: 0 -> 700
-OF.particle("particleNeighborhood", 25);			//	RANGE: 1 -> 25
+OF.particle("particleNeighborhood", 25);//15 default			//	RANGE: 1 -> 25
 OF.particle("iPodPush", 0);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)
 
 OF.particle("dotColor", 15);					//	0:DON'T PUSH, 1: PUSH (AT THE CENTER)

@@ -26,7 +26,22 @@ vaggelis at: 1,2,3,4,7,11(drone)
 //==========
 // meros1o |
 //==========
-NetAddr("localhost", 57120).sendMsg('meros1o')
+
+Notialb.load;
+Notialb.meros1o;
+{
+3000.do{|i|
+OF.particle(
+"add",
+rrand(0,~width).asInteger,
+rrand(0,~height).asInteger,
+0.5, 0.5);
+0.01.wait;
+}
+}.fork;
+
+{Notialb.meros1o;0.01.wait;NetAddr("localhost", 57120).sendMsg('meros1o')}.fork
+
 meter duration: 2.6 sec
 pappous sound at : 1,3
 vaggelis at: 1-11
@@ -89,6 +104,10 @@ Notialb_Score {
 		~d7  = RespTags.do('/tags3', 7, nil);   ~d8 = RespTags.do('/tags3', 8, nil);  ~d9 = RespTags.do('/tags3', 9, nil);
 		~d10 = RespTags.do('/tags3', 10, nil); ~d11 = RespTags.do('/tags3', 11, nil);
 	}
+
+	//========================================================================//
+	//========================================================================//
+
 	*eisagogi{
 		~eisagogiResp.remove;
 		~eisagogiResp = OSCresponderNode(
@@ -109,7 +128,7 @@ Notialb_Score {
 							rrand(0,~width).asInteger,
 							rrand(0,~height).asInteger,
 							0.5, 0.5);
-						0.1.wait;
+						0.01.wait;
 					}
 				}.fork;
 
@@ -143,26 +162,6 @@ Notialb_Score {
 							1.wait;
 						}.fork;
 					});
-					// if (~meterCount == 37,{
-					// 	OF.particle("bounce", 0, 0, ~width, ~height);
-					// });
-					// if (~meterCount == 38,{
-					// 	OF.particle("bounce", 0, 400, ~width, 500);
-					// });
-					// if (~meterCount == 39,{
-					// 	{
-					// 		OF.particle("bounce", ~screen1, 0, ~screen1+30, ~height);
-					// 		1.wait;
-					// 		OF.particle("bounce", ~screen2, 0, ~screen2+30, ~height);
-					// 		1.wait;
-					// 		OF.particle("bounce", ~screen3, 0, ~screen3+30, ~height);
-					// 		1.wait;
-					// 	}.fork;
-					//
-					// });
-					// if (~meterCount == 42,{
-					// 	OF.particle("bounce", 0, 0, ~width, ~height);
-					// });
 					if (~meterCount == 43,{
 						OF.particle("bounce", ~screen1, 0, ~screen2,~height);
 					});
@@ -187,6 +186,10 @@ Notialb_Score {
 				};
 		}).add;
 	}
+
+	//========================================================================//
+	//========================================================================//
+
 	*afterEisagogi {
 		~afterEisagogiResp.remove;
 		~afterEisagogiResp = OSCresponderNode(
@@ -348,7 +351,6 @@ Notialb_Score {
 							OF.effect("destruct","activate",1);
 							OF.effect("destruct","case",1);
 						}
-
 					);
 					if ((~meterCount % 3 == 0) && (~meterCount > 24),
 						{
@@ -356,7 +358,6 @@ Notialb_Score {
 							OF.effect("destruct","case",2);
 						}
 					);
-
 					OF.background(0,0,0,255);
 					OF.background(0,0,0,25);
 				};
@@ -364,6 +365,10 @@ Notialb_Score {
 		}).add;
 
 	}
+	//========================================================================//
+	//========================================================================//
+	//   Notialb.load;
+	//                Notialb.meros1o;
 
 	*meros1o {
 		~meros1oResp.remove;
@@ -375,52 +380,112 @@ Notialb_Score {
 				OF.effect("destruct","activate",0);
 				OF.feedback("activate", 0);
 				~meterCount = 0;
+				//~mySendAmpFreq.start;
+				//OF.interactWithSound("glBeginType",0);
+				OF.interactWithSound("maxFreqIn", 600);
+				OF.interactWithSound("maxAmpIn", 0.7);
+				OF.interactWithSound("maxSoundElasticity",0.7);
+				OF.interactWithSound("numSoundSketches", 300);
+				OF.background(0,0,0,20);
+				//OF.background(255,255,255,15);
 
-				~meros1oTask1 = Task({
-					inf.do({
-						OF.rgb("sound",255,255,255,255);
-						0.04.wait;
-						OF.rgb("sound",0,0,0,255);
-						0.04.wait;
-					});
-				});
+				OF.particle("activate", 1);
+				//OF.particle("bounce", 0, (~height/2 -10), ~width, (~height/2 + 100));
+				OF.particle("bounce", 0, 0, ~width, ~height);
+				OF.particle("pusher","set", 0, ~width/2, ~height/2);
+				OF.particle("pusher","set", 1, 0, 0);
+				OF.particle("pusher","set", 2, ~width, 0);
+				OF.particle("pusher","set", 3, ~width, ~height);
+				OF.particle("pusher","set", 4, 0, ~height);
+				//OF.particle("pusher","remove", 0)
+				OF.particle("forceRadius", 400);
+				OF.particle("particleNeighborhood", 25);
+				OF.particle("dotColor",255,255,255,155);
+				OF.particle("conColor",255,255,255,10);
 
-				~c1.action = { "c1".postln;
-					~meterCount = ~meterCount + 1; "\n~meterCount=".post; ~meterCount.postln;
-					if(~meterCount == 1, {
-						~mySendAmpFreq.start;
-						OF.interactWithSound("activate",1);
-						OF.interactWithSound("glBeginType",1);
-						OF.interactWithSound("numSoundSketches", 100);
-						// {
-						// 	10.do{
-						// 		OF.background(0,0,0,255);
-						// 		0.01.wait;
-						// 		OF.background(255,255,255,255);
-						// 		0.01.wait;
-						// 		OF.background(0,0,0,255);
-						// 	}
-						// }.fork;
-						OF.background(0,0,0,0);
-						~meros1oTask1.play;
+				~c1.action = { "c1".postln; "\n~meterCount=".post; ~meterCount.postln;
+					OF.interactWithSound("activate",0);
+					if (~meterCount < 25, {{5.do{OF.rect(~screen3+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+					if (~meterCount == 3, {
+						OF.particle("bounce", 0, (~height/2 -10), ~width, (~height/2 + 100));
+						OF.particle("pusher","remove", 0);
+						OF.particle("pusher","remove", 1);
+						OF.particle("pusher","remove", 2);
+						OF.particle("pusher","remove", 3);
+						OF.particle("pusher","remove", 4);
+						OF.particle("particleNeighborhood", 10);});
+					if (~meterCount == 14,{
+						OF.particle("particleNeighborhood", 20);
+						OF.particle("forceRadius", 500);
+						OF.particle("dotColor",255,255,255,55);
+						OF.particle("conColor",255,255,255,10);
 					});
+					if (~meterCount == 16,{
+						OF.particle("forceRadius", 100);
+						OF.particle("dotColor",255,255,255,55);
+						OF.particle("conColor",255,255,255,10);
+					});
+					if (~meterCount == 17,{
+						OF.particle("particleNeighborhood", 15);
+					});
+					if (~meterCount == 18,{
+						OF.particle("particleNeighborhood", 5);
+					});
+
+					if ((~meterCount > 4) && (~meterCount < 23), {OF.particle("bounce", ~screen1, 0, ~screen2,~height);});
+					if (~meterCount > 25, {
+						OF.particle("bounce", 0, ((~height/2)-100), ~width,((~height/2)+100));
+						OF.particle("particleNeighborhood", 15);
+						OF.particle("pusher","set", 0, ~screen1+(~screenWidth/2), ~height/2);
+						OF.particle("pusher","set", 1, ~screen2+(~screenWidth/2), ~height/2);
+						OF.particle("pusher","set", 2, ~screen3+(~screenWidth/2), ~height/2);
+					});
+					~meterCount = ~meterCount + 1;
+
 				};
 				~c2.action = {"c2".postln;
+					if (~meterCount < 25, {{5.do{OF.rect(~screen2+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
 				};
-				~c3.action  = {"c3".postln;};
-				~c4.action  = {"c4".postln;};
-				~c5.action  = {"c5".postln;};
-				~c6.action  = {"c6".postln;};
-				~c7.action  = {"c7".postln;};
-				~c8.action  = {"c8".postln;};
-				~c9.action  = {"c9".postln;};
-				~c10.action = {"c10".postln;};
-				~c11.action = {"c11".postln;};
-
+				~c3.action  = {"c3".postln;
+					if (~meterCount < 25, {{5.do{OF.rect(~screen3+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+					if ((~meterCount > 4) && (~meterCount < 25), {OF.particle("bounce", ~screen3, 0, ~width,~height);});
+				};
+				~c4.action  = {"c4".postln;
+					if (~meterCount < 25, {{5.do{OF.rect(~screen2+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+					if (~meterCount > 4, {OF.particle("bounce", ~screen2, 0, ~screen3,~height);});
+				};
+				~c5.action  = {"c5".postln;
+					if (~meterCount < 25, {{5.do{OF.rect(~screen1+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+					if ((~meterCount > 4) && (~meterCount < 14), {OF.particle("bounce", ~screen1, 0, ~screen2,~height);});
+					if ((~meterCount > 11) && (~meterCount < 20), {OF.particle("bounce", ~screen3, 0, ~width,~height);});
+					if (~meterCount > 17, {OF.particle("bounce", ~screen2, 0, ~screen3,~height);});
+				};
+				~c6.action  = {"c6".postln;
+					OF.interactWithSound("activate",0);
+					if (~meterCount < 15, {OF.rect(~screen3,0,~screenWidth,~height, 255,255,255,255);});
+				};
+				~c7.action  = {"c7".postln;
+					if (~meterCount < 15, {OF.rect(~screen1,0,~screenWidth,~height, 255,255,255,255);});
+				};
+				~c8.action  = {"c8".postln;
+					if (~meterCount < 15, {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
+				};
+				~c9.action  = {"c9".postln;
+					if (~meterCount < 15, {OF.rect(~screen3,0,~screenWidth,~height, 255,255,255,255);});
+				};
+				~c10.action  = {"c10".postln;
+					if (~meterCount < 15, {OF.rect(~screen1,0,~screenWidth,~height, 255,255,255,255);});
+				};
+				~c11.action  = {"c11".postln;
+					if (~meterCount < 15, {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
+				};
 		}).add;
 
 
 	}
+
+	//========================================================================//
+	//========================================================================//
 
 	*meros2o {
 		~meros2oResp.remove;

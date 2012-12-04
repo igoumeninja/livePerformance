@@ -1186,7 +1186,7 @@ void liveApp::draw()	{
 			}
 		}
 		
-		particleSystem.addRepulsionForce(ofGetMouseX(), ofGetMouseY(), forceRadius, forceScale);
+		//particleSystem.addRepulsionForce(ofGetMouseX(), ofGetMouseY(), forceRadius, forceScale);
 		particleSystem.update();		
         ofSetColor(rDotColor, gDotColor, bDotColor, aDotColor);
         particleSystem.draw();

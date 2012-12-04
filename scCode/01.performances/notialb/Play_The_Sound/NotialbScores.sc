@@ -15,7 +15,7 @@ NotialbScores
 
 		~alex     = NetAddr("192.168.1.5", 57120);
 		~vaggelis = NetAddr("192.168.1.6", 57120);
-		~aris     = NetAddr("192.168.1.7", 57120);
+		~aris     = NetAddr("localhost", 57120);
 		~eisagogi = SendTags.new;
 		~eisagogi.dests = [~vaggelis, ~aris, ~alex];
 		~eisagogi.title = '/tags';
@@ -34,7 +34,7 @@ NotialbScores
 		//~aftereisagogi.loop;
 
 		~meros1 = SendTags.new;
-		~meros1.dests = [Dests.mineAddr, ~aris, ~alex];
+		~meros1.dests = [~vaggelis, ~aris, ~alex];
 		~meros1.title = '/tags2';
 		~meros1.tags = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 		~meros1.step = [1/3, 1/2, 1/3, 1/3, Pseq([1/6], 6), 1/6];
@@ -62,17 +62,17 @@ NotialbScores
 		~b10 = RespTags.do('/tags1', 10, nil);
 		~b11 = RespTags.do('/tags1', 11, nil);
 
-		~c1 = RespTags.do('/tags2', 1, nil);
-		~c2 = RespTags.do('/tags2', 2, nil);
-		~c3 = RespTags.do('/tags2', 3, nil);
-		~c4 = RespTags.do('/tags2', 4, nil);
-		~c5 = RespTags.do('/tags2', 5, nil);
-		~c6 = RespTags.do('/tags2', 6, nil);
-		~c7 = RespTags.do('/tags2', 7, nil);
-		~c8 = RespTags.do('/tags2', 8, nil);
-		~c9 = RespTags.do('/tags2', 9, nil);
-		~c10 = RespTags.do('/tags2', 10, nil);
-		~c11 = RespTags.do('/tags2', 11, nil);
+		~r1 = RespTags.do('/tags2', 1, nil);
+		// ~c2 = RespTags.do('/tags2', 2, nil);
+		// ~c3 = RespTags.do('/tags2', 3, nil);
+		// ~c4 = RespTags.do('/tags2', 4, nil);
+		// ~c5 = RespTags.do('/tags2', 5, nil);
+		// ~c6 = RespTags.do('/tags2', 6, nil);
+		// ~c7 = RespTags.do('/tags2', 7, nil);
+		// ~c8 = RespTags.do('/tags2', 8, nil);
+		// ~c9 = RespTags.do('/tags2', 9, nil);
+		// ~c10 = RespTags.do('/tags2', 10, nil);
+		// ~c11 = RespTags.do('/tags2', 11, nil);
 
 
 
@@ -177,7 +177,7 @@ NotialbScores
 		//:Meros_1_Actions //~meros1.loop;
 		//:========================
 
-		~c1.action = {'1'.postln; ~counter1 = ~counter1 + 1;
+		~r1.action = {'1'.postln; ~counter1 = ~counter1 + 1;
 			("Metro: ").post; ~counter1.postln;
 
 
@@ -192,16 +192,16 @@ NotialbScores
 		};
 
 
-		~c2.action = {'2'.postln;};
-		~c3.action = {'3'.postln;};
-		~c4.action = {'4'.postln;};
-		~c5.action = {'5'.postln;};
-		~c6.action = {'6'.postln;};
-		~c7.action = {'7'.postln;};
-		~c8.action = {'8'.postln;};
-		~c9.action = {'9'.postln;};
-		~c10.action = {'10'.postln;};
-		~c11.action = {'11'.postln;};
+		// ~c2.action = {'2'.postln;};
+		// ~c3.action = {'3'.postln;};
+		// ~c4.action = {'4'.postln;};
+		// ~c5.action = {'5'.postln;};
+		// ~c6.action = {'6'.postln;};
+		// ~c7.action = {'7'.postln;};
+		// ~c8.action = {'8'.postln;};
+		// ~c9.action = {'9'.postln;};
+		// ~c10.action = {'10'.postln;};
+		// ~c11.action = {'11'.postln;};
 
 
 
