@@ -78,7 +78,7 @@ void liveApp::setup()	{
 	}	// memAlloc
 	{
         //create epilyptic effe
-        cleanBW = false;
+        sinEq = false;
         
 		//video
 		videoX=videoY=0;
@@ -399,6 +399,17 @@ void liveApp::update()	{
 
 		}
 	}	//  spectro
+    if ( m.getAddress() == "sinEq")			{
+        if (m.getArgAsString(0) == "activate") {
+            playSpectro = m.getArgAsInt32(1);
+            cout << playSpectro << endl;
+        } else if (m.getArgAsString(0) == "mirrorMode") {
+            mirrorMode = m.getArgAsInt32(1);
+        } else if (m.getArgAsString(0) == "rotCircSpect") {
+            rotCircSpect = m.getArgAsFloat(1);
+            
+        }
+    }	//  spectro
 	if ( m.getAddress() == "rotate" )				{
 		ofBeginShape();		
 		ofRotateX(m.getArgAsInt32(0));
@@ -559,8 +570,8 @@ void liveApp::update()	{
 	}	//	video
 	if ( m.getAddress() == "particle" )				{
 		if (m.getArgAsString( 0 ) == "activate")				{
-				if (m.getArgAsInt32(1) == 1)	viewParticles = true;	
-				else if (m.getArgAsInt32(1) == 0)	viewParticles = false;	
+            if (m.getArgAsInt32(1) == 1)	viewParticles = true;
+            else if (m.getArgAsInt32(1) == 0)	viewParticles = false;
 		}
 		else if (m.getArgAsString( 0 ) == "lineOpacity")			lineOpacity = m.getArgAsInt32( 1 );	
 		else if (m.getArgAsString( 0 ) == "particleNeighborhood")	particleNeighborhood = m.getArgAsInt32( 1 );
@@ -1136,15 +1147,29 @@ void liveApp::update()	{
 	}	//	Sound Interaction amp, freq, loudness, onset, specCentroid, specFlatness, fftData 
 	}
 }
-	
+
 void liveApp::draw()	{
 	
-	if (cleanBW)										{
-        //ofSetBackgroundAuto(TRUE);
-        image[ofGetFrameNum()%2].draw(0,0);
-        cout << ofGetFrameNum()%2 << endl;
+	if (sinEq)										{
+        //ofBackground(0, 0, 0);
+        ofEnableAlphaBlending();	// turn on alpha blending
+        ofNoFill();
+        ofSetColor(255,0,0,127);
+        //ofSetPolyMode(OF_POLY_WINDING_NONZERO);
+        ofBeginShape();
+        int numSamples = ofGetScreenWidth();
+        float samples[numSamples];
+        for(int i=0; i<numSamples;i++){
+            float a = TWO_PI/numSamples*i;
+            //samples[i]=sin(a*a*sin(a*20/2));
+            samples[i]=sin(a*a*sin(a*5/2));
+            ofVertex(100 + 10*(ofGetFrameNum()%40)*samples[i],i);
+        }
+        ofEndShape();
+
+        //cout << ofGetFrameNum()%2 << endl;
     }
-	if (camera)										{
+	if (camera)                                         {
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
 		ofRotateX(mouseY);
@@ -1192,7 +1217,6 @@ void liveApp::draw()	{
         particleSystem.draw();
 
 	}	//  Particles
-	
     if (viewSketch3d)								{
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
@@ -1614,13 +1638,13 @@ void liveApp::draw()	{
 				break;
 		}
 	}	//	Mirrow Effect
-	/*	if (spectro3dObject)								{
+	/*	if (spectro3dObject)	{							
 		cam.begin();
 		vbo.setColorData(&colors[0],colors.size(),GL_DYNAMIC_DRAW);
 		vbo.setVertexData(&points[0], points.size(), GL_DYNAMIC_DRAW);
 		vbo.draw(GL_POINTS, 0, (int)points.size());			
 		cam.end();		
-	}	//	3D-OBJECT-SPECTROGRAM	*/
+	}*/	//	3D-OBJECT-SPECTROGRAM
 	
 	/*	{
 		//we have to disable depth testing to draw the video frame
@@ -1642,7 +1666,7 @@ void liveApp::draw()	{
 		ofDrawBitmapString(msg, 10, 20);
 		
 		
-	}	// Meshing	*/
+	}*/	// Meshing
 }
 void liveApp::seed1(float dotSize, float angle, float x, float y)	{
   
