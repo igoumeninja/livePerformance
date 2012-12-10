@@ -5,11 +5,10 @@ Aris Bezas Corfu -> Igoumeninja 121129
 OSCFunc.trace(true); // Turn posting on
 OSCFunc.trace(false); // Turn posting off
 
-NetAddr("192.168.1.6", 5711 0).sendMsg('eisagogi'); // about 3min
-
 //============
 // Eisaqgogi |
 //============
+Notialb_Score.sendTheTags
 NetAddr("localhost", 57120).sendMsg('eisagogi'); // about 3min
 NetAddr("localhost", 57120).sendMsg('eisagogiFeedBack'); // about 3min
 
@@ -40,7 +39,6 @@ rrand(0,~height).asInteger,
 }
 }.fork;
 
-{Notialb.meros1o;0.01.wait;NetAddr("localhost", 57120).sendMsg('meros1o')}.fork
 
 meter duration: 2.6 sec
 pappous sound at : 1,3
@@ -53,10 +51,6 @@ NetAddr("localhost", 57120).sendMsg('meros2o')
 meter duration: 2.6 sec
 pappous sound at : 1,3
 vaggelis at: 1-11
-
-
-OF.effect("mirror", 0);
-OF.effect("tree");
 
 */
 
@@ -84,25 +78,25 @@ Notialb_Score {
 		~ena.loop;
 	}
 	*defineRespTags {
-		~a1 = RespTags.do('/tags', 1, nil);
-		~a2 = RespTags.do('/tags', 2, nil);
-		~a3 = RespTags.do('/tags', 3, nil);
-		~a4 = RespTags.do('/tags', 4, nil);
+		~aResp1 = RespTags.do('/tags', 1, nil);
+		~aResp2 = RespTags.do('/tags', 2, nil);
+		~aResp3 = RespTags.do('/tags', 3, nil);
+		~aResp4 = RespTags.do('/tags', 4, nil);
 
-		~b1 =  RespTags.do('/tags1', 1, nil);   ~b2 = RespTags.do('/tags1', 2, nil);  ~b3 = RespTags.do('/tags1', 3, nil);
-		~b4 =  RespTags.do('/tags1', 4, nil);   ~b5 = RespTags.do('/tags1', 5, nil);  ~b6 = RespTags.do('/tags1', 6, nil);
-		~b7 =  RespTags.do('/tags1', 7, nil);   ~b8 = RespTags.do('/tags1', 8, nil);  ~b9 = RespTags.do('/tags1', 9, nil);
-		~b10 = RespTags.do('/tags1', 10, nil); ~b11 = RespTags.do('/tags1', 11, nil);
+		~bResp1 =  RespTags.do('/tags1', 1, nil);   ~bResp2 = RespTags.do('/tags1', 2, nil);  ~bResp3 = RespTags.do('/tags1', 3, nil);
+		~bResp4 =  RespTags.do('/tags1', 4, nil);   ~bResp5 = RespTags.do('/tags1', 5, nil);  ~bResp6 = RespTags.do('/tags1', 6, nil);
+		~bResp7 =  RespTags.do('/tags1', 7, nil);   ~bResp8 = RespTags.do('/tags1', 8, nil);  ~bResp9 = RespTags.do('/tags1', 9, nil);
+		~bResp10 = RespTags.do('/tags1', 10, nil); ~bResp11 = RespTags.do('/tags1', 11, nil);
 
-		~c1 =  RespTags.do('/tags2', 1, nil);   ~c2 = RespTags.do('/tags2', 2, nil);  ~c3 = RespTags.do('/tags2', 3, nil);
-		~c4 =  RespTags.do('/tags2', 4, nil);   ~c5 = RespTags.do('/tags2', 5, nil);  ~c6 = RespTags.do('/tags2', 6, nil);
-		~c7 =  RespTags.do('/tags2', 7, nil);   ~c8 = RespTags.do('/tags2', 8, nil);  ~c9 = RespTags.do('/tags2', 9, nil);
-		~c10 = RespTags.do('/tags2', 10, nil); ~c11 = RespTags.do('/tags2', 11, nil);
+		~cResp1 =  RespTags.do('/tags2', 1, nil);   ~cResp2 = RespTags.do('/tags2', 2, nil);  ~cResp3 = RespTags.do('/tags2', 3, nil);
+		~cResp4 =  RespTags.do('/tags2', 4, nil);   ~cResp5 = RespTags.do('/tags2', 5, nil);  ~cResp6 = RespTags.do('/tags2', 6, nil);
+		~cResp7 =  RespTags.do('/tags2', 7, nil);   ~cResp8 = RespTags.do('/tags2', 8, nil);  ~cResp9 = RespTags.do('/tags2', 9, nil);
+		~cResp10 = RespTags.do('/tags2', 10, nil); ~cResp11 = RespTags.do('/tags2', 11, nil);
 
-		~d1  = RespTags.do('/tags3', 1, nil);   ~d2 = RespTags.do('/tags3', 2, nil);  ~d3 = RespTags.do('/tags3', 3, nil);
-		~d4  = RespTags.do('/tags3', 4, nil);   ~d5 = RespTags.do('/tags3', 5, nil);  ~d6 = RespTags.do('/tags3', 6, nil);
-		~d7  = RespTags.do('/tags3', 7, nil);   ~d8 = RespTags.do('/tags3', 8, nil);  ~d9 = RespTags.do('/tags3', 9, nil);
-		~d10 = RespTags.do('/tags3', 10, nil); ~d11 = RespTags.do('/tags3', 11, nil);
+		~dResp1  = RespTags.do('/tags3', 1, nil);   ~dResp2 = RespTags.do('/tags3', 2, nil);  ~dResp3 = RespTags.do('/tags3', 3, nil);
+		~dResp4  = RespTags.do('/tags3', 4, nil);   ~dResp5 = RespTags.do('/tags3', 5, nil);  ~dResp6 = RespTags.do('/tags3', 6, nil);
+		~dResp7  = RespTags.do('/tags3', 7, nil);   ~dResp8 = RespTags.do('/tags3', 8, nil);  ~dResp9 = RespTags.do('/tags3', 9, nil);
+		~dResp10 = RespTags.do('/tags3', 10, nil); ~dResp11 = RespTags.do('/tags3', 11, nil);
 	}
 
 	//========================================================================//
@@ -128,17 +122,17 @@ Notialb_Score {
 							rrand(0,~width).asInteger,
 							rrand(0,~height).asInteger,
 							0.5, 0.5);
-						0.01.wait;
+						0.07.wait;
 					}
 				}.fork;
 
 				~meterCount = 1;
-				~a1.action = {
+				~aResp1.action = {
 					"meterCount=".post; ~meterCount.postln;
 					"a1".postln;
 					~meterCount = ~meterCount + 1;
 				};
-				~a2.action = {
+				~aResp2.action = {
 					"a2".postln;
 					if (~meterCount == 28,{
 						OF.particle("bounce", 100, 0, 300, ~height);
@@ -172,15 +166,16 @@ Notialb_Score {
 						OF.particle("bounce", ~screen3, 0, ~width,~height);
 					});
 				};
-				~a3.action = {
+				~aResp3.action = {
 					"a3".postln;
 				};
-				~a4.action = {
+				~aResp4.action = {
 					"a4".postln;
 					if (~meterCount == 20,
 						{
 							OF.feedback("activate", 1);
 							OF.feedback("speedXY", 0,-0.5);
+							OF.particle("dotColor",255,255,255,65);		//	RGBA
 						}
 					);
 				};
@@ -203,11 +198,21 @@ Notialb_Score {
 				~meterCount = 0;
 
 				//Actions
-				~b1.action = {
+				~bResp1.action = {
 					//if(~meterCount > 25, {~meterCount=0;});
 					~meterCount = ~meterCount + 1; "\n~meterCount=".post; ~meterCount.postln;
 					"b1".postln;
 					{
+						if ((~meterCount > 15) && (~meterCount < 64), {
+							OF.sinEq(1,~screen1+~screenWidth/2,100);
+						});
+
+						if (~meterCount > 40, {
+							OF.effect("mirror", 1);
+						});
+						if (~meterCount > 63, {
+							OF.effect("mirror", 0);
+						});
 						if (~meterCount < 15, {
 							OF.rect(~screen31,0,~screenWidth,~height, 255,255,255,255);
 						});
@@ -227,7 +232,7 @@ Notialb_Score {
 						};
 					}.fork
 				};
-				~b2.action = {
+				~bResp2.action = {
 					"b2".postln;
 					{
 						if (~meterCount < 15, {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
@@ -242,7 +247,7 @@ Notialb_Score {
 						}
 					}.fork
 				};
-				~b3.action = {
+				~bResp3.action = {
 					"b3".postln;
 					{
 						if (~meterCount < 15, {OF.rect(~screen3,0,~screenWidth,~height, 255,255,255,255);});
@@ -260,19 +265,19 @@ Notialb_Score {
 						};
 					}.fork
 				};
-				~b4.action = {
+				~bResp4.action = {
 					"b4".postln;
 					if (~meterCount < 15, {OF.rect(~screen1,0,~screenWidth,~height, 255,255,255,255);});
 					OF.background(0,0,0,255);
 					OF.background(0,0,0,20);
 				};
-				~b5.action = {
+				~bResp5.action = {
 					"b5".postln;
 				};
-				~b6.action = {
+				~bResp6.action = {
 					"b6".postln;
 				};
-				~b7.action = {
+				~bResp7.action = {
 					"b7".postln;
 					2.do{
 						OF.rect(0,1000.rand,~width,2,255,255,255,255);
@@ -288,65 +293,67 @@ Notialb_Score {
 						}
 					)
 				};
-				~b8.action = {
+				~bResp8.action = {
 					"b8".postln;
 				};
-				~b9.action = {
+				~bResp9.action = {
 					"b9".postln;
 				};
-				~b10.action = {"b10".postln;};
-				~b11.action = {
+				~bResp10.action = {"b10".postln;};
+				~bResp11.action = {
 					"b11".postln;
-					if (~meterCount % 5 == 0,
-						{
+					if ((~meterCount > 15) && (~meterCount < 64),{
+						if (~meterCount % 5 == 0,
 							{
-								(~width/20).do{
-									|i|
-									OF.writeString(
-										"110",
-										"notialb".choose.asString,
-										0,500,
-										255,255,255,255
-									);
-									0.05.wait;
-								};
-							}.fork
-						}
-					);
-					if (~meterCount % 6 == 0,
-						{
+								{
+									(~width/20).do{
+										|i|
+										OF.writeString(
+											"110",
+											"notialb".choose.asString,
+											0,500,
+											255,255,255,255
+										);
+										0.05.wait;
+									};
+								}.fork
+							}
+						);
+						if (~meterCount % 6 == 0,
 							{
-								(~width/20).do{
-									|i|
-									OF.writeString(
-										"110",
-										"notialb".choose.asString,
-										~screen2,500,
-										255,255,255,255
-									);
-									0.05.wait;
-								};
-							}.fork
-						}
-					);
-					if (~meterCount % 7 == 0,
-						{
+								{
+									(~width/20).do{
+										|i|
+										OF.writeString(
+											"110",
+											"notialb".choose.asString,
+											~screen2,500,
+											255,255,255,255
+										);
+										0.05.wait;
+									};
+								}.fork
+							}
+						);
+						if (~meterCount % 7 == 0,
 							{
-								(~width/20).do{
-									|i|
-									OF.writeString(
-										"110",
-										"notialb".choose.asString,
-										~screen3,500,
-										255,255,255,255
-									);
-									0.05.wait;
-								};
-							}.fork
-						}
-					);
+								{
+									(~width/20).do{
+										|i|
+										OF.writeString(
+											"110",
+											"notialb".choose.asString,
+											~screen3,500,
+											255,255,255,255
+										);
+										0.05.wait;
+									};
+								}.fork
+							}
+						);
+					});
 
-					if (~meterCount > 18,
+					if ((~meterCount > 34) && (~meterCount < 64),
 						{
 							OF.effect("destruct","activate",1);
 							OF.effect("destruct","case",1);
@@ -403,10 +410,14 @@ Notialb_Score {
 				OF.particle("dotColor",255,255,255,155);
 				OF.particle("conColor",255,255,255,10);
 
-				~c1.action = { "c1".postln; "\n~meterCount=".post; ~meterCount.postln;
+				~cResp1.action = { "c1".postln; "\n~meterCount=".post; ~meterCount.postln;
 					OF.interactWithSound("activate",0);
 					if (~meterCount < 25, {{5.do{OF.rect(~screen3+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
-					if (~meterCount == 3, {
+					if (~meterCount == 0, {
+						OF.particle("activate", 0);
+					});
+					if (~meterCount == 1, {
+						OF.particle("activate", 1);
 						OF.particle("bounce", 0, (~height/2 -10), ~width, (~height/2 + 100));
 						OF.particle("pusher","remove", 0);
 						OF.particle("pusher","remove", 1);
@@ -429,55 +440,77 @@ Notialb_Score {
 						OF.particle("particleNeighborhood", 15);
 					});
 					if (~meterCount == 18,{
-						OF.particle("particleNeighborhood", 5);
+						OF.particle("particleNeighborhood", 19);
 					});
 
-					if ((~meterCount > 4) && (~meterCount < 23), {OF.particle("bounce", ~screen1, 0, ~screen2,~height);});
-					if (~meterCount > 25, {
+					if ((~meterCount > 1) && (~meterCount < 23), {OF.particle("bounce", ~screen1, 0, ~screen2,~height);});
+					if ((~meterCount > 25) && (~meterCount < 29) , {
 						OF.particle("bounce", 0, ((~height/2)-100), ~width,((~height/2)+100));
 						OF.particle("particleNeighborhood", 15);
 						OF.particle("pusher","set", 0, ~screen1+(~screenWidth/2), ~height/2);
 						OF.particle("pusher","set", 1, ~screen2+(~screenWidth/2), ~height/2);
 						OF.particle("pusher","set", 2, ~screen3+(~screenWidth/2), ~height/2);
 					});
+					if ((~meterCount > 29) && (~meterCount < 32) , {
+						OF.particle("bounce", 0,~height/2, ~screen2, ~height);
+						OF.particle("particleNeighborhood", 15);
+						OF.particle("pusher","set", 0, ~screen1+(~screenWidth/2), ~height/2);
+						OF.particle("pusher","set", 1, ~screen2+(~screenWidth/2), ~height/2);
+						OF.particle("pusher","set", 2, ~screen3+(~screenWidth/2), ~height/2);
+					});
+
+					if ((~meterCount > 36) && (~meterCount < 132) , {
+						if(~meterCount%3 == 0,{OF.sinEq(1,~screen1+(~screenWidth/2) ,100);});
+						if(~meterCount%4 == 0,{OF.sinEq(1,~screen2+(~screenWidth/2) ,100);});
+						if(~meterCount%5 == 0,{OF.sinEq(1,~screen3+(~screenWidth/2) ,100);});
+					});
+					if ((~meterCount > 42) && (~meterCount < 132) , {
+						OF.interactWithSound("activate",1);
+					});
+
 					~meterCount = ~meterCount + 1;
 
 				};
-				~c2.action = {"c2".postln;
-					if (~meterCount < 25, {{5.do{OF.rect(~screen2+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+				~cResp2.action = {"c2".postln;
+					if ((~meterCount > 2) && (~meterCount < 25),
+						{{5.do{OF.rect(~screen2+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
 				};
-				~c3.action  = {"c3".postln;
-					if (~meterCount < 25, {{5.do{OF.rect(~screen3+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
-					if ((~meterCount > 4) && (~meterCount < 25), {OF.particle("bounce", ~screen3, 0, ~width,~height);});
+				~cResp3.action  = {"c3".postln;
+					if ((~meterCount > 2) && (~meterCount < 25),
+						{{5.do{OF.rect(~screen3+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+					if ((~meterCount > 1) && (~meterCount < 25), {OF.particle("bounce", ~screen3, 0, ~width,~height);});
 				};
-				~c4.action  = {"c4".postln;
-					if (~meterCount < 25, {{5.do{OF.rect(~screen2+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
-					if (~meterCount > 4, {OF.particle("bounce", ~screen2, 0, ~screen3,~height);});
+				~cResp4.action  = {"c4".postln;
+					if ((~meterCount > 2) && (~meterCount < 25),
+						{{5.do{OF.rect(~screen2+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+					if (~meterCount > 1, {OF.particle("bounce", ~screen2, 0, ~screen3,~height);});
 				};
-				~c5.action  = {"c5".postln;
-					if (~meterCount < 25, {{5.do{OF.rect(~screen1+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
-					if ((~meterCount > 4) && (~meterCount < 14), {OF.particle("bounce", ~screen1, 0, ~screen2,~height);});
+				~cResp5.action  = {"c5".postln;
+					if ((~meterCount > 2) && (~meterCount < 25),
+						{{5.do{OF.rect(~screen1+~screenWidth.rand-30,0,1,~height,255,255,255,255);}}.fork;});
+					if ((~meterCount > 1) && (~meterCount < 14), {OF.particle("bounce", ~screen1, 0, ~screen2,~height);});
 					if ((~meterCount > 11) && (~meterCount < 20), {OF.particle("bounce", ~screen3, 0, ~width,~height);});
-					if (~meterCount > 17, {OF.particle("bounce", ~screen2, 0, ~screen3,~height);});
-				};
-				~c6.action  = {"c6".postln;
+					if ((~meterCount > 17) && (~meterCount < 29) , {OF.particle("bounce", ~screen2, 0, ~screen3,~height);});
+					if (~meterCount > 29, {/*OF.particle("bounce", 0,0, ~screen2, ~height/2);*/});
+					};
+				~cResp6.action  = {"c6".postln;
 					OF.interactWithSound("activate",0);
-					if (~meterCount < 15, {OF.rect(~screen3,0,~screenWidth,~height, 255,255,255,255);});
+					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen3,0,~screenWidth,~height, 255,255,255,255);});
+					};
+					~cResp7.action  = {"c7".postln;
+					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen1,0,~screenWidth,~height, 255,255,255,255);});
 				};
-				~c7.action  = {"c7".postln;
-					if (~meterCount < 15, {OF.rect(~screen1,0,~screenWidth,~height, 255,255,255,255);});
+				~cResp8.action  = {"c8".postln;
+					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
 				};
-				~c8.action  = {"c8".postln;
-					if (~meterCount < 15, {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
+				~cResp9.action  = {"c9".postln;
+					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen3,0,~screenWidth,~height, 255,255,255,255);});
 				};
-				~c9.action  = {"c9".postln;
-					if (~meterCount < 15, {OF.rect(~screen3,0,~screenWidth,~height, 255,255,255,255);});
+				~cResp10.action  = {"c10".postln;
+					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen1,0,~screenWidth,~height, 255,255,255,255);});
 				};
-				~c10.action  = {"c10".postln;
-					if (~meterCount < 15, {OF.rect(~screen1,0,~screenWidth,~height, 255,255,255,255);});
-				};
-				~c11.action  = {"c11".postln;
-					if (~meterCount < 15, {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
+				~cResp11.action  = {"c11".postln;
+					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
 				};
 		}).add;
 
@@ -494,7 +527,7 @@ Notialb_Score {
 			'meros2o',
 			{ |t,r,msg|
 				//Actions
-				~d1.action = {
+				~dResp1.action = {
 					{
 						OF.feedback("activate", 1);
 						OF.feedback("speedXY", 0,0);
@@ -516,7 +549,7 @@ Notialb_Score {
 
 					}.fork
 				};
-				~d2.action = {
+				~dResp2.action = {
 					{
 						OF.feedback("speedXY", 0.5,0);
 						OF.writeString(
@@ -537,7 +570,7 @@ Notialb_Score {
 					}.fork
 
 				};
-				~d3.action = {
+				~dResp3.action = {
 					{
 						OF.feedback("speedXY", 1.5,0);
 						OF.writeString(
@@ -558,7 +591,7 @@ Notialb_Score {
 					}.fork
 
 				};
-				~d4.action = {
+				~dResp4.action = {
 					{
 						OF.feedback("speedXY", -1.5,0);
 						OF.writeString(

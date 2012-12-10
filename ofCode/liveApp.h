@@ -39,7 +39,12 @@ public:
 	void	resized		(int w, int h);		
 	
 	void	seed1(float dotSize, float angle, float x, float y);
-	void	seed2(float dotSize, float angle, float x, float y);	
+	void	seed2(float dotSize, float angle, float x, float y);
+    
+    void    sinEq(int x, float par1);
+    bool sinEqBool;
+    int xSinEq, counterSinEq;
+    float par1SinEq;
 	
 	//-========================
 	//	GENERAL
@@ -88,7 +93,6 @@ public:
 	
 	//==================
 	//	EFFECTS
-    bool            sinEq;
 	ofTexture		texScreen2, pixelTexture;
 	float 			feedbackSpeedX,	feedbackSpeedY;
 	int				feedbackView, timeLine, viewRotate, view_fillBackground, mirrorEffectCase;	

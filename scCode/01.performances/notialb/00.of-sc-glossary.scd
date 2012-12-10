@@ -11,7 +11,7 @@ MakeResponders
 
 BACKGROUND
 ----------
-OF.background(0,0,0,5);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,15);		//OF.rgb("background",R,G,B,A);
 OF.background(255,255,255,10);
 OF.background(255,10);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
@@ -21,10 +21,15 @@ OF.rect(100,100,200,200,255,255,255,255);	//x,y,width,height
 
 OF.background(setBackgroundAutoBool, 0);
 
+SIN EQUATIONS
+-------------
+OF.sinEq(1,600.rand,100); // OF.sinEq(true,xPos,par1);
+OF.sinEq(0,200,100); // OF.sinEq(true,xPos,par1);
+
 FEEDBACK
 --------
 OF.feedback("activate", 1);
-OF.feedback("speedXY", 0,1.5);
+OF.feedback("speedXY", 0,5.5);
 
 EFFECTS
 =======

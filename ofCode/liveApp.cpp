@@ -77,9 +77,6 @@ void liveApp::setup()	{
 	}
 	}	// memAlloc
 	{
-        //create epilyptic effe
-        sinEq = false;
-        
 		//video
 		videoX=videoY=0;
 		
@@ -399,17 +396,11 @@ void liveApp::update()	{
 
 		}
 	}	//  spectro
-    if ( m.getAddress() == "sinEq")			{
-        if (m.getArgAsString(0) == "activate") {
-            playSpectro = m.getArgAsInt32(1);
-            cout << playSpectro << endl;
-        } else if (m.getArgAsString(0) == "mirrorMode") {
-            mirrorMode = m.getArgAsInt32(1);
-        } else if (m.getArgAsString(0) == "rotCircSpect") {
-            rotCircSpect = m.getArgAsFloat(1);
-            
-        }
-    }	//  spectro
+    if ( m.getAddress() == "sinEq")                 {
+        sinEqBool = m.getArgAsInt32(0);
+        xSinEq = m.getArgAsInt32(1);
+        par1SinEq = m.getArgAsFloat(2);
+    }	//  sinEq
 	if ( m.getAddress() == "rotate" )				{
 		ofBeginShape();		
 		ofRotateX(m.getArgAsInt32(0));
@@ -681,7 +672,7 @@ void liveApp::update()	{
 				break;
 		}
 		//ofBackground(rBack, gBack, bBack);
-	}	//	background						
+	}	//	background			
 	if ( m.getAddress() == "rect" )					{
 		switch (m.getNumArgs())	{
 			case 4:
@@ -895,7 +886,7 @@ void liveApp::update()	{
 				sketch[i].init(1, ofRandom(minMouseElasticity, maxMouseElasticity), ofRandom(minMouseDamping, maxMouseDamping)); //id:1 => mouse init(int sketchID, float elast, float aposv)
 			}		
 		}
-	}	//  Mouse Interaction		
+	}	//  Mouse Interaction	
 	if (viewSound)									{			
 		if ( m.getAddress() == "mlab" )	{					// Machine Listening
 			if		(m.getArgAsString(0) == "amp" )			{	ampChan0 = m.getArgAsFloat( 1 );		} 
@@ -1147,28 +1138,33 @@ void liveApp::update()	{
 	}	//	Sound Interaction amp, freq, loudness, onset, specCentroid, specFlatness, fftData 
 	}
 }
+void liveApp::sinEq(int x, float par1)   {
+    //ofBackground(0, 0, 0);
+    ofEnableAlphaBlending();	// turn on alpha blending
+    ofNoFill();
+    ofSetColor(255,0,0,127);
+    //ofSetPolyMode(OF_POLY_WINDING_NONZERO);
+    ofBeginShape();
 
-void liveApp::draw()	{
-	
-	if (sinEq)										{
-        //ofBackground(0, 0, 0);
-        ofEnableAlphaBlending();	// turn on alpha blending
-        ofNoFill();
-        ofSetColor(255,0,0,127);
-        //ofSetPolyMode(OF_POLY_WINDING_NONZERO);
-        ofBeginShape();
-        int numSamples = ofGetScreenWidth();
-        float samples[numSamples];
-        for(int i=0; i<numSamples;i++){
-            float a = TWO_PI/numSamples*i;
-            //samples[i]=sin(a*a*sin(a*20/2));
-            samples[i]=sin(a*a*sin(a*5/2));
-            ofVertex(100 + 10*(ofGetFrameNum()%40)*samples[i],i);
-        }
-        ofEndShape();
-
-        //cout << ofGetFrameNum()%2 << endl;
+    int numSamples = ofGetScreenWidth();
+    float samples[numSamples];
+    for(int i=0; i<numSamples;i++){
+        float a = TWO_PI/numSamples*i;
+        //samples[i]=sin(a*a*sin(a*20/2));
+        samples[i]=sin(a*a*sin(a*5/2));
+        ofVertex(x + (ofGetFrameNum()%40)*samples[i],i);
     }
+    ofEndShape();
+    if (counterSinEq%40 == true) {
+        sinEqBool=0;
+    }
+    counterSinEq++;
+    
+}
+void liveApp::draw()	{
+    
+    if(sinEqBool) {sinEq(xSinEq, par1SinEq);}
+	
 	if (camera)                                         {
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
