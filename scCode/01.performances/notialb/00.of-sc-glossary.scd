@@ -11,7 +11,7 @@ MakeResponders
 
 BACKGROUND
 ----------
-OF.background(0,0,0,15);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,25);		//OF.rgb("background",R,G,B,A);
 OF.background(255,255,255,10);
 OF.background(255,10);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
@@ -23,12 +23,16 @@ OF.background(setBackgroundAutoBool, 0);
 
 SIN EQUATIONS
 -------------
-OF.sinEq(1,600.rand,100); // OF.sinEq(true,xPos,par1);
+OF.background(0,0,0,15);
+OF.sinEq(0,600.rand,10.03213); // OF.sinEq(true,xPos,par1);
 OF.sinEq(0,200,100); // OF.sinEq(true,xPos,par1);
+OF.sinEq("remove",1)
+OF.sinEq("remove",0)
+25.do{|i|OF.sinEq("remove",24-i)}
 
 FEEDBACK
 --------
-OF.feedback("activate", 1);
+OF.feedback("activate", 0);
 OF.feedback("speedXY", 0,5.5);
 
 EFFECTS
@@ -42,7 +46,7 @@ DESTRUCT CASES
 0:
 OF.effect("noiseEffect", 0); 	// with z0re is clearing the background
 OF.effect("mirror", 1);
-OF.effect("mirror", "case", 0);
+OF.effect("mirror", "case", 3);
 OF.effect("tree");
 
 MACHINE LISTENING

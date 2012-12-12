@@ -397,9 +397,17 @@ void liveApp::update()	{
 		}
 	}	//  spectro
     if ( m.getAddress() == "sinEq")                 {
-        sinEqBool = m.getArgAsInt32(0);
-        xSinEq = m.getArgAsInt32(1);
-        par1SinEq = m.getArgAsFloat(2);
+        
+        sinEqArray[m.getArgAsInt32(0)].activeSinEq = true;
+        sinEqArray[m.getArgAsInt32(0)].xPos = m.getArgAsInt32(1);
+        sinEqArray[m.getArgAsInt32(0)].par1 = m.getArgAsInt32(2);
+        if (m.getArgAsString(0) == "remove") {
+            sinEqArray[m.getArgAsInt32(1)].activeSinEq = false;
+        }
+        //sinEqBool = m.getArgAsInt32(0);
+        //xSinEq = m.getArgAsInt32(1);
+        //par1SinEq = m.getArgAsFloat(2);
+        //sinEq(xSinEq);
     }	//  sinEq
 	if ( m.getAddress() == "rotate" )				{
 		ofBeginShape();		
@@ -444,7 +452,7 @@ void liveApp::update()	{
 		if (m.getArgAsString(0) == "bita") {
 			myform.bita = m.getArgAsFloat(1);
 		}
-	}	//	superformula		
+	}	//	superformula
 	if ( m.getAddress() == "img" )					{
 		
 		//cout << m.getNumArgs() << endl;
@@ -637,7 +645,7 @@ void liveApp::update()	{
 			else if (m.getArgAsString(1) == "remove") {
 				pushersArray[m.getArgAsInt32(2)].activeP = false;
 			}
-		}			
+		}		
 	}	//  particles
 	if ( m.getAddress() == "feedback" )				{
 		if (m.getArgAsString( 0 ) == "activate")	{
@@ -672,7 +680,7 @@ void liveApp::update()	{
 				break;
 		}
 		//ofBackground(rBack, gBack, bBack);
-	}	//	background			
+	}	//	background
 	if ( m.getAddress() == "rect" )					{
 		switch (m.getNumArgs())	{
 			case 4:
@@ -761,6 +769,7 @@ void liveApp::update()	{
 					}					
 					break;
 				case 3:
+                    
 					mirrorEffectCase = m.getArgAsInt32(2);
 					break;
 
@@ -1129,8 +1138,7 @@ void liveApp::update()	{
 				printf(" %f \n", m.getArgAsFloat( 1 ));						
 			} 
 
-			else if	(m.getArgAsString(0) == "fftColor" )	{
-				spectroRed = m.getArgAsInt32(1);
+			else if	(m.getArgAsString(0) == "fftColor" )	{				spectroRed = m.getArgAsInt32(1);
 				spectroGreen = m.getArgAsInt32(2);
 				spectroBlue = m.getArgAsInt32(3);
 			}
@@ -1146,13 +1154,13 @@ void liveApp::sinEq(int x, float par1)   {
     //ofSetPolyMode(OF_POLY_WINDING_NONZERO);
     ofBeginShape();
 
-    int numSamples = ofGetScreenWidth();
+    int numSamples = ofGetScreenWidth()/4;
     float samples[numSamples];
     for(int i=0; i<numSamples;i++){
         float a = TWO_PI/numSamples*i;
         //samples[i]=sin(a*a*sin(a*20/2));
-        samples[i]=sin(a*a*sin(a*5/2));
-        ofVertex(x + (ofGetFrameNum()%40)*samples[i],i);
+        samples[i]=sin(par1*a*a*sin(a*5/2));
+        ofVertex(x + 40*sin(ofGetFrameNum()*0.04)*samples[i],i*4);
     }
     ofEndShape();
     if (counterSinEq%40 == true) {
@@ -1163,9 +1171,12 @@ void liveApp::sinEq(int x, float par1)   {
 }
 void liveApp::draw()	{
     
-    if(sinEqBool) {sinEq(xSinEq, par1SinEq);}
-	
-	if (camera)                                         {
+    for(int i = 0; i < 1024; i++)	{
+        if (sinEqArray[i].activeSinEq == true) {
+            sinEq(sinEqArray[i].xPos,sinEqArray[i].par1);
+        }
+    }
+	if (camera)                                     {
 		ofPushMatrix();
 		ofTranslate(ofGetWidth() / 2, ofGetHeight() / 2, 0);
 		ofRotateX(mouseY);
@@ -1176,7 +1187,7 @@ void liveApp::draw()	{
 		ofFill();	
 		ofSetColor(rBack, gBack, bBack, aBack);
 		ofRect(0,0,ofGetWidth(),ofGetHeight());			
-	}	//	background	
+	}	//	background
 	if (playVideo)									{
 		myVideo->idleMovie();
 		ofSetColor(rVideo,gVideo,bVideo,aVideo);		
@@ -1641,7 +1652,6 @@ void liveApp::draw()	{
 		vbo.draw(GL_POINTS, 0, (int)points.size());			
 		cam.end();		
 	}*/	//	3D-OBJECT-SPECTROGRAM
-	
 	/*	{
 		//we have to disable depth testing to draw the video frame
 		glDisable(GL_DEPTH_TEST);	

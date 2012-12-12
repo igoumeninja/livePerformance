@@ -42,6 +42,12 @@ public:
 	void	seed2(float dotSize, float angle, float x, float y);
     
     void    sinEq(int x, float par1);
+	struct structSinEq {
+		bool    activeSinEq;
+		int     xPos;
+        float   par1;
+	} sinEqArray[1024];
+
     bool sinEqBool;
     int xSinEq, counterSinEq;
     float par1SinEq;
