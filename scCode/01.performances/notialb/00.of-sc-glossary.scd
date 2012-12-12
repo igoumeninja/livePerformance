@@ -11,7 +11,7 @@ MakeResponders
 
 BACKGROUND
 ----------
-OF.background(0,0,0,25);		//OF.rgb("background",R,G,B,A);
+OF.background(0,0,0,10);		//OF.rgb("background",R,G,B,A);
 OF.background(255,255,255,10);
 OF.background(255,10);
 OF.background(0);		//OF.rgb("background",R,G,B,A);
@@ -23,7 +23,7 @@ OF.background(setBackgroundAutoBool, 0);
 
 SIN EQUATIONS
 -------------
-OF.background(0,0,0,15);
+OF.background(0,0,0,0);
 OF.sinEq(0,600.rand,10.03213); // OF.sinEq(true,xPos,par1);
 OF.sinEq(0,200,100); // OF.sinEq(true,xPos,par1);
 OF.sinEq("remove",1)
@@ -151,16 +151,16 @@ OF.rgb("sketch",255,255,255,20);
 OF.rgb("sketch",0,0,0,250);
 -sound2d
 OF.interactWithSound("activate",1); 				//	0:DEACTIVATE, 1: ACTIVATE
-OF.interactWithSound("numSoundSketches", 500);		//	RANGE: 1 -> 999
+OF.interactWithSound("numSoundSketches", 80);		//	RANGE: 1 -> 999
 OF.interactWithSound("glBeginType",1);			//	0:POINTS, 1: LINES
 OF.interactWithSound("numSoundSketches", 200);		//  200: LINES or POINTS
 OF.interactWithSound("maxFreqIn", 2000);			// 2000 Hz
 OF.interactWithSound("maxAmpIn", 1);				// 1: amplitude
-OF.interactWithSound("maxSoundElasticity",1.1);	//  RANGE: 0 -> 20
-OF.rgb("sound",255,255,255,20);				// 	OF.rgb("sound",r,g,b,a)
+OF.interactWithSound("maxSoundElasticity",5.1);	//  RANGE: 0 -> 20
+OF.rgb("sound",255,255,255,25);				// 	OF.rgb("sound",r,g,b,a)
 -sound3d
-OF.sketch3d("activate", 1);
-OF.sketch3d("glBeginType",0);
+OF.sketch3d("activate", 0);
+OF.sketch3d("glBeginType",1);
 OF.sketch3d("numSketch3d",500);
 OF.sketch3d("rotYratio",0.3);
 OF.sketch3d("rotZratio",0.1);
@@ -171,7 +171,7 @@ OF.rgb("sketch3d",255,255,255,20);
 PARTICLE
 --------
 OF.rgb("background",0,0,0,0);				//OF.rgb("background",R,G,B,A);
-OF.particle("activate", 1);					//	0:DEACTIVATE, 1: ACTIVATE
+OF.particle("activate", 0);					//	0:DEACTIVATE, 1: ACTIVATE
 OF.particle("add", xPos, yPos, xSpeed, ySpeed);
 OF.particle("add", 10,10, 0.5, 0.5);
 //:Add more
@@ -245,6 +245,7 @@ OF.particle("pusher","remove", i);
 
 TYPOGRAPHY
 ----------
+OF.writeString("34","sdg",500,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);
 OF.writeString("string",500,100,255,255,255,255);	//	("takis", X, Y, R, G, B, A);
 OF.writeString("bigCenter", "~sadfh",~width/2,~height/2,255,255,255,255); // BIG
 OF.writeString("bigCenter", "hi",~width/2,~height/2,255,255,255,255); // BIG

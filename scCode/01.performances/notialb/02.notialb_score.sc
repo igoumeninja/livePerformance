@@ -55,7 +55,6 @@ vaggelis at: 1-11
 */
 
 Notialb_Score {
-
 	*initClass {
 		StartUp add: {
 			//this.sendTheTags;
@@ -205,12 +204,6 @@ Notialb_Score {
 					~meterCount = ~meterCount + 1; "\n~meterCount=".post; ~meterCount.postln;
 					"b1".postln;
 					{
-						if ((~meterCount > 15) && (~meterCount < 64) && (~meterCount%2 == 0), {
-							OF.sinEq(0,~screen1+~screenWidth/2,10.rand);
-						},
-						{
-							OF.sinEq("remove",0);
-						});
 						if (~meterCount > 9, {
 							{
 								OF.effect("noiseEffect", 1);
@@ -434,6 +427,29 @@ Notialb_Score {
 				OF.particle("dotColor",255,255,255,155);
 				OF.particle("conColor",255,255,255,10);
 				~cResp1.action = { "\n~meterCount=".post; ~meterCount.postln;"c1".postln;
+					if ((~meterCount > 92) && (~meterCount < 117), {
+						{
+							{
+								OF.effect("noiseEffect", 1);
+								0.04.wait;
+								OF.effect("noiseEffect", 0);
+							}.fork;
+
+						}.fork;
+					});
+					if ((~meterCount > 47) && (~meterCount < 58) , {
+						{
+							OF.rect([~screen1,~screen2,~screen3].choose,0,~screenWidth,~height, 255,255,255,255);
+							0.1.wait;
+							OF.rect([~screen1,~screen2,~screen3].choose,0,~screenWidth,~height, 255,255,255,255);
+							0.1.wait;
+							OF.rect([~screen1,~screen2,~screen3].choose,0,~screenWidth,~height, 255,255,255,255);
+							0.1.wait;
+							OF.rect([~screen1,~screen2,~screen3].choose,0,~screenWidth,~height, 255,255,255,255);
+							0.1.wait;
+						}.fork;
+						}
+					);
 					if ((~meterCount > 58) && (~meterCount < 65) , {
 						{
 							OF.writeString("bigCenter","-",~screen1+(~screenWidth/2)-100,~height.rand,255,255,255,255);
@@ -600,7 +616,6 @@ Notialb_Score {
 					if ((~meterCount > 4) && (~meterCount < 21), {
 						{
 							OF.effect("mirror", 1);
-							OF.sinEq(0,10,10);OF.sinEq(1,20,10);
 							~mySendAmpFreq.start;
 							OF.interactWithSound("activate",1);
 							OF.effect("mirror","case", 5);
@@ -629,18 +644,6 @@ Notialb_Score {
 							OF.sinEq("remove",1);OF.sinEq("remove",0);
 						}.fork;
 					});
-
-					if ((~meterCount > 92) && (~meterCount < 117), {
-						{
-							{
-								OF.effect("noiseEffect", 1);
-								0.04.wait;
-								OF.effect("noiseEffect", 0);
-							}.fork;
-
-						}.fork;
-					});
-
 				};
 				~cResp8.action  = {"c8".postln;
 					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
@@ -655,8 +658,6 @@ Notialb_Score {
 					if ((~meterCount > 0) && (~meterCount < 15), {OF.rect(~screen2,0,~screenWidth,~height, 255,255,255,255);});
 				};
 		}).add;
-
-
 	}
 
 	//========================================================================//
@@ -675,6 +676,8 @@ Notialb_Score {
 				OF.background(0,0,0,0);
 				OF.feedback("speedXY", 0,0.5);
 				OF.rgb("sound",255,255,255,15);
+				OF.interactWithSound("maxFreqIn", 1000);
+				OF.interactWithSound("glBeginType",1);
 
 				OF.sketch3d("glBeginType",1);
 				OF.sketch3d("numSketch3d",250);
@@ -682,24 +685,14 @@ Notialb_Score {
 				OF.sketch3d("rotZratio",0.1);
 				OF.sketch3d("maxSketch3dElasticity",0.9);
 				OF.rgb("sketch3d",255,255,255,20);
-
 				OF.sketch3d("activate", 0);
-
 				~meterCount = 0;
 				//Actions
 				~dResp1.action = { "\n~meterCount=".post; ~meterCount.postln;"d1".postln;
 					if (~meterCount == 3, {OF.background(0,0,0,5);});
-					if ((~meterCount > 3) && (~meterCount%2==0) &&  (~meterCount < 31),
-						{
-							OF.sketch3d("numSketch3d",250);
-							OF.sketch3d("activate", 1);
-						},
-						{
-							OF.sketch3d("activate", 0);
-							OF.sketch3d("numSketch3d",50);
-					});
+					if (~meterCount == 30, {~meterCount = ~meterCount+1});
 
-					if ((~meterCount > 31) && (~meterCount%2 != 0),
+					if ((~meterCount > 8) && (~meterCount%2 == 0) && (~meterCount < 61),
 						{
 							OF.sketch3d("numSketch3d",250);
 							OF.sketch3d("activate", 1);
@@ -709,26 +702,29 @@ Notialb_Score {
 							OF.sketch3d("numSketch3d",50);
 					});
 					~meterCount = ~meterCount+1;
-
 				};
 				~dResp2.action = {"d2".postln;
 				};
 				~dResp3.action = {"d3".postln;
 				};
 				~dResp4.action = {"d4".postln;
-					if (~meterCount == 62,
+					if (~meterCount == 63,
 						{
 							OF.feedback("activate", 0);
 							OF.sketch3d("activate", 0);
 							OF.background(0,0,0,15);
 							OF.interactWithSound("activate",0);
 							{
-								3.wait;
-								OF.writeString("110","notialb",~screen3,~height,255,255,255,255);
+								9.wait;
+								OF.background(0,0,0,0);
+								OF.writeString("110","notialb",
+									~screen3,~height,
+									255,255,255,255);
 								OF.feedback("activate", 1);
 								OF.feedback("speedXY", -0.5,0);
 							}.fork;
-					});
+						}
+					);
 				};
 		}).add;
 	}

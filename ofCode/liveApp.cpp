@@ -201,6 +201,7 @@ void liveApp::setup()	{
 	*/	
 
 		// Fonts
+        myFont34.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 34, true, true, true);
 		myFont11.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 11, true, true, true);
         myFont100.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 100, true, true, true);
 		myFont350.loadFont("/Users/ari/Media/fonts/favorites/Batang.ttf", 250, true, true, true);
@@ -705,6 +706,14 @@ void liveApp::update()	{
 			ofPushMatrix();
 			ofTranslate(m.getArgAsInt32( 2 ), m.getArgAsInt32(3), 0);
 			myFont350.drawString(m.getArgAsString( 1 ), 0, 0);		
+			ofPopMatrix();
+		} else if (m.getArgAsString(0) == "34"){
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // GL_SRC_ALPHA_SATURATE,GL_ONE     GL_SRC_ALPHA, GL_ONE
+			ofFill();
+			ofSetColor(m.getArgAsInt32( 4 ),m.getArgAsInt32( 5 ),m.getArgAsInt32( 6 ),m.getArgAsInt32( 7 ));
+			ofPushMatrix();
+			ofTranslate(m.getArgAsInt32( 2 ), m.getArgAsInt32(3), 0);
+			myFont34.drawString(m.getArgAsString( 1 ), 0, 0);
 			ofPopMatrix();
 			
 		} else if (m.getArgAsString(0) == "110"){
